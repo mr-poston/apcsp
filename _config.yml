@@ -3,6 +3,6 @@ permalink: pretty
 plugins:
   - jekyll-remote-theme
 
-remote_theme: cs50/jekyll-theme-cs50
+remote_theme: samarsault/texture
 
 title: CS50 AP
