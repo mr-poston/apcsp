@@ -1,6 +1,6 @@
 ***
 
-* [CS50 IDE](https://ide.cs50.io/)
+* [VSCode for CS50](https://code.cs50.io/)
 * [CS50 Programmer's Manual](https://man.cs50.io/)
 
 ***
