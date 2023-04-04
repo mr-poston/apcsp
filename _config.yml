@@ -3,6 +3,6 @@ permalink: pretty
 plugins:
   - jekyll-remote-theme
 
-remote_theme: "https://github.com/mr-poston/jekyll-theme-cs50"
+remote_theme: "https://github.com/cs50/jekyll-theme-cs50"
 
 title: CS50 AP
