@@ -1,4 +1,8 @@
-# [CS50 AP]({{ "/" | relative_url }})
+# [AP Computer Science Principles]({{ "/" | relative_url }})
+
+via Harvard's CS50 Curriculum
+
+---
 
 Richardson High School\\
 2023–2024\\
