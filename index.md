@@ -1,7 +1,4 @@
 ---
-layout: default
----
----
 title: false
 ---
 
