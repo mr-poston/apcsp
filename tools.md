@@ -1,17 +1,6 @@
-# CS50 Tools
+## VSCode for CS50
 
-<iframe title="Tools" src="{{'/assets/pdfs/tools.pdf' | relative_url }}" width="838" height="1130" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>
-
----
-
-## CS50 Sandbox
-
-Temporary programming environments for students and teachers
-<https://sandbox.cs50.io/>
-
-## CS50 IDE
-
-CS50 IDE is a cloud-based Integrated Development Environment powered by AWS Cloud9 that features a cloud-based Ubuntu environment. Since it’s cloud-based, you can continue working on your problem sets even if you use a different computer!
+VSCode for CS50 is a cloud-based Integrated Development Environment that adapts [GitHub Codespaces](https://github.com/features/codespaces) for students and teachers that features a cloud-based Ubuntu environment. Since it’s cloud-based, you can continue working on your problem sets even if you use a different computer!
 
 You can also share your workspace with others. Visit [https://cs50.readthedocs.io/ide/online/#sharing-your-workspace](https://cs50.readthedocs.io/ide/online/#sharing-your-workspace) for more information.
 
@@ -37,6 +26,11 @@ Usage: `style50 program.c`
 
 Checks for correctness using test cases  
 Usage: `check50 cs50/problems/2018/ap/problem_name`
+
+## CS50 Sandbox
+
+Temporary programming environments for students and teachers
+<https://sandbox.cs50.io/>
 
 ## Documentation
 
