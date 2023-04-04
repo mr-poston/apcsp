@@ -2,8 +2,6 @@
 
 VSCode for CS50 is a cloud-based Integrated Development Environment that adapts [GitHub Codespaces](https://github.com/features/codespaces) for students and teachers that features a cloud-based Ubuntu environment. Since it’s cloud-based, you can continue working on your problem sets even if you use a different computer!
 
-You can also share your workspace with others. Visit [https://cs50.readthedocs.io/ide/online/#sharing-your-workspace](https://cs50.readthedocs.io/ide/online/#sharing-your-workspace) for more information.
-
 ## Command-Line Tools
 
 #### `help50`
