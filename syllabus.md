@@ -34,36 +34,70 @@
 
 [AP Computer Science Conceptual Framework](apcentral.collegeboard.org/pdf/ap-computer-science-principles-conceptual-framework-2020-21.pdf.)
 
-P1
+<details>
+<summary>Details</summary>
+
+#### P1
+
 The course provides opportunities for students to develop the skills related to Computational Thinking Practice P1: Computational Solution Design.
-P2
+
+#### P2
+
 The course provides opportunities for students to develop the skills related to Computational Thinking Practice P2: Algorithms and Program Development.
-P3
+
+#### P3
+
 The course provides opportunities for students to develop the skills related to Computational Thinking Practice P3: Abstraction in Program Development.
-P4
+
+#### P4
+
 The course provides opportunities for students to develop the skills related to Computational Thinking Practice P4: Code Analysis.
-P5
+
+#### P5
+
 The course provides opportunities for students to develop the skills related to Computational Thinking Practice P5: Computing Innovations.
-P6
+
+#### P6
+
 The course provides opportunities for students to develop the skills related to Computational Thinking Practice P6: Responsible Computing.
-CRD
+
+#### CRD
+
 The course provides opportunities to develop student understanding of Big Idea 1: Creative Development.
-DAT
+
+#### DAT
+
 The course provides opportunities to develop student understanding of Big Idea 2: Data.
-AAP
+
+#### AAP
+
 The course provides opportunities to develop student understanding of Big Idea 3: Algorithms and Programming.
-CSN
+
+#### CSN
+
 The course provides opportunities to develop student understanding of Big Idea 4: Computing Systems and Networks.
-IOC
+
+#### IOC
+
 The course provides opportunities to develop student understanding of Big Idea 5: Impact of Computing.
-CI-1
+
+#### CI-1
+
 The course provides an opportunity for students to investigate Computing Innovation 1 - Basic Home Computing.
-CI-2
+
+#### CI-2
+
 The course provides an opportunity for students to investigate Computing Innovation 2 - Large Scale Data Processing.
-CI-3
+
+#### CI-3
+
 The course provides an opportunity for students to investigate Computing Innovation 3 - Cybersecurity and the Internet.
-TCA
+
+#### TCA
+
 Students are provided at least twelve (12) hours of dedicated class time to complete the AP Create Performance Task.
+
+</details>
 
 ## Course Introduction
 
@@ -83,37 +117,37 @@ No books are required for this course. However, students may wish to supplement 
 
 ### For Those Less Comfortable
 
-C Programming Absolute Beginner’s Guide, 3rd Edition
+*C Programming Absolute Beginner’s Guide*, 3rd Edition
 Greg Perry, Dean Miller
 Pearson Education, 2014
 ISBN 0-789-75198-4
 
 ### For Those More Comfortable
 
-Programming in C, 4th Edition
+*Programming in C*, 4th Edition
 Stephen G. Kochan
 Pearson Education, 2015
 ISBN 0-321-77641-0
 
 The following book is recommended for those interested in understanding more about how their own computers work, for personal edification.
 
-How Computers Work, 10th Edition
+*How Computers Work*, 10th Edition
 Ron White
 Que Publishing, 2014
 ISBN 0-7897-4984-X
 
 Lastly, the following book is recommended for aspiring hackers—those interested in programming techniques and low-level optimization of code that goes beyond the scope of this course.
 
-Hacker’s Delight, 2nd Edition
+*Hacker’s Delight*, 2nd Edition
 Henry S. Warren, Jr.
 Pearson Education, 2013
 ISBN 0-321-84268-5
 
 ## Programming Environments
 
-Several programming languages are taught in the course, and students are able to program in all of them in an environment designed specifically for the course called CS50 IDE. Students will need to sign up for a (free) GitHub account in order to use CS50 IDE.
+Several programming languages are taught in the course, and students are able to program in all of them in an environment designed specifically for the course called VSCode for CS50. Students will need to sign up for a (free) GitHub account in order to use VSCode for CS50.
 
-CS50 IDE is a web-based utility (hosted on a platform known as AWS Cloud9) with cloud storage, meaning students will be able to work on the course’s programming exercises at home, school, or anywhere they have an internet connection. Instructions for setting up and using CS50 IDE are provided in the first assignment requiring its use.
+VSCode for CS50 is a web-based utility with cloud storage, meaning students will be able to work on the course’s programming exercises at home, school, or anywhere they have an internet connection. Instructions for setting up and using VSCode for CS50 are provided in the first assignment requiring its use.
 
 Additionally, students will use a drag-and-drop programming language called Scratch for some of the course’s early material. Scratch is similarly a web-based environment.
 
@@ -201,48 +235,17 @@ In this module, students learn about how it all works underneath the hood and ho
 
 #### Topics within this Module
 
-Hardware
-Internet
-Multimedia
-Security
-Web Development *
-Programming **
+1. Hardware
+2. Internet
+3. Multimedia
+4. Security
+5. Web Development *
+6. Programming **
 * also in CS50x’s Web Track
 ** also in CS50x’s Week 0
 
-Sample Problems
-Around the House
+#### Big Ideas Covered in these Topics
 
-Students explore the devices in their home to find “non-traditional” computers. In no more than 400 words, they’ll describe these devices in detail. [P5] [P6]
-
-They will answer questions such as:
-
-What does the device look like?
-What kind of data does it accept?
-How does it process that data?
-What is the result of that processing?
-Tech Spotlight
-
-Students research technological innovations and apply their newfound knowledge of computer hardware. In no more than 600 words, students will expound on this technology. Their objective is to provide the reader with a well-rounded, unbiased summary of this innovation and the abstractions used in its creation. [P1] [P3] [P5] [P6]
-
-In accordance with Computing Innovation 1[CI-1], students will explore Technology around the Home and:
-
-[B] Students will Identify the data used in at least one computing innovation and explain how the data is consumed, produced, or transformed by the given computing innovation.
-In addition, in writing their response students will consider:
-
-What is this technology called?
-What does it do?
-How does someone use this technology?
-How is its quality of performance commonly measured? (e.g. in megabytes (MB), gigahertz (GHz), etc.)
-How does the recent news about the technology change the product or service?
-What older form of technology does it replace, if any?
-How has this technology impacted your life, for better or worse?
-How has this technology impacted society at large, for better or worse
-Everyday Algorithms
-
-Students will write an algorithm in sentence form and in pseudocode for how to complete a task that they do on a daily basis such as brushing their teeth. Students should strive to accurately describe that algorithm without ambiguity in a spoken language. [P2] [P3]
-
-Big Ideas Covered in these Topics
 CRD-2.J
 DAT-1.A
 DAT-1.B
@@ -255,8 +258,11 @@ IOC-1.A
 IOC-1.F
 IOC-2.A
 IOC-2.B
-CS50x
-Scratch
+
+### CS50x
+
+#### Scratch
+
 In this module, students will learn about how data is represented in their computer and the language of computers – binary, how information is encoded so that humans can understand it and begin to explore the ways in which computers process information.
 
 Topics within this Module
