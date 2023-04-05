@@ -11,7 +11,7 @@
   * [Transistors and Logic](../../../assets/pdfs/transistors_and_logic.pdf)
 * [Slides](https://cdn.cs50.net/cscie1a/2017/fall/lectures/hardware/hardware.pdf)
 * [Assignment1](../../../assignments/hardware.md)
-* [Assignment2](./assignments)
+* [Assignment2](./assignments/)
 * Past Problems
   * Around the House
   * Tech Spotlight
