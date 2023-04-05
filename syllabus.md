@@ -32,68 +32,68 @@
 
 ## Curricular Requirements
 
-[AP Computer Science Conceptual Framework](apcentral.collegeboard.org/pdf/ap-computer-science-principles-conceptual-framework-2020-21.pdf.)
+[AP Computer Science Conceptual Framework](https://apcentral.collegeboard.org/media/pdf/ap-computer-science-principles-conceptual-framework-2020-21.pdf)
 
 <details>
 <summary>Details</summary>
 
-#### P1
+    #### P1
 
-The course provides opportunities for students to develop the skills related to Computational Thinking Practice P1: Computational Solution Design.
+    The course provides opportunities for students to develop the skills related to Computational Thinking Practice P1: Computational Solution Design.
 
-#### P2
+    #### P2
 
-The course provides opportunities for students to develop the skills related to Computational Thinking Practice P2: Algorithms and Program Development.
+    The course provides opportunities for students to develop the skills related to Computational Thinking Practice P2: Algorithms and Program Development.
 
-#### P3
+    #### P3
 
-The course provides opportunities for students to develop the skills related to Computational Thinking Practice P3: Abstraction in Program Development.
+    The course provides opportunities for students to develop the skills related to Computational Thinking Practice P3: Abstraction in Program Development.
 
-#### P4
+    #### P4
 
-The course provides opportunities for students to develop the skills related to Computational Thinking Practice P4: Code Analysis.
+    The course provides opportunities for students to develop the skills related to Computational Thinking Practice P4: Code Analysis.
 
-#### P5
+    #### P5
 
-The course provides opportunities for students to develop the skills related to Computational Thinking Practice P5: Computing Innovations.
+    The course provides opportunities for students to develop the skills related to Computational Thinking Practice P5: Computing Innovations.
 
-#### P6
+    #### P6
 
-The course provides opportunities for students to develop the skills related to Computational Thinking Practice P6: Responsible Computing.
+    The course provides opportunities for students to develop the skills related to Computational Thinking Practice P6: Responsible Computing.
 
-#### CRD
+    #### CRD
 
-The course provides opportunities to develop student understanding of Big Idea 1: Creative Development.
+    The course provides opportunities to develop student understanding of Big Idea 1: Creative Development.
 
-#### DAT
+    #### DAT
 
-The course provides opportunities to develop student understanding of Big Idea 2: Data.
+    The course provides opportunities to develop student understanding of Big Idea 2: Data.
 
-#### AAP
+    #### AAP
 
-The course provides opportunities to develop student understanding of Big Idea 3: Algorithms and Programming.
+    The course provides opportunities to develop student understanding of Big Idea 3: Algorithms and Programming.
 
-#### CSN
+    #### CSN
 
-The course provides opportunities to develop student understanding of Big Idea 4: Computing Systems and Networks.
+    The course provides opportunities to develop student understanding of Big Idea 4: Computing Systems and Networks.
 
-#### IOC
+    #### IOC
 
-The course provides opportunities to develop student understanding of Big Idea 5: Impact of Computing.
+    The course provides opportunities to develop student understanding of Big Idea 5: Impact of Computing.
 
-#### CI-1
+    #### CI-1
 
-The course provides an opportunity for students to investigate Computing Innovation 1 - Basic Home Computing.
+    The course provides an opportunity for students to investigate Computing Innovation 1 - Basic Home Computing.
 
-#### CI-2
+    #### CI-2
 
-The course provides an opportunity for students to investigate Computing Innovation 2 - Large Scale Data Processing.
+    The course provides an opportunity for students to investigate Computing Innovation 2 - Large Scale Data Processing.
 
-#### CI-3
+    #### CI-3
 
-The course provides an opportunity for students to investigate Computing Innovation 3 - Cybersecurity and the Internet.
+    The course provides an opportunity for students to investigate Computing Innovation 3 - Cybersecurity and the Internet.
 
-#### TCA
+    #### TCA
 
 Students are provided at least twelve (12) hours of dedicated class time to complete the AP Create Performance Task.
 
@@ -117,30 +117,30 @@ No books are required for this course. However, students may wish to supplement 
 
 ### For Those Less Comfortable
 
-*C Programming Absolute Beginner’s Guide*, 3rd Edition
-Greg Perry, Dean Miller
-Pearson Education, 2014
+*C Programming Absolute Beginner’s Guide*, 3rd Edition  
+Greg Perry, Dean Miller  
+Pearson Education, 2014  
 ISBN 0-789-75198-4
 
 ### For Those More Comfortable
 
-*Programming in C*, 4th Edition
-Stephen G. Kochan
-Pearson Education, 2015
+*Programming in C*, 4th Edition  
+Stephen G. Kochan  
+Pearson Education, 2015  
 ISBN 0-321-77641-0
 
 The following book is recommended for those interested in understanding more about how their own computers work, for personal edification.
 
-*How Computers Work*, 10th Edition
-Ron White
-Que Publishing, 2014
+*How Computers Work*, 10th Edition  
+Ron White  
+Que Publishing, 2014  
 ISBN 0-7897-4984-X
 
 Lastly, the following book is recommended for aspiring hackers—those interested in programming techniques and low-level optimization of code that goes beyond the scope of this course.
 
-*Hacker’s Delight*, 2nd Edition
-Henry S. Warren, Jr.
-Pearson Education, 2013
+*Hacker’s Delight*, 2nd Edition  
+Henry S. Warren, Jr.  
+Pearson Education, 2013  
 ISBN 0-321-84268-5
 
 ## Programming Environments
@@ -246,17 +246,17 @@ In this module, students learn about how it all works underneath the hood and ho
 
 #### Big Ideas Covered in these Topics
 
-CRD-2.J
-DAT-1.A
-DAT-1.B
-DAT-2.E
-CSN-1.A
-CSN-1.B
-CSN-1.C
-CSN-1.D
-IOC-1.A
-IOC-1.F
-IOC-2.A
+CRD-2.J  
+DAT-1.A  
+DAT-1.B  
+DAT-2.E  
+CSN-1.A  
+CSN-1.B  
+CSN-1.C  
+CSN-1.D  
+IOC-1.A  
+IOC-1.F  
+IOC-2.A  
 IOC-2.B
 
 ### CS50x
