@@ -2,27 +2,16 @@
 
 <iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" class="border" data-video="" src="https://video.cs50.io/6mbFO0ZLMW8?screen=WRB6P2vMAao"></iframe>
 
-+ Lecture
-  * Notes
-  * Slides
-  * Subtitles
-  * Transcript
-  + Video
-    * CS50 Video Player
-    + MP4
-      * 360p
-      * 720p
-      * 1080p
-      * 4K
-    * YouTube
-- References
+* [Notes](./notes)
+* Reference Sheets
   * Computers and Computing
   * CPU and SoC
   * How Computers Work
   * Memory
   * Transistors and Logic
 * Assignment
-+ Past Problems
+* Slides
+* Past Problems
   * Around the House
   * Tech Spotlight
   * Everyday Algorithms
