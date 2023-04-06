@@ -1,6 +1,6 @@
 # Curriculum
 
-CS50 for AP Computer Science Principles includes materials from CS50T (Understanding Technology) and CS50x (Introduction to Computer Science) as well as two AP-specific modules (Data Science and Impact of Computing).
+CS50 for AP Computer Science Principles includes materials from [CS50T](https://cs50.harvard.edu/ap/2023/curriculum/#cs50t) (Understanding Technology) and [CS50x](https://cs50.harvard.edu/ap/2023/curriculum/#cs50x) (Introduction to Computer Science) as well as two AP-specific modules (Data Science and Impact of Computing).
 
 ## CS50T
 
@@ -14,7 +14,7 @@ CS50 for AP Computer Science Principles includes materials from CS50T (Understan
 [^1]: Also in CS50X Web Track  
 [^2]: Also in CS50X Unit 0
 
-## CS50X
+## CS50x
 
 0. [Scratch](https://cs50.harvard.edu/ap/2023/curriculum/x/weeks/0/)
 1. [Intro to C](https://cs50.harvard.edu/ap/2023/curriculum/x/weeks/1/)

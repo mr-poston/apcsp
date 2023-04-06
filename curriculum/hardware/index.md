@@ -1,6 +1,6 @@
 # Hardware
 
-<iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" class="border" data-video="" src="https://video.cs50.io/6mbFO0ZLMW8"></iframe>
+<iframe width="1214" height="683" src="https://www.youtube.com/embed/6mbFO0ZLMW8" title="Hardware - CS50&#39;s Understanding Technology 2017" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 * [Notes](./notes)
 * Reference Sheets
@@ -16,3 +16,4 @@
   * [Tech Spotlight](https://cs50.harvard.edu/ap/2023/problems/tech/)
   * [Everyday Algorithms](https://cs50.harvard.edu/ap/2023/problems/algorithms/)
   * [Me, Myself, and UI](https://cs50.harvard.edu/ap/2023/problems/ui/)
+  
