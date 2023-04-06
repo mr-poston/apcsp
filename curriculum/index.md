@@ -4,7 +4,7 @@ CS50 for AP Computer Science Principles includes materials from CS50T (Understan
 
 ## CS50T
 
-* Hardware
+* [Hardware](hardware)
 * Internet
 * Multimedia
 * Security
