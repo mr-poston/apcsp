@@ -4,11 +4,11 @@
 
 * [Notes](./notes)
 * Reference Sheets
-  * [Computers and Computing](../../../assets/pdfs/computers_and_computing.pdf)
-  * [CPU and SoC](../../../assets/pdfs/cpu_and_soc.pdf)
-  * [How Computers Work](../../../assets/pdfs/how_computers_work.pdf)
-  * [Memory](../../../assets/pdfs/memory.pdf)
-  * [Transistors and Logic](../../../assets/pdfs/transistors_and_logic.pdf)
+  * [Computers and Computing](../../assets/pdfs/computers_and_computing.pdf)
+  * [CPU and SoC](../../assets/pdfs/cpu_and_soc.pdf)
+  * [How Computers Work](../../assets/pdfs/how_computers_work.pdf)
+  * [Memory](../../assets/pdfs/memory.pdf)
+  * [Transistors and Logic](../../assets/pdfs/transistors_and_logic.pdf)
 * [Slides](https://cdn.cs50.net/cscie1a/2017/fall/lectures/hardware/hardware.pdf)
 * [Assignment](./assignments/)
 * Past Problems
