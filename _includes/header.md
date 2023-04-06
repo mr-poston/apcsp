@@ -1,6 +1,6 @@
 # [AP Computer Science Principles]({{ "/" | relative_url }})
 
-via Harvard's CS50 Curriculum
+via Harvard University's CS50 Curriculum
 
 ---
 

@@ -10,10 +10,9 @@
   * [Memory](../../../assets/pdfs/memory.pdf)
   * [Transistors and Logic](../../../assets/pdfs/transistors_and_logic.pdf)
 * [Slides](https://cdn.cs50.net/cscie1a/2017/fall/lectures/hardware/hardware.pdf)
-* [Assignment1](../../../assignments/hardware.md)
-* [Assignment2](./assignments/)
+* [Assignment](./assignments/)
 * Past Problems
-  * Around the House
-  * Tech Spotlight
-  * Everyday Algorithms
-  * Me, Myself, and UI
+  * [Around the House](https://cs50.harvard.edu/ap/2023/problems/house/)
+  * [Tech Spotlight](https://cs50.harvard.edu/ap/2023/problems/tech/)
+  * [Everyday Algorithms](https://cs50.harvard.edu/ap/2023/problems/algorithms/)
+  * [Me, Myself, and UI](https://cs50.harvard.edu/ap/2023/problems/ui/)
