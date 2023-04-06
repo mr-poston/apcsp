@@ -1,6 +1,6 @@
 # Multimedia
 
-<iframe width="1214" height="683" src="https://www.youtube.com/embed/kccUxGDsMAQ" title="Multimedia - CS50&#39;s Understanding Technology 2017" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="1214" height="683" src="https://www.youtube.com/embed/kccUxGDsMAQ?rel=0" title="Multimedia - CS50&#39;s Understanding Technology 2017" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 * [Notes](./notes)
 * Reference Sheets
