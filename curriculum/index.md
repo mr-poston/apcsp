@@ -5,12 +5,16 @@ CS50 for AP Computer Science Principles includes materials from CS50T (Understan
 ## CS50T
 
 * [Hardware](hardware)
-* Internet
-* Multimedia
-* Security
-* Web Development
+* [Internet](internet)
+* [Multimedia](multimedia)
+* [Security](security)
+* Web Development[^1]
+* Programming[^2]
 
-## CS50x
+[^1]: Also in CS50X Web Track
+[^2]: Also in CS50X Unit 0
+
+## CS50X
 
 * [Chapter 0](0)
 * [Chapter 1](1)
@@ -24,6 +28,5 @@ CS50 for AP Computer Science Principles includes materials from CS50T (Understan
 
 ## AP Modules
 
-* [Understanding Technology](understanding_technology)
 * [Data Science](data_science)
 * [Impact of Computing](impact_of_computing)
