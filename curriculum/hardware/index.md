@@ -4,6 +4,8 @@
 
 * [Notes](./notes)
 * Reference Sheets
+  * [ASCII](../../assets/pdfs/ascii.pdf)
+  * [Binary](../../assets/pdfs/binary.pdf)
   * [Computers and Computing](../../assets/pdfs/computers_and_computing.pdf)
   * [CPU and SoC](../../assets/pdfs/cpu_and_soc.pdf)
   * [How Computers Work](../../assets/pdfs/how_computers_work.pdf)
@@ -11,9 +13,14 @@
   * [Transistors and Logic](../../assets/pdfs/transistors_and_logic.pdf)
 * [Slides](https://cdn.cs50.net/cscie1a/2017/fall/lectures/hardware/hardware.pdf)
 * [Assignment](./assignments/)
-* Past Problems
-  * [Around the House](https://cs50.harvard.edu/ap/2023/problems/house/)
-  * [Tech Spotlight](https://cs50.harvard.edu/ap/2023/problems/tech/)
-  * [Everyday Algorithms](https://cs50.harvard.edu/ap/2023/problems/algorithms/)
-  * [Me, Myself, and UI](https://cs50.harvard.edu/ap/2023/problems/ui/)
+
+<details>
+<summary>Past Problems</summary>
+<ul>
+  <li><a href="https://cs50.harvard.edu/ap/2023/problems/house/">Around the House</a></li>
+  <li><a href="https://cs50.harvard.edu/ap/2023/problems/tech/">Tech Spotlight</a></li>
+  <li><a href="https://cs50.harvard.edu/ap/2023/problems/algorithms/">Everyday Algorithms</a></li>
+  <li><a href="https://cs50.harvard.edu/ap/2023/problems/ui/">Me, Myself, and UI</a></li>
+</ul>
+</details>
   
