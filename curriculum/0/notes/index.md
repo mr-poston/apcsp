@@ -6,9 +6,8 @@
 
 ## Welcome
 
-* When David was a freshman, he was too intimidated to take any computer science classes. But even if the topic feels out of your comfort zone, know that we'll fill in all the blanks along the way, until we are all on the same page.
-* In fact, 68% of CS50 students have never taken a CS course before.
-* To support you, there is an amazing staff, sections, and office hours.
+* When Mr. Poston was in high school (at Richardson HS in the 1990s) and [David Malan](https://cs.harvard.edu/malan/) of Harvard University was a freshman in college, they were too intimidated to take any computer science classes. But even if the topic feels out of your comfort zone, know that we'll fill in all the blanks along the way, until we are all on the same page.
+* It turns out that computer science was less about programming than about problem solving. And though there may be frustration from feeling stuck or making mistakes, there will also be a great sense of gratification and pride from getting something to work or completing some task.
 * And importantly, too:
   > what ultimately matters in this course is not so much where you end up relative to your classmates but where you end up relative to where you started.
 
@@ -16,13 +15,15 @@
 
 * Computer science is fundamentally problem-solving, and programming alone or (more likely) collaboratively is one way to do that.
 * Collaboration is an important aspect of problem solving. It can take on many forms, such as communication or consultation. Collaboration helps us see diverse perspectives, which can help us avoid bias in the development of computing innovations.
-* We can think of problem-solving as the process of taking some input (details about our problem) and generate some output (the solution to our problem). The "black box" in the middle is what we'll gradually learn more and more about in this course.<br>
+* We can think of **problem-solving** as the process of taking some input (details about our problem) and generate some output (the solution to our problem). The "black box" in the middle is what we'll gradually learn more and more about in this course.<br>
   ![word "input", arrow into box, arrow out of box, word "output"](input_output.png)
-* We need a way to represent inputs in some standard way, and if our problem were to simply count the number of people in the lecture hall, we'd have many options. We could write tally marks on a board, or use our hands. In fact, with just one hand, we can use our fingers creatively: with just our thumb up, we could represent one; with our just index finger up, we could represent two; with both our thumb and index finger up, we could represent three. And by continuing to use a pattern of permutations, we could represent 32 different values with just five fingers!
+* We need a way to represent inputs in some standard way, and if our problem were to simply count the number of people in the classroom, we'd have many options. We could write tally marks on a board, or use our hands. In fact, with just one hand, we can use our fingers creatively: with just our thumb up, we could represent one; with our just index finger up, we could represent two; with both our thumb and index finger up, we could represent three. And by continuing to use a pattern of permutations, we could represent 32 different values with just five fingers!
 
-## Binary
+## Representing Numbers
 
-* A computer, at the lowest level, stores data in binary, where there are just two digits, 0 and 1. And that maps to how our computers use electricity, which is easy to turn off or on.
+* To count the number of people in a room, we might start by using our fingers, one at a time. This system is called **unary**, where each digit represents a single value of one.
+* To count to higher numbers, we might use ten digits, 0 through 9, with a system called **decimal**.
+* A computer, at the lowest level, uses a simpler system called **binary**, where there are just two digits, 0 and 1. And that maps to how our computers use electricity, which is easy to turn off or on.
 * As humans, we know the following represents one hundred and twenty-three.
   ```
   1 2 3
