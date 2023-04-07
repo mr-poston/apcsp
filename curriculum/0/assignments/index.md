@@ -29,15 +29,15 @@ Once finished with your project, select **File > Save now** one last time. Then 
 
 ## How to Submit
 
-<div class="alert" data-alert="warning" role="alert"><p>Be sure to complete <strong>both</strong> steps below, in order!</p></div>
+> Be sure to complete **both** steps below, in order!
 
 ### Step 1 of 2
 
-Submit this form.
+Submit *this form*.
 
 ### Step 2 of 2
 
-This step assumes that you’ve downloaded your Scratch project as a file whose name ends in .sb3. And this step also assumes that you’ve signed up for a GitHub account, per the above form.
+This step assumes that you’ve downloaded your Scratch project as a file whose name ends in `.sb3`. And this step also assumes that you’ve signed up for a GitHub account, per the above form.
 
 1. Visit *this link*, log in with your GitHub account, and click **Authorize cs50**.
 2. Check the box indicating that you’d like to grant course staff access to your submissions, and click **Join course**.
