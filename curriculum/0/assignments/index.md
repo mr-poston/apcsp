@@ -29,7 +29,7 @@ Once finished with your project, select **File > Save now** one last time. Then 
 
 ## How to Submit
 
-> <div style="background: #fcffa4">Be sure to complete **both** steps below, in order!</div>
+> Be sure to complete **both** steps below, in order!
 
 ### Step 1 of 2
 
