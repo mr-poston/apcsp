@@ -17,7 +17,7 @@ CS50 for AP Computer Science Principles includes materials from [CS50T](https://
 ## CS50x
 
 0. [Scratch](0)
-1. [Intro to C](https://cs50.harvard.edu/ap/2023/curriculum/x/weeks/1/)
+1. [Intro to C](1)
 2. [Arrays](https://cs50.harvard.edu/ap/2023/curriculum/x/weeks/2/)
 3. [Algorithms](https://cs50.harvard.edu/ap/2023/curriculum/x/weeks/3/)
 4. [Memory](https://cs50.harvard.edu/ap/2023/curriculum/x/weeks/4/)
