@@ -6,13 +6,13 @@
 2, Once your codespace has loaded, close any **Welcome** tabs that might have opened by default
 3. Log into [submit.cs50.io](https://submit.cs50.io/) using your GitHub account and click **Authorize cs50** to activate `check50`
 4. Run `update50` in your codespace’s terminal window to ensure your codespace is up-to-date and, if prompted, click **Rebuild now**
-5. Submit [Hello](./hello.md)
+5. Submit [Hello](hello.md)
 6. Submit one of:
-  * [this version of Mario](./marioless.md) if feeling less comfortable
-  * [this version of Mario](./mariomore.md) if feeling more comfortable
+  * [this version of Mario](marioless.md) if feeling less comfortable
+  * [this version of Mario](mariomore.md) if feeling more comfortable
 7. Submit one of:
-  * [Cash](./cash.md) if feeling less comfortable
-  * [Credit](./credit.md) if feeling more comfortable
+  * [Cash](cash.md) if feeling less comfortable
+  * [Credit](credit.md) if feeling more comfortable
 
 If you submit both versions of Mario, I’ll record the higher of your two scores. If you submit both Cash and Credit, I’ll record the higher of your two scores.
 
