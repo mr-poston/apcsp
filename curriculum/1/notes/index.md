@@ -11,13 +11,29 @@
 * Computers represent inputs and outputs with lots of bits, binary digits, 0s and 1s, that are on or off. And with enough of those bits, we can represent not only larger numbers, but text, images, and video.
 * And there can be different algorithms that can solve the same problem, but with different running times.
 * We can write down algorithms more precisely with pseudocode, and along the way use concepts like functions, loops, and conditions.
-  * With the help of volunteers from the audience, we make peanut butter and jelly sandwiches from ingredients, though each of us interpreted the instructions differently!
 * It turns out, we (as humans) naturally make assumptions and abstractions when following instructions or even pseudocode. But as we saw in Scratch, and as we will see in C, we won't be able to do that anymore, and will have to think more carefully about the steps and cases that our programs will need to handle.
   * With Scratch, we were able to leverage the work done by the folks at MIT, who created the blocks, and sprites, to make programs of our own. And we too made custom blocks like the `cough` function, that was a layer of abstraction of our own.
 
 ## C
 
-* We'll use a new language, C, that's purely text, which comes with some cryptic keywords and punctuation:
+* Today we’ll learn a new language, [**C**](https://en.wikipedia.org/wiki/C_(programming_language)): a programming language that has all the features of Scratch and more, but perhaps a little less friendly since it’s purely in text.
+* By the end of the year, our goal is not to have learned a specific programming language, but how to program.
+* The syntax, or rules around structure, punctuation, and symbols in code, will become familiar to us, even if we might not understand what everything does right away.
+* With Scratch, we explored some ideas of programming, like:
+  * functions
+    * arguments, return values
+  * conditionals
+  * Boolean expressions
+  * loops
+  * variables
+  * ...
+* Today, we’ll translate some of those ideas to C, a computer language with new syntax and more precision, though fewer words to learn than a human language might include.
+* As a first-year student, we might not have known all the information about our new campus right away, but instead learned what we needed to on a day-by-day basis. Here too, we’ll start with the most important details, and “wave our hands” at some of the other details we don’t need quite yet.
+* When we evaluate the quality of our code, we might consider the following aspects:
+  * **correctness**, or whether our code solves our problem correctly
+  * **design**, or how well-written our code is, based on how efficient and readable it is
+  * **style**, or how well-formatted our code is visually
+* Our first program in C that simply prints “hello, world” to the screen looks like this:
   ```c
   #include <stdio.h>
 
@@ -26,6 +42,188 @@
       printf("hello, world\n");
   }
   ```
+
+## IDEs, compilers, interfaces
+
+* In order to turn this code into a program that our computer can actually run, we need to first translate it to binary, or zeroes and ones.
+* Tools called IDEs, [**integrated development environments**](https://en.wikipedia.org/wiki/Integrated_development_environment), will include features for us to write, translate, and run our code.
+* One popular IDE, [Visual Studio Code](https://en.wikipedia.org/wiki/Visual_Studio_Code), contains a text editor, or area where we can write our code in plain text and save it to a file:
+![panel labeled 'hello.c' with hello, world program as contents](text_editor.png)
+* Now our **source code**, or code that we can read and write, is saved to a file called `hello.c`. Next, we need to convert it to **machine code**, or zeroes and ones that represent instructions that tell our computer to perform low-level operations.
+* A [**compiler**](https://en.wikipedia.org/wiki/Compiler) is a program that can convert one language to another, such as source code to machine code:
+![source code as input to box labeled compiler with machine code as output](compiler.png)
+* Visual Studio Code, also referred to as VS Code, is typically a program that we can download to our own PC or Mac. But since we all might have different systems at home, it’s easier to get started with a cloud-based version of VS Code that we can access with just a browser.
+  * In Problem Set 1, we’ll learn how to access our own instance of VS Code.
+* In the bottom half of the VS Code interface, we see a [**terminal**](https://en.wikipedia.org/wiki/Terminal_emulator), a window into which we can type and run text commands:
+![panel labeled terminal with $ as prompt and cursor for input](terminal.png)
+  * This terminal will be connected to our own virtual server, with its own operating system, set of files, and other installed programs that we access through the browser.
+* The terminal provides a **command-line interface**, or CLI, and it allows us to access the virtual server’s operating system, [Linux](https://en.wikipedia.org/wiki/Linux).
+* We’ll run a command to compile our program, `make hello`. Nothing appears to happen, but we’ll now have another file that’s just called `hello`, which we can run with `./hello`:
+![panel labeled terminal with command make hello, command ./hello, and hello, world as output](hello_world.png)
+  * `./hello` tells our computer to find a file in our current folder (`.`), called `hello`, and run it. And we indeed see the output that we expected.
+* We’ll open the sidebar and see that there are two files in our virtual server, one called `hello.c` (which we have open in our editor), and one called `hello`:
+![panel labeled explorer with file hello and file hello.c](sidebar.png)
+  * The `make hello` command created the `hello` file containing machine code.
+  * The sidebar is a graphical user interface, or GUI, with which we can interact visually as we typically do.
+* To delete a file, for example, we can right-click it in the sidebar and select the “Delete Permanently” option, but we can also use the terminal with the `rm` command:
+![panel labeled terminal with command rm hello](rm.png)
+  * We run `rm hello` to remove the file called `hello`, and respond `y` for “yes” to confirm when prompted.
+* We can also run the `ls` command to *list* files in our current folder. We’ll compile our file again and run `ls` to see that a file called `hello` was created:
+![panel labeled terminal with command make hello and ls](make_hello.png)
+  * `hello` is in green with an asterisk, `*`, to indicate that it’s executable, or that we can run it.
+* Now, if we change our source code to read a different message, and run our program with `./hello`, we won’t see the changes we made. We need to compile our code again, in order to create a new version of `hello` with machine code that we can run and see our changes in.
+  * `make` is actually a program that finds and uses a compiler to create programs from our source code, and automatically names our program based on the name of the source code’s file.
+
+## Functions, arguments, return values, variables
+
+* Last time, we learned about functions, or actions, and arguments, or inputs to those functions that change what they do.
+* The “say” block, for example, is closest to `printf` in C:
+  ![say hello, world](say_hello_world.png)
+  ```c
+  printf("hello, world");
+  ```
+  * The `f` in `printf` refers to a “formatted” string, which we’ll see again soon. And a **string** is a number of characters or words that we want to treat as text. In C, we need to surround strings with double quotes, `""`.
+  * The parentheses, `()`, allow us to give an argument, or input, to our `printf` function.
+  * Finally, we need a semicolon, `;`, to indicate the end of our statement or line of code.
+* One type of output for a function is a **side effect**, or change that we can observe (like printing to the screen or playing a sound):
+![arguments as input to functions with side effects as output](side_effects.png)
+* In Scratch, the “say” block had a side effect:
+![hello, world as input to say block with cat and speech bubble as output](scratch_side_effects.png)
+* In contrast to side effects, we also saw blocks, or functions, with **return values** that we can use in our program. That return value might then be saved into a **variable**.
+* In Scratch, the “ask” block, for example, stored an answer into the “answer” block:
+  ```scratch
+  ask ["What's your name?"] and wait
+  ```
+  ```scratch
+  (answer)
+  ```
+  ```c
+  string answer = get_string("What's your name? ");
+  ```
+  * In C, we have a function called `get_string()`, into which we pass the argument `"What's your name? "` as the prompt.
+  * Then, we save the return value into a variable with `answer = `. Here, we’re not asking whether the two sides are equal, but rather using `=` as the **assignment operator** to set the *lef*t side to the value on the *right*.
+  * Finally, we need to indicate in C that `answer` is a variable with the **type** of `string`. Another type, `int`, is short for integer, or whole number. We’ll see other types soon, but this is how our program will interpret different bytes.
+    * If we try to set a value with a different type to a variable, the compiler will give us an error.
+  * And just like learning a new human language, it might take weeks or months before we start automatically noticing these small details, like the semicolon. For some programming languages, the convention is to use all lowercase letters for variable and function names, but for others the conventional style might be different.
+* We’ll experiment again with our original program, this time removing the `\n` from the string we pass into `printf`:
+  ```c
+  #include <stdio.h>
+  
+  int main(void)
+  {
+      printf("hello, world");
+  }
+  ```
+* And now, when we compile and run our program, we won’t have the new line at the end of our message:
+  ```
+  $ make hello
+  $ ./hello
+  hello, world$
+  ```
+* Let’s try adding a new line within our string:
+  ```c
+  #include <stdio.h>
+
+  int main(void)
+  {
+      printf("hello, world
+      ");
+  }
+  ```
+* Our compiler will gives us back many errors:
+  ```
+  $ make hello
+  hello.c:5:12: error: missing terminating '"' character [-Werror,-Winvalid-pp-token]
+      printf("hello, world
+            ^
+  hello.c:5:12: error: expected expression
+  hello.c:6:5: error: missing terminating '"' character [-Werror,-Winvalid-pp-token]
+      ");
+      ^
+  hello.c:7:2: error: expected '}'
+  }
+  ^
+  hello.c:4:1: note: to match this '{'
+  {
+  ^
+  4 errors generated.
+  make: *** [<builtin>: hello] Error 1
+  ```
+  * Since many of these tools like compilers were originally written years ago, their error messages are concise and not as user-friendly as we’d like, but in this case it looks like we need to close our string with a `"` on the same line.
+* When we use `\n` to create a new line, we’re using an **escape sequence**, or a way to indicate a different expression within our string. [In C](https://en.wikipedia.org/wiki/Escape_sequences_in_C), escape sequences start with a backslash, `\`.
+* Now, let’s try writing a program to get a string from the user:
+  ```c
+  #include <stdio.h>
+
+  int main(void)
+  {
+      string answer = get_string("What's your name? ");
+      printf("hello, answer\n");
+  }
+  ```
+  * We’ll add a space instead of a new line after “What’s your name?” so the user can type in their name on the same line.
+* When we compile this with `make hello`, we get a lot of errors. We’ll scroll up and focus on just the first error:
+  ```
+  $ make hello
+  hello.c:5:5: error: use of undeclared identifier 'string'; did you mean 'stdin'?
+      string answer = get_string("What's your name? ");
+      ^~~~~~
+      stdin
+  /usr/include/stdio.h:137:14: note: 'stdin' declared here
+  extern FILE *stdin;             /* Standard input stream.  */
+              ^
+  ```
+  * `hello.c:5:5` indicates that the error was found on line 5, character 5. It looks like `string` isn’t defined.
+* It turns out that, in order to use certain features or functions that don’t come with C, we need to load libraries. A **library** is a common set of code, like extensions in Scratch, that we can reuse, and `stdio.h` refers to a library for standard input and output functions. With the line `#include <stdio.h>`, we’re loading this library that contains `printf`, so that we can print to the screen.
+* We’ll need to also include `cs50.h`, a library written by CS50’s staffat Harvard, with helpful functions and definitions like `string` and `get_string`.
+* We’ll update our code to load the library …
+  ```c
+  #include <cs50.h>
+  #include <stdio.h>
+
+  int main(void)
+  {
+      string answer = get_string("What's your name? ");
+      printf("hello, answer\n");
+  }
+  ```
+* … and now our compiler works. But when we run our program, we see `hello, answer` printed literally:
+  ```
+  $ make hello
+  $ ./hello
+  What's your name? David
+  hello, answer
+  $
+  ```
+* It turns out, we need to use a bit more syntax:
+  ```c
+  printf("hello, %s\n", answer);
+  ```
+  * With `%s`, we’re adding a placeholder for `printf` to *format* our string. Then, outside our string, we pass in the variable as another argument with `answer`, separating it from the first argument with a comma, `,`.
+* Text editors for programming languages will helpfully highlight, or color-code, different types of ideas in our code:
+  ![panel labeled 'hello.c' with earlier code as contents, with expressions color-coded](highlighting.png)
+  * Now, it’s easier for us to see the different components of our code and notice when we make a mistake.
+  * Notice that on line 6, too, when our cursor is next to a parenthesis, the matching one is highlighted as well.
+  * The four dots on lines 6 and 7 also help us see the number of spaces for indentation, helping us line up our code.
+* We could also use the return value from `get_string` directly as an argument, as we might have done in Scratch with nested blocks:
+  ```c
+  #include <cs50.h>
+  #include <stdio.h>
+
+  int main(void)
+  {
+      printf("hello, %s\n", get_string("What's your name? ");
+  }
+  ```
+  * But we might consider this to be harder to read, and we aren’t able to reuse the return value later.
+* Both `get_string` in C and the “ask” block in Scratch are functions that have a return value as output:
+![arguments as input to functions with return value as output](return_value.png)
+* `printf("hello, %s\n", answer);` is also similar to these Scratch blocks:
+  ![say join hello, answer]()
+  * We’re placing a variable into our string, and displaying it right away.
+
+---
+
   * This is equivalent to the "when green flag clicked" and "say (hello, world)" block:<br>
     ![block labeled 'when green flag clicked', block labeled 'say (hello, world)'](when_green_flag.png)
 * We can compare a lot of the constructs in C, to blocks we've already seen and used in Scratch. The syntax is far less important than the principles, which we've already been introduced to.
