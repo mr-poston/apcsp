@@ -90,7 +90,7 @@ For this program, try testing your code manually–it’s good practice:
 
 * If you input `-1`, does your program prompts you again?
 * If you input `0`, does your program output `0`?
-* If you input `1, does your program output `1 (i.e., one penny)?
+* If you input `1`, does your program output `1` (i.e., one penny)?
 * If you input `4`, does your program output `4` (i.e., four pennies)?
 * If you input `5`, does your program output `1` (i.e., one nickel)?
 * If you input `24`, does your program output `6` (i.e., two dimes and four pennies)?
