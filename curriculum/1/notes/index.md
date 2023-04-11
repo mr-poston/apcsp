@@ -48,28 +48,41 @@
 * In order to turn this code into a program that our computer can actually run, we need to first translate it to binary, or zeroes and ones.
 * Tools called IDEs, [**integrated development environments**](https://en.wikipedia.org/wiki/Integrated_development_environment), will include features for us to write, translate, and run our code.
 * One popular IDE, [Visual Studio Code](https://en.wikipedia.org/wiki/Visual_Studio_Code), contains a text editor, or area where we can write our code in plain text and save it to a file:
-![panel labeled 'hello.c' with hello, world program as contents](text_editor.png)
+
+  <img src="text_editor.png" width="300">
+
 * Now our **source code**, or code that we can read and write, is saved to a file called `hello.c`. Next, we need to convert it to **machine code**, or zeroes and ones that represent instructions that tell our computer to perform low-level operations.
 * A [**compiler**](https://en.wikipedia.org/wiki/Compiler) is a program that can convert one language to another, such as source code to machine code:
-![source code as input to box labeled compiler with machine code as output](compiler.png)
+
+  <img src="compiler.png" width="300">
+
 * Visual Studio Code, also referred to as VS Code, is typically a program that we can download to our own PC or Mac. But since we all might have different systems at home, it’s easier to get started with a cloud-based version of VS Code that we can access with just a browser.
-  * In Problem Set 1, we’ll learn how to access our own instance of VS Code.
 * In the bottom half of the VS Code interface, we see a [**terminal**](https://en.wikipedia.org/wiki/Terminal_emulator), a window into which we can type and run text commands:
-![panel labeled terminal with $ as prompt and cursor for input](terminal.png)
+
+  <img src="terminal.png" width="1000">
+
   * This terminal will be connected to our own virtual server, with its own operating system, set of files, and other installed programs that we access through the browser.
 * The terminal provides a **command-line interface**, or CLI, and it allows us to access the virtual server’s operating system, [Linux](https://en.wikipedia.org/wiki/Linux).
 * We’ll run a command to compile our program, `make hello`. Nothing appears to happen, but we’ll now have another file that’s just called `hello`, which we can run with `./hello`:
-![panel labeled terminal with command make hello, command ./hello, and hello, world as output](hello_world.png)
+
+  <img src="hello_world.png" width="500">
+
   * `./hello` tells our computer to find a file in our current folder (`.`), called `hello`, and run it. And we indeed see the output that we expected.
 * We’ll open the sidebar and see that there are two files in our virtual server, one called `hello.c` (which we have open in our editor), and one called `hello`:
-![panel labeled explorer with file hello and file hello.c](sidebar.png)
+
+  <img src="sidebar.png" width="300">
+
   * The `make hello` command created the `hello` file containing machine code.
   * The sidebar is a graphical user interface, or GUI, with which we can interact visually as we typically do.
 * To delete a file, for example, we can right-click it in the sidebar and select the “Delete Permanently” option, but we can also use the terminal with the `rm` command:
-![panel labeled terminal with command rm hello](rm.png)
+
+  <img src="rm.png" width="350">
+
   * We run `rm hello` to remove the file called `hello`, and respond `y` for “yes” to confirm when prompted.
 * We can also run the `ls` command to *list* files in our current folder. We’ll compile our file again and run `ls` to see that a file called `hello` was created:
-![panel labeled terminal with command make hello and ls](make_hello.png)
+
+  <img src="make_hello.png" width="150">
+
   * `hello` is in green with an asterisk, `*`, to indicate that it’s executable, or that we can run it.
 * Now, if we change our source code to read a different message, and run our program with `./hello`, we won’t see the changes we made. We need to compile our code again, in order to create a new version of `hello` with machine code that we can run and see our changes in.
   * `make` is actually a program that finds and uses a compiler to create programs from our source code, and automatically names our program based on the name of the source code’s file.
@@ -78,7 +91,9 @@
 
 * Last time, we learned about functions, or actions, and arguments, or inputs to those functions that change what they do.
 * The “say” block, for example, is closest to `printf` in C:
-  ![say hello, world](say_hello_world.png)
+  
+  <img src="say_hello_world.png" height="50">
+
   ```c
   printf("hello, world");
   ```
@@ -86,9 +101,13 @@
   * The parentheses, `()`, allow us to give an argument, or input, to our `printf` function.
   * Finally, we need a semicolon, `;`, to indicate the end of our statement or line of code.
 * One type of output for a function is a **side effect**, or change that we can observe (like printing to the screen or playing a sound):
-![arguments as input to functions with side effects as output](side_effects.png)
+
+  <img src="side_effects.png" width="300">
+
 * In Scratch, the “say” block had a side effect:
-![hello, world as input to say block with cat and speech bubble as output](scratch_side_effects.png)
+
+  <img src="scratch_side_effects.png" width="700">
+
 * In contrast to side effects, we also saw blocks, or functions, with **return values** that we can use in our program. That return value might then be saved into a **variable**.
 * In Scratch, the “ask” block, for example, stored an answer into the “answer” block:
   ```scratch
@@ -201,7 +220,9 @@
   ```
   * With `%s`, we’re adding a placeholder for `printf` to *format* our string. Then, outside our string, we pass in the variable as another argument with `answer`, separating it from the first argument with a comma, `,`.
 * Text editors for programming languages will helpfully highlight, or color-code, different types of ideas in our code:
-  ![panel labeled 'hello.c' with earlier code as contents, with expressions color-coded](highlighting.png)
+
+  <img src="highlighting.png" width="500">
+  
   * Now, it’s easier for us to see the different components of our code and notice when we make a mistake.
   * Notice that on line 6, too, when our cursor is next to a parenthesis, the matching one is highlighted as well.
   * The four dots on lines 6 and 7 also help us see the number of spaces for indentation, helping us line up our code.
@@ -217,7 +238,9 @@
   ```
   * But we might consider this to be harder to read, and we aren’t able to reuse the return value later.
 * Both `get_string` in C and the “ask” block in Scratch are functions that have a return value as output:
-![arguments as input to functions with return value as output](return_value.png)
+
+  <img src="return_value.png" width="300">
+
 * `printf("hello, %s\n", answer);` is also similar to these Scratch blocks:
   ![say join hello, answer]()
   * We’re placing a variable into our string, and displaying it right away.
