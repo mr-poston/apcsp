@@ -139,7 +139,7 @@ Write in `pseudocode.txt` some pseudocode that implements this program, even if 
 <ol>
     <li>Prompt user for height</li>
     <li>If height is less than 1 or greater than 8 (or not an integer at all), go back one step</li>
-    <li>Iterate from 1 through height:
+    <li>Iterate from 1 through height:</li>
     <ol>
         <li>On iteration <i>i</i>, print <i>i</i> hashes and then a newline</li>
     </ol>
