@@ -2,7 +2,7 @@
 
 via Harvard University's CS50 Curriculum
 
-![APCSP Endorsed](../assets/images/AP.png)
+![APCSP Endorsed](AP.png)
 ---
 
 Richardson High School\\
