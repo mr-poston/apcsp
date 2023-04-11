@@ -47,7 +47,7 @@ Notice how VS Code adds “syntax highlighting” (i.e., color) as you type, tho
 
 ## Listing Files
 
-Next, in your terminal window, immediately to the right of the prompt (h`ello/ $`), execute
+Next, in your terminal window, immediately to the right of the prompt (`hello/ $`), execute
 ```
 ls
 ```
