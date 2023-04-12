@@ -348,3 +348,52 @@
     <img src="video_sensing.png" width="175">
 
     * Now, if we move in view of the camera slowly, our cat won’t make a sound, but if we move quickly, it will.
+
+## Demos
+
+* With a volunteer from the audience, we demonstrate a [whack-a-mole](https://scratch.mit.edu/projects/565362715) game.
+* We also take a look at [Oscartime](https://scratch.mit.edu/projects/277537196), another game where the player drags trash into a trashcan for points.
+* We’ll take a look at how we might have built this program. First, we can add an image of the [lamp post](https://scratch.mit.edu/projects/565133620) as a backdrop:
+
+    <img src="oscartime.png" width="350">
+
+* Then, we’ll add images of [trash cans](https://scratch.mit.edu/projects/565100517), with one open and one closed:
+
+    <img src="switch_costume.png" width="250">
+
+    * We name these costumes “oscar1” and “oscar2”, and whenever the mouse is touching it, the trash can will appear to be open.
+* Then, we’ll work on a piece of [falling trash](https://scratch.mit.edu/projects/565117390):
+
+    <img src="falling_trash.png" width="250">
+
+    * We move the trash sprite to a random horizontal position, and have it move downwards over and over while the distance to the floor (another sprite that’s a black line) is more than 0.
+* We’ll allow [dragging trash](https://scratch.mit.edu/projects/565119737) with these blocks:
+
+    <img src="dragging trash.png" width="350">
+
+    * If the mouse is down and touching the trash, then our trash will move to the mouse’s location.
+* Finally, we’ll use [variables](https://scratch.mit.edu/projects/565472267) to keep track of our score:
+
+    <img src="score.png" width="250">
+
+    * Now, we have another sprite called “Oscar”, and if the trash is touching it, then it will add 1 to the “score” variable, and move back to the top at a random horizontal position so we can continue the game.
+* Now, we’ll take a look at [moving](https://scratch.mit.edu/projects/565121265). Here, we have a few different scripts, one checking for whether keys are being pressed, and one for whether our sprite is touching a wall:
+
+    <img src="functions.png" width="250">
+
+    * Our main script, when the green flag is clicked, will move our sprite to the center of the stage at 0, 0 and then “listen for keyboard” and “feel for walls” forever.
+    * The custom “listen for keyboard” script has blocks that will change our sprite’s x- or y-coordinate on the stage for each of the arrow keys, moving it around.
+    * The “feel for walls” script will check whether the sprite is now touching a wall, and move it back if it is.
+* We can make another sprite [bounce](https://scratch.mit.edu/projects/565127193) back and forth, like it’s getting in our way:
+
+    <img src="bounce.png" width="350">
+
+    * First, we’ll move the sprite to the middle and have it point 90 degrees to the right.
+    * Then, we’ll constantly check if it’s touching a wall and turn 180 degrees (reversing direction) if so, and move 1 step every time.
+* We can have one sprite [follow](https://scratch.mit.edu/projects/565479840) another:
+
+    <img src="follow.png" width="150">
+
+    * Our sprite will start at a random position, and move towards our “Harvard” sprite one step at a time.
+    * We can change the script to move two steps at a time, so it will always catch up.
+* We’ll finish by trying out the full [Ivy’s Hardest Game](https://scratch.mit.edu/projects/565742837) with a volunteer.
