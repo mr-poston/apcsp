@@ -8,8 +8,8 @@ CS50 for AP Computer Science Principles includes materials from [CS50T](https://
 * [Internet](internet)
 * [Multimedia](multimedia)
 * [Security](security)
-* [Web Development](https://cs50.harvard.edu/ap/2023/curriculum/technology/weeks/web_development/)[^1]
-* [Programming](https://cs50.harvard.edu/ap/2023/curriculum/technology/weeks/programming/)[^2]
+* [Web Development](web_development)[^1]
+* [Programming](programming)[^2]
 
 [^1]: Also in CS50X Web Track  
 [^2]: Also in CS50X Unit 0
