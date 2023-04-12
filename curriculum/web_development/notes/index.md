@@ -221,39 +221,39 @@
     * <tr></tr> are table row tags
     * <td></td> are table data tag
         * Like columns or cells
-        ```html
-        <!DOCTYPE html>
+            ```html
+            <!DOCTYPE html>
 
-        <html lang="en">
-            <head>
-                <title>table</title>
-            </head>
-            <body>
-                <table>
-                    <tr>
-                        <td>7</td>
-                        <td>8</td>
-                        <td>9</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>*</td>
-                        <td>0</td>
-                        <td>#</td>
-                    </tr>
-                </table>
-            </body>
-        </html>
-        ```
+            <html lang="en">
+                <head>
+                    <title>table</title>
+                </head>
+                <body>
+                    <table>
+                        <tr>
+                            <td>7</td>
+                            <td>8</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>*</td>
+                            <td>0</td>
+                            <td>#</td>
+                        </tr>
+                    </table>
+                </body>
+            </html>
+            ```
 
     <img src="table.png">
 
