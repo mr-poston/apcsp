@@ -217,9 +217,9 @@
 
 ## Tables
 
-* <table></table> are table tags that create a table
-    * <tr></tr> are table row tags
-    * <td></td> are table data tag
+* `<table></table>` are table tags that create a table
+    * `<tr></tr>` are table row tags
+    * `<td></td>` are table data tag
         * Like columns or cells
             ```html
             <!DOCTYPE html>
