@@ -265,60 +265,86 @@
         <img src="move_steps.png" height="40">
 
     * In the “Events” category, we can see blocks that will activate when something happens, like when the green flag on top of the stage is clicked:
-    when
-    clicked
+    
+        <img src="when_gf_clicked.png" height="50">
+
     * “Control” has conditionals, each of which will only do something if the Boolean expression inside is true:
-    if
-    then
+    
+        <img src="if_then.png" height="75">
+
     * “Sensing” includes those Boolean expressions, or questions like whether the sprite is touching the mouse pointer:
-    touching
-    mouse-pointer
-    ?
+    
+        <img src="touching.png" height="30">
+
     * “Operators” contains blocks that let us do math or pick random numbers, or combine multiple Boolean expressions:
-    and
-    * “Variables” will let us store values like words or numbers, and save them with names like x, y, or other full words to describe them.
+    
+        <img src="and.png" height="30">
+
+    * “Variables” will let us store values like words or numbers, and save them with names like `x`, `y`, or other full words to describe them.
     * We can even combine multiple blocks ourselves into a new puzzle piece, or function, with “My Blocks”.
 * We can drag a few blocks to make our cat say “hello, world”:
-when
-clicked
-say
-hello, world
-The purple block, “say”, is a function that takes some sort of input, the text in the white oval, and makes our cat say it on the stage as its output.
-We can also drag in the “ask and wait” block, with a question like “What’s your name?”, and combine it with a “say” block for the answer:
-when
-clicked
-ask
-What's your name?
-and
-wait
-say
-hello,
-say
-answer
-The “answer” block is a variable, or value, that stores what the program’s user types in, and we can place it in a “say” block by draggind and dropping as well.
-The “ask and wait” block takes in a question as its input (or argument), and stores its return value into the “answer” block as output.
-But we didn’t wait after we said “Hello” with the first block, so we didn’t see the first message of “hello” before it was covered by our name. We can use the “join” block to combine two phrases so our cat can say “hello, David”:
-when
-clicked
-ask
-What's your name?
-and
-wait
-say
-join
-hello,
-answer
-Note that the “join” block takes not just one, but two arguments, or inputs, and its output, or the combined phrase, is used immediately as the input to another function, the “say” block:
-hello, answer blocks as inputs to join block, then output of hello, David as input to say block, then output of cat with speech bubble
-At the bottom left of the screen, we see an icon for extensions, and one of them is called Text to Speech. After we add it, we can use the “speak” block to hear our cat speak:
-when
-clicked
-ask
-What's your name?
-and
-wait
-speak
-join
-hello,
-answer
-The Text to Speech extension, thanks to the cloud, or computer servers on the internet, is converting our text to audio.
+
+    <img src="hello_world.png" width="100">
+
+    * The purple block, “say”, is a function that takes some sort of *input*, the text in the white oval, and makes our cat say it on the stage as its output.
+* We can also drag in the “ask and wait” block, with a question like “What’s your name?”, and combine it with a “say” block for the answer:
+
+    <img src="hello_name.png" width="180">
+
+    * The “answer” block is a variable, or value, that stores what the program’s user types in, and we can place it in a “say” block by draggind and dropping as well.
+    * The “ask and wait” block takes in a question as its input (or *argument*), and stores its *return value* into the “answer” block as output.
+* But we didn’t wait after we said “Hello” with the first block, so we didn’t see the first message of “hello” before it was covered by our name. We can use the “join” block to combine two phrases so our cat can say “hello, David”:
+
+    <img src="join_hello_name.png" width="180">
+
+    * Note that the “join” block takes not just one, but two arguments, or inputs, and its *output*, or the combined phrase, is used immediately as the *input* to another function, the “say” block:
+
+        <img src="join_say.png" width="700">
+
+* At the bottom left of the screen, we see an icon for extensions, and one of them is called Text to Speech. After we add it, we can use the “speak” block to hear our cat speak:
+
+    <img src="tts.png" width="200">
+
+    * The Text to Speech extension, thanks to the cloud, or computer servers on the internet, is converting our text to audio.
+
+## Abstraction
+
+* We can try to make the cat say meow:
+
+    <img src="meow3.png" width="200">
+
+    * We can have it say meow three times, but now we’re repeating blocks over and over.
+* Let’s use a loop, or a “repeat” block:
+
+    <img src="meow3_loop.png" width="200">
+
+    * Now our program achieves the same results, but with fewer blocks. We can consider it to have a better design: if there’s something we wanted to change, we would only need to change it in one place instead of three.
+* We can use the idea of **abstraction**, or combining several ideas (or puzzle pieces) into one, so we can use and think about them more easily. We’ll go into the “My Blocks” category, and click “Make a Block”, and call it “meow”:
+
+    <img src="meow_function.png" width="200">
+
+    * Now, our main set of blocks can just use the custom “meow” block, and we’ll be able to read this code later and understand what it does more easily.
+    * We could even drag the set of blocks with “define meow” to the bottom of the screen so it’s not visible, and this will still work, even if we don’t know the **implementation details**, or exactly how our custom block works.
+* We can change the “meow” block to take an input, so it can repeat any number of times:
+
+    <img src="meow_function_param.png" width="200">
+
+    * Now, our “meow” block achieves the same effect, but we can easily reuse it or change the number of times our cat says meow.
+* A good strategy when programming is breaking down a larger problem into smaller subproblems, and solving those first.
+
+## Conditionals and more
+
+* We’ll try to have our cat make a sound if we “pet” it with our mouse:
+
+    <img src="pet_cat.png" width="250">
+
+    * But this doesn’t seem to work. That’s because the cat is checking whether the mouse pointer is touching it right as the green flag is clicked, and nothing happens since we’re clicking the flag.
+* We can have our cat check over and over with the “forever” block:
+
+    <img src="pet_cat_forever.png" width="250">
+
+* We can add another extension, “Video Sensing”:
+
+    <img src="video_sensing.png" width="175">
+
+    * Now, if we move in view of the camera slowly, our cat won’t make a sound, but if we move quickly, it will.
