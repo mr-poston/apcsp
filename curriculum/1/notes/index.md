@@ -87,7 +87,7 @@
 * Now, if we change our source code to read a different message, and run our program with `./hello`, we won’t see the changes we made. We need to compile our code again, in order to create a new version of `hello` with machine code that we can run and see our changes in.
   * `make` is actually a program that finds and uses a compiler to create programs from our source code, and automatically names our program based on the name of the source code’s file.
 
-## Functions, arguments, return values, variables
+## Functions, arguments, return values, variables [^1] 
 
 * Last time, we learned about functions, or actions, and arguments, or inputs to those functions that change what they do.
 * The “say” block, for example, is closest to `printf` in C:
@@ -120,7 +120,7 @@
   string answer = get_string("What's your name? ");
   ```
   * In C, we have a function called `get_string()`, into which we pass the argument `"What's your name? "` as the prompt.
-  * Then, we save the return value into a variable with `answer = `. Here, we’re not asking whether the two sides are equal, but rather using `=` as the **assignment operator** to set the *lef*t side to the value on the *right*.
+  * Then, we save the return value into a variable with `answer = `. Here, we’re not asking whether the two sides are equal, but rather using `=` as the **assignment operator** [^2] to set the *left* side to the value on the *right*.
   * Finally, we need to indicate in C that `answer` is a variable with the **type** of `string`. Another type, `int`, is short for integer, or whole number. We’ll see other types soon, but this is how our program will interpret different bytes.
     * If we try to set a value with a different type to a variable, the compiler will give us an error.
   * And just like learning a new human language, it might take weeks or months before we start automatically noticing these small details, like the semicolon. For some programming languages, the convention is to use all lowercase letters for variable and function names, but for others the conventional style might be different.
@@ -341,7 +341,7 @@
   * `%i` for ints
   * `%li` for long integers
   * `%s` for strings
-* There are several mathematical operators we can use, too:
+* There are several mathematical operators we can use, too:[^5] [^6]
   * `+` for addition
   * `-` for subtraction
   * `*` for multiplication
@@ -449,7 +449,7 @@
   ```
   * But we could still have a value that’s too large, which is a general problem we’ll discuss again later.
 
-## Conditionals, Boolean expressions
+## Conditionals, Boolean expressions [^3]
 
 * In Scratch, we had conditional, or “if”, blocks, like:
 
@@ -496,7 +496,7 @@
       printf("x is equal to y\n");
   }
   ```
-  * Notice that, to compare two values in C, we use two equals signs, `==`.
+  * Notice that, to compare two values in C, we use two equals signs, `==`[^3].
   * And, logically, we don’t need the `if (x == y)` in the final condition, since that’s the only case remaining. Instead of asking three different questions, we can just ask two, and if both of the first cases are false, we can just say `else`:
     ```c
     if (x < y)
@@ -593,7 +593,7 @@
       }
   }
   ```
-  * The `%` operator gives us the remainder of `n after we divide it by `2`. If it is `0`, then `n` is an even number. Otherwise, it’s an odd number.
+  * The `%` operator gives us the remainder of `n` after we divide it by `2`. If it is `0`, then `n` is an even number. Otherwise, it’s an odd number.
 * And we can make and test our program in the terminal:
   ```
   $ make parity
@@ -628,10 +628,19 @@
       }
   }
   ```
-  * First, we can get a single character, `char`, with `get_char()`. Then, we’ll check whether the response is `Y` or `y`, *or* `N` or `n`. In C, we can ask two questions with “or”, represented by two vertical bars, `||`, to check if at least one of them has an answer of true. (If we wanted to check that both questions have an answer of true, we would use “and”, represented by ampersands, `&&`.)
+  * First, we can get a single character, `char`, with `get_char()`. Then, we’ll check whether the response is `Y` or `y`, *or* `N` or `n`. In C, we can ask two questions with “or”, represented by two vertical bars, `||`[^7], to check if at least one of them has an answer of true. (If we wanted to check that both questions have an answer of true, we would use “and”, represented by ampersands, `&&`[^7].)
   * In C, a `char` is surrounded by single quotes, `'`, instead of double quotes for strings. (And strings with just a single character will still have double quotes, since they are a different data type.)
 
-## Loops, functions
+#### Logical Operators
+* The logical operators we have access to are "and", "or", and "not"[^7].
+
+  | C syntax | Operator | Example (suppose `x = 5` and `y = 4`) |
+  |:----------:|:------:|-------------------------------|
+  | `&&` | AND | `x < 10 && y > 3` --> `true` |
+  | `||` | OR | `x < 2 || y > 3` --> `true` |
+  | `!` | NOT | `!(x==y)` --> `true` |
+
+## Loops, functions [^4]
 
 * We’ll write a program to print “meow” three times, as we did in Scratch:
   ```c
@@ -1034,14 +1043,7 @@
 
 ---
 
-  #### Logical Operators
-  * The logical operators we have access to are "and", "or", and "not"[^7].
-  * | C syntax | Operator | Example (suppose `x = 5` and `y = 4`) |
-|:----------:|:------:|-------------------------------|
-| `&&` | AND | `x < 10 && y > 3` --> `true` |
-| `||` | OR | `x < 2 || y > 3` --> `true` |
-| `!` | NOT | `!(x==y)` --> `true` |
-  * Notice that we use a `||` to indicate an "or" in our Boolean expression. (A logical "and" would be `&&`.)
+
 
 ---
 
