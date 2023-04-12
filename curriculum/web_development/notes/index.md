@@ -315,26 +315,26 @@
 * Let’s make our webpages more pretty
 * CSS (Cascading Style Sheets) allows us to style our webpages
     * In contrast, HTML allows us to structure our webpages
-    ```html
-    <!DOCTYPE html>
+        ```html
+        <!DOCTYPE html>
 
-    <html lang="en">
-        <head>
-            <title>css0</title>
-        </head>
-        <body>
-            <header style="font-size: large; text-align: center;">
-                John Harvard
-            </header>
-            <main style="font-size: medium; text-align: center;">
-                Welcome to my home page!
-            </main>
-            <footer style="font-size: small; text-align: center;">
-                Copyright &%169; John Harvard
-            </footer>
-        </body>
-    </html>
-    ```
+        <html lang="en">
+            <head>
+                <title>css0</title>
+            </head>
+            <body>
+                <header style="font-size: large; text-align: center;">
+                    John Harvard
+                </header>
+                <main style="font-size: medium; text-align: center;">
+                    Welcome to my home page!
+                </main>
+                <footer style="font-size: small; text-align: center;">
+                    Copyright &%169; John Harvard
+                </footer>
+            </body>
+        </html>
+        ```
 * Here, inside `body`, we have three tags: `<header></header>`, `<main></main>`, and `<footer></footer>`
     * They include style attributes written in CSS
         * These are written as key-value pairs
