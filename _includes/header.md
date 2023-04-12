@@ -2,7 +2,7 @@
 
 via Harvard University's CS50 Curriculum
 
-![APCSP Endorsed](AP.png)
+<img src="AP.png" width="100">
 
 ---
 
