@@ -163,7 +163,7 @@ print("hello, world")
     console.log("hello, world")
     ```
 
-### Introducing Scratch
+## Introducing Scratch
 
 * Each of these languages have a lot more features, but they have commonalities
     * Functions, loops, conditions, Boolean expressions, variables, threads, etc.
