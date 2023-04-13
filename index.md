@@ -4,6 +4,8 @@ title: false
 
 # Hello, world!
 
+![AP CSP Endorsed](assets/images/AP-CSP-Blue-180px.png)
+
 This is CS50 AP, Harvard University’s introduction to the intellectual enterprises of computer science and the art of programming for students in high school, which satisfies the [College Board’s AP Computer Science Principles](https://apcentral.collegeboard.org/courses/ap-computer-science-principles/course) (CSP) curriculum framework.
 
 ![This Week's Announcements](assets/images/TWA.jpg)
