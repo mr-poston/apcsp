@@ -1,5 +1,23 @@
 ***
 
+<details>
+<summary>Q1</summary>
+</details>
+
+<details>
+<summary>Q2</summary>
+</details>
+
+<details>
+<summary>Q3</summary>
+</details>
+
+<details>
+<summary>Q4</summary>
+</details>
+
+***
+
 * [VSCode for CS50](https://code.cs50.io/)
 * [CS50 Programmer's Manual](https://man.cs50.io/)
 

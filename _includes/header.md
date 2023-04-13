@@ -2,7 +2,7 @@
 
 via Harvard University's CS50 Curriculum
 
-<img src="AP.png" width="100">
+<img src="AP-CSP-Blue-180px.png">
 
 ---
 
