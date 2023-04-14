@@ -1,6 +1,6 @@
 ***
 
-**<span style="color:#daa520">We are here &rarr;</span>** [Week 0](../weeks/week0)
+**<span style="color:#daa520">We are here &rarr;</span>** [Week 0](/../weeks/week0)
 
 
 
