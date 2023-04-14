@@ -1,6 +1,6 @@
 ***
 
-**<span style="color:#daa520">:star1: &rarr;</span>** [Week 0](../weeks/week0.md) 08/14 - 08/18
+**<span style="color:#daa520">We are here &rarr;</span>** [Week 0](../weeks/week0)
 
 
 
