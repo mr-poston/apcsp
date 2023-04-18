@@ -1,4 +1,5 @@
 # Lecture 2
+
 {:.no_toc}
 
 *TOC
