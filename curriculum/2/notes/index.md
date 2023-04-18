@@ -1,9 +1,7 @@
 # Lecture 2
-
 {:.no_toc}
 
-*TOC
-
+* TOC
 {:toc}
 
 ## Compiling
