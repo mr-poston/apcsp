@@ -5,17 +5,10 @@
 * [Notes](notes)
 * Reference Sheets
   * [Arrays and Strings](../../assets/pdfs/arrays_and_strings.pdf)
-  * [Binary Search](../../assets/pdfs/binary_search.pdf)
-  * [Bubble Sort](../../assets/pdfs/bubble_sort.pdf)
   * [Command-Line Interaction](../../assets/pdfs/command-line_interaction.pdf)
   * [Compiling](../../assets/pdfs/compiling.pdf)
   * [Computational Complexity](../../assets/pdfs/computational_complexity.pdf)
   * [Exit Codes](../../assets/pdfs/exit_codes.pdf)
-  * [Insertion Sort](../../assets/pdfs/insertion_sort.pdf)
-  * [Linear Search](../../assets/pdfs/linear_search.pdf)
-  * [Merge Sort](../../assets/pdfs/merge_sort.pdf)
-  * [Recursion](../../assets/pdfs/recursion.pdf)
-  * [Selection Sort](../../assets/pdfs/selection_sort.pdf)
   * [Typecasting](../../assets/pdfs/typecasting.pdf)
 * Slides
   * [Google Slides](https://docs.google.com/presentation/d/1O-Ft7NJln0OYA8veKHDhTurnHrYN67TMaBaTskESnkg/edit?usp=sharing)
