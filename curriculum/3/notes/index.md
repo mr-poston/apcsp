@@ -22,7 +22,7 @@
   * Recall that arrays are zero-indexed, meaning that the first item has an index of 0. And with $n$ items, the highest index would be $n - 1$.
 * **Searching** is how we solve the problem of finding information. A simple problem has an input of some values, and an output of a `bool`, whether or not a particular value is in the array.
 
-### Big $O$ 
+### Big $O$
 
 * Today we’ll look at algorithms for searching. To compare their efficiency, we’ll consider **running time**, or how long an algorithm takes to run given some size of input.
 * Computer scientists tend to describe running time with **big $O$ notation**, which we can think of as “on the order of” something, as though we want to convey an idea of running time and not an exact number of milliseconds or steps.
