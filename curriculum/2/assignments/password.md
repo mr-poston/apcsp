@@ -17,9 +17,9 @@ In this lab, the user is prompted for a password, which will then be validated u
 <details>
     <summary>Hints</summary>
     <ul>
-        <li>The <code>ctype</.code> library has many useful functions that can come in handy here.</li>
+        <li>The <code>ctype</code> library has many useful functions that can come in handy here.</li>
         <li>Boolean variables can keep track of whether each criteria in an algorithm is valid.</li>
-    <ul>
+    </ul>
 </details>
 
 ## Demo
