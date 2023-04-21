@@ -18,7 +18,7 @@ Up until now, you’ve frequently written programs for which you’ve been provi
     <summary>Hints</summary>
     <ul>
         <li>Do note that the <code>main</code> function in the distribution code uses <code>argc</code> and <code>argv</code>. Be sure to use these!</li>
-        <li>Be sure to check for the correct number of command-line arguments before doing anything else in your <code>main</code> function.<./li>
+        <li>Be sure to check for the correct number of command-line arguments before doing anything else in your <code>main</code> function.</li>
     </ul>
 </details>
 
