@@ -1,6 +1,6 @@
 # Secirity
 
-<iframe width="1134" height="638" src="https://www.youtube.com/embed/QQmFyybzon0" title="Security - CS50&#39;s Understanding Technology 2017" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="1134" height="638" src="https://video.cs50.io/QQmFyybzon0" title="Security - CS50&#39;s Understanding Technology 2017" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 * [Notes](./notes)
 * Reference Sheets
