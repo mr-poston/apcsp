@@ -125,6 +125,6 @@
 	* Notice that `p` takes up 8 bytes, since in modern computer systems, 64 bits are used in order to address the billions of bytes of memory available. With 32 bits, we can only count up to about 4 billion bytes, or about 4GB of memory.
 * We can abstract away the actual value of the addresses, since they’ll be different as we declare variables in our programs. We can simply think of `p` as pointing at some value in memory:
 
-	<img src="pointing.png" width="600">
+	<img src="" width="600">
 
 * In the real world, we might have a mailbox labeled “p”, among many mailboxes with addresses. Inside our mailbox, we can put a value like `0x123`, which is the address of some other mailbox that’s labeled “n”.
