@@ -221,8 +221,8 @@ Then, implement a function called, e.g., `rotate`, that takes a `char` as input 
 	<ul>
 		<li>Odds are you’ll want a prototype like:<br><code>char rotate(char c, int n);</code><br>A function call like<br><code>rotate('A', 1)</code><br>or even<br><code>rotate('A', 27)</code><br>should thus return <code>'B'</code>. And a function call like<br><code>rotate('!', 13)</code><br>should return <code>'!'</code>.</li>
 		<li>Recall that you can explicitly “cast” a <code>char</code> to an <code>int</code> with <code>(char)</code>, and an <code>int</code> to a <code>char</code> with <code>(int)</code>. Or you can do so implicitly by simply treating one as the other.</li>
-		<li>Odds are you’ll want to subtract the ASCII value of <code>'A'<code> from any uppercase letters, so as to treat <code>'A'</code> as <code>0</code>, <code>'B'</code> as <code>1</code>, and so forth, while performing arithmetic. And then add it back when done with the same.</li>
-		<li>Odds are you’ll want to subtract the ASCII value of <code>'a'<code> from any lowercase letters, so as to treat <code>'a'</code> as <code>0</code>, <code>'b'</code> as <code>1</code>, and so forth, while performing arithmetic. And then add it back when done with the same.</li>
+		<li>Odds are you’ll want to subtract the ASCII value of <code>'A'</code> from any uppercase letters, so as to treat <code>'A'</code> as <code>0</code>, <code>'B'</code> as <code>1</code>, and so forth, while performing arithmetic. And then add it back when done with the same.</li>
+		<li>Odds are you’ll want to subtract the ASCII value of <code>'a'</code> from any lowercase letters, so as to treat <code>'a'</code> as <code>0</code>, <code>'b'</code> as <code>1</code>, and so forth, while performing arithmetic. And then add it back when done with the same.</li>
 		<li>You might find some other functions declared in <code>ctype.h</code> to be helpful, per <a href="https://manual.cs50.io/">manual.cs50.io</a>.</li>
 		<li>Odds are you’ll find <code>%</code> helpful when “wrapping around” arithmetically from a value like <code>25</code> to <code>0</code>.</li>
 	</ul>
