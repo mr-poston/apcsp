@@ -60,7 +60,7 @@ To be clear, then, here’s how encrypting `HELLO` with a key of $1$ yields `IFM
 |+ key|$1$|$1$|$1$|$1$|$1$|
 |= ciphertext|**`I`**|**`F`**|**`M`**|**`M`**|**`P`**|
 
-More formally, Caesar’s algorithm (i.e., cipher) encrypts messages by “rotating” each letter by $k$ positions. More formally, if $p$ is some plaintext (i.e., an unencrypted message), $p_i$ is the $i^th$ character in $p$, and $k$ is a secret key (i.e., a non-negative integer), then each letter, $c_i$, in the ciphertext, $c$, is computed as
+More formally, Caesar’s algorithm (i.e., cipher) encrypts messages by “rotating” each letter by $k$ positions. More formally, if $p$ is some plaintext (i.e., an unencrypted message), $p_i$ is the $i^{th}$ character in $p$, and $k$ is a secret key (i.e., a non-negative integer), then each letter, $c_i$, in the ciphertext, $c$, is computed as
 
 $c_i = (p_i + k) % 26$
 
@@ -258,3 +258,4 @@ style50 caesar.c
 In your terminal, execute the below to submit your work.
 ```
 submit50 cs50/problems/2022/x/caesar
+```
