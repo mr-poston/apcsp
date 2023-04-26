@@ -20,7 +20,7 @@ CS50 for AP Computer Science Principles includes materials from [CS50T](https://
     <li><a href="https://mr-poston.github.io/apcsp/curriculum/1/">Intro to C</a></li>
     <li><a href="https://mr-poston.github.io/apcsp/curriculum/2/">Arrays</a></li>
     <li><a href="https://mr-poston.github.io/apcsp/curriculum/3/">Algorithms</a></li>
-    <li><a href="https://cs50.harvard.edu/ap/2023/curriculum/x/weeks/4/">Memory</a></li>
+    <li><a href="https://mr-poston.github.io/apcsp/curriculum/4/">Memory</a></li>
     <li><a href="https://cs50.harvard.edu/ap/2023/curriculum/x/weeks/5/">Data Structures</a></li>
     <li><a href="https://cs50.harvard.edu/ap/2023/curriculum/x/weeks/6/">Python</a></li>
     <li><a href="https://cs50.harvard.edu/ap/2023/curriculum/x/weeks/7/">SQL</a></li>
