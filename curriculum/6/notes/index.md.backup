@@ -864,56 +864,52 @@ from cs50 import get_float, get_int, get_string
 	    print("Huh?")
 	```
 * We can recognize audio input from a microphone and respond with [`listen2.py`](https://cdn.cs50.net/2021/fall/lectures/6/src6/6/listen/listen2.py?highlight):
-	```python
-	# Responds to a greeting
-	# https://pypi.org/project/SpeechRecognition/
-	  
-	import speech_recognition
-	  
-	# Obtain audio from the microphone
-	recognizer = speech_recognition.Recognizer()
-	with speech_recognition.Microphone() as source:
-	    print("Say something:")
-	    audio = recognizer.listen(source)
-	  
-	# Recognize speech using Google Speech Recognition
-	words = recognizer.recognize_google(audio)
-	  
-	# Respond to speech
-	if "hello" in words:
-	    print("Hello to you too!")
-	elif "how are you" in words:
-	    print("I am well, thanks!")
-	elif "goodbye" in words:
-	    print("Goodbye to you too!")
-	else:
-	    print("Huh?")
-	```
-* We can even add more logic to listen for a name:
-	```python
-	# Responds to a name
-	# https://pypi.org/project/SpeechRecognition/
-	  
-	import re
-	import speech_recognition
-	  
-	# Obtain audio from the microphone
-	recognizer = speech_recognition.Recognizer()
-	with speech_recognition.Microphone() as source:
-	    print("Say something:")
-	    audio = recognizer.listen(source)
-	  
-	# Recognize speech using Google Speech Recognition
-	words = recognizer.recognize_google(audio)
-	  
-	# Respond to speech
-	matches = re.search("my name is (.*)", words)
-	if matches:
-	    print(f"Hey, {matches[1]}.")
-	else:
-	    print("Hey, you.")
-	```
-* We can create a QR code, or two-dimensional barcode, with another library:
+# Responds to a greeting
+# https://pypi.org/project/SpeechRecognition/
+  
+import speech_recognition
+  
+# Obtain audio from the microphone
+recognizer = speech_recognition.Recognizer()
+with speech_recognition.Microphone() as source:
+    print("Say something:")
+    audio = recognizer.listen(source)
+  
+# Recognize speech using Google Speech Recognition
+words = recognizer.recognize_google(audio)
+  
+# Respond to speech
+if "hello" in words:
+    print("Hello to you too!")
+elif "how are you" in words:
+    print("I am well, thanks!")
+elif "goodbye" in words:
+    print("Goodbye to you too!")
+else:
+    print("Huh?")
+We can even add more logic to listen for a name:
+# Responds to a name
+# https://pypi.org/project/SpeechRecognition/
+  
+import re
+import speech_recognition
+  
+# Obtain audio from the microphone
+recognizer = speech_recognition.Recognizer()
+with speech_recognition.Microphone() as source:
+    print("Say something:")
+    audio = recognizer.listen(source)
+  
+# Recognize speech using Google Speech Recognition
+words = recognizer.recognize_google(audio)
+  
+# Respond to speech
+matches = re.search("my name is (.*)", words)
+if matches:
+    print(f"Hey, {matches[1]}.")
+else:
+    print("Hey, you.")
+We can create a QR code, or two-dimensional barcode, with another library:
 import os
 import qrcode
 
