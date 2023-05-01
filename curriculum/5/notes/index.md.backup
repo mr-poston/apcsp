@@ -1,4 +1,8 @@
 # Lecture 5
+{:.no_toc}
+
+* TOC
+{:toc}
 
 ## Recap
 
@@ -403,199 +407,241 @@
 
 ## Trees
 
-Recall that with a sorted array, we can use binary search to find an element, starting at the middle (yellow), then the middle of either half (red), and finally left or right (green) as needed:
-boxes labeled 1, green; 2, red; 3, green; 4, yellow; 5, green; 6, red; 7, green
-With an array, we can randomly access elements in 
- time, since we can use arithmetic to go to an element at any index.
-A tree is another data structure where each node points to other nodes. We might have a tree where each node points to one to the left (with a smaller value) and one to the right (with a larger value):
-tree with node 4 at top center, left arrow to 3 below, right arrow to 6 below; 2 has left arrow to 1 below, right arrow to 3 below; 6 has left arrow to 5 below, right arrow to 7 below
-Notice that we now visualize this data structure in two dimensions (even though the nodes in memory can be at any location).
-Each node has not one but two pointers to other nodes. All the values to the left of a node are smaller, and all the values of nodes to the right are greater, which allows this to be used as a binary search tree.
-Each node has at most two children, or nodes it is pointing to.
-And like a linked list, we’ll want to keep a pointer to just the beginning of the list, but in this case we want to point to the root, or topmost node of the tree (the 4).
-To search for a number, we’ll start at the root node, and be able to recursively search the left or right subtree.
-The height of this tree is 3, or 
-, since each parent node has up to two children.
-We can define a node with not one but two pointers:
-typedef struct node
-{
-    int number;
-    struct node *left;
-    struct node *right;
-}
-node;
-Let’s use that definition to write a program that uses a tree:
-int main(void)
-{
-    // Tree of size 0
-    node *tree = NULL;
-  
-    // Add number to list
-    node *n = malloc(sizeof(node));
-    if (n == NULL)
-    {
-        return 1;
-    }
-    n->number = 2;
-    n->left = NULL;
-    n->right = NULL;
-    tree = n;
-First, we have a tree with no nodes, so the root is null. Then we allocate memory for a node n, and set its value and pointers to children nodes to null. Then, we can set our tree to point to that node.
-To add a node, we allocate more memory for another node, and set tree->left = n, since this node should be the left child of the root node.
-// Add number to list
-n = malloc(sizeof(node));
-if (n == NULL)
-{
-    free_tree(tree);
-    return 1;
-}
-n->number = 1;
-n->left = NULL;
-n->right = NULL;
-tree->left = n;
-We have a free_tree function, which we’ll see later.
-We’ll add our third node, which will be the right child:
-// Add number to list
-n = malloc(sizeof(node));
-if (n == NULL)
-{
-    free_tree(tree);
-    return 1;
-}
-n->number = 3;
-n->left = NULL;
-n->right = NULL;
-tree->right = n;
+* Recall that with a sorted array, we can use binary search to find an element, starting at the middle (yellow), then the middle of either half (red), and finally left or right (green) as needed:
 
-// Print tree
-print_tree(tree);
+	<img src="sorted_array.png" width="500">
 
-// Free tree
-free_tree(tree);
-return 0;
-The print_tree function will start at the root node, and recursively print the tree:
-void print_tree(node *root)
-{
-    if (root == NULL)
-    {
-        return;
-    }
-    print_tree(root->left);
-    printf("%i\n", root->number);
-    print_tree(root->right);
-}
-Notice that this function recursively prints the left subtree first, then the root node’s value, then the right subtree. Since all the values to the left are lower, and all the values to the right will be higher, the values will be printed in order:
-$ make tree
-$ ./tree
-1
-2
-3
-We can even swap print_tree(root->left); and print_tree(root->right); to print our tree in reverse order:
-void print_tree(node *root)
-{
-    if (root == NULL)
-    {
-        return;
-    }
-    print_tree(root->right);
-    printf("%i\n", root->number);
-    print_tree(root->left);
-}
-$ make tree
-$ ./tree
-3
-2
-1
-To free the memory for each of the nodes in our tree, we’ll have to recursively free both children first:
-void free_tree(node *root)
-{
-    if (root == NULL)
-    {
-        return;
-    }
-    free_tree(root->left);
-    free_tree(root->right);
-    free(root);
-}
-We can also search our tree with an implementation of binary search:
-bool search(node *tree, int number)
-{
-    if (tree == NULL)
-    {
-        return false;
-    }
-    else if (number < tree->number)
-    {
-        return search(tree->left, number);
-    }
-    else if (number > tree->number)
-    {
-        return search(tree->right, number);
-    }
-    else if (number == tree->number)
-    {
-        return true;
-    }
-}
-If we don’t have any more nodes to look at, then we know the number we’re looking for isn’t in the tree, and we can return false.
-Otherwise, we can search either the left or the right subtrees.
-And if the number is at the node we’re looking at, we can return true.
-The last conditional can be simplified to else, since there’s no other case possible.
-If we add nodes in inefficient ways, though, our binary search tree might start to look like a linked list:
-node with 1 pointing at node with 2 pointing at node with 3
-We started our tree with a node with value of 1, then added the node with value 2, and finally added the node with value 3. Even though this tree follows the constraints of a binary search tree, it’s not as efficient as it could be.
-We can make the tree balanced, or more optimal, by making the node with value 2 the new root node.
-With a balanced binary search tree, the running time for search and insert will be 
-. But if our tree isn’t balanced, it can devolve into a linked list, with running time for search and insert of 
-.
-More data structures
-A hash table is a data structure that allows us to associate keys with values. It looks like an array, where we can jump to each location by its index:
-vertical column of boxes, labeled 0 through 25
-We can think of each location as labeled with a letter from A through Z, and insert names into each location:
-vertical column of boxes, each with arrow pointing to a name
-If we have multiple names with the same first letter, we can add them with a linked list:
-vertical column of boxes, each with arrow pointing to a name, with the eighth box with an arrow pointing to a box labeled Hermione with an arrow from that box pointing to a box labeled Harry with an arrow to a box labeled Hagrid
-The array has 26 pointers, some of which are null, but some pointing to a name in a node, each of which may also point to another name in another node.
-We can describe each node in code with:
-typedef struct node
-{
-    char word[LONGEST_WORD + 1];
-    struct node *next;
-}
-node;
-Each node will have an array of characters already allocated, of maximum size LONGEST_WORD + 1, called word, that it’s storing. Then, a next pointer will point to another node, if there is one.
-And to create the hash table, we might write:
-node *hash_table[NUMBER_OF_BUCKETS];
-The hash table will be an array of pointers to nodes, with NUMBER_OF_BUCKETS as its size.
-To decide which bucket, or location in the array, that a value should be placed in, we use a hash function, which takes some input and produces an index, or location. In our example, the hash function just returns an index corresponding to the first letter of the name, such as “0” for “Albus” and “25” for “Zacharias”.
-We might start sorting a shuffled deck of cards by dividing them into four buckets, each labeled by suit, and then sort each of the suits.
-We can try to have smaller chains in our hash table by using two letters, instead of just one:
-vertical array with boxes labeled Ha, pointing to Harry and Hagrid, Hb, Hc, Hd, He pointing to Hermione, Hf
-Now, we’ll have 676 buckets total, for all the combinations of the first two letters.
-We can consider the first three letters with even more buckets, but we’ll be using more space in memory. Some of those buckets will be empty, but we’re more likely to only need one step to look for a value, reducing our running time for searching.
-It turns out that the worst case running time for searching a hash table is 
-, since all of our values might be in the same bucket, devolving into a linked list as well. In practice, though, the running time will likely be much faster.
-We can use another data structure called a trie (pronounced like “try”, and is short for “retrieval”). A trie is a tree with arrays as nodes:
-array with letters from A-Z in 26 locations
-Each array will have locations that represent each letter, A-Z.
-For each word, the first letter will point to an array, where the next valid letter will point to another array, and so on, until we reach a boolean value indicating the end of a valid word, marked in green:
-array with H pointing to another array, with A pointing to another array, with G pointing to another array, with R pointing to another array, with I pointing to another array, with D marked in green
-With multiple names, we start seeing some of the space being reused for the first letters that are shared:
-array with H pointing to another array, with A pointing to another array, with G pointing to another array, with R pointing to another array, with I pointing to another array, with D marked in green; the second array from H also has E pointing to R, M, I, O, N, and E; the third array from H, to A, has R pointing to R and Y
-We might define a trie in code with:
-typedef struct node
-{
-    bool is_word;
-    struct node *children[SIZE_OF_ALPHABET];
-}
-node;
-At each node, or array, we’ll have a boolean value that indicates if it’s a valid word (whether or not it should be green). Then, we’ll have an array of SIZE_OF_ALPHABET pointers to other nodes, called children.
-Now, the height of our tree is the length of the longest word we want to store.
-And even if our data structure has lots of words, the maximum lookup time will be just the length of the word we’re looking for. This might be a fixed maximum, so we have a constant time, 
-, for searching and insertion.
-The cost for this, though, is that we need lots of memory to store mostly null pointers.
-There are even higher-level constructs, abstract data structures, where we use our building blocks of arrays, linked lists, trees, hash tables, and tries to solve some other problem.
-For example, one abstract data structure is a queue, like a line of people waiting, where the first value we put in are the first values that are removed, or first-in-first-out (FIFO). To add a value we enqueue it, and to remove a value we dequeue it. We could use an array that we have to grow, or we could use a linked list.
-Another abstract data structure is a stack, where items most recently added are removed first: last-in-first-out (LIFO). In a dining hall, we might take, or pop, the top tray from a stack, and clean trays would be added, or pushed, to the top as well.
+	* With an array, we can randomly access elements in $O(1)$ time, since we can use arithmetic to go to an element at any index.
+* A **tree** is another data structure where each node points to other nodes. We might have a tree where each node points to one to the left (with a smaller value) and one to the right (with a larger value):
+
+	<img src="tree.png" width="500">
+
+	* Notice that we now visualize this data structure in two dimensions (even though the nodes in memory can be at any location).
+	* Each node has not one but two pointers to other nodes. All the values to the left of a node are smaller, and all the values of nodes to the right are greater, which allows this to be used as a **binary search tree**.
+	* Each node has at most two **children**, or nodes it is pointing to.
+	* And like a linked list, we’ll want to keep a pointer to just the beginning of the list, but in this case we want to point to the **root**, or topmost node of the tree (the 4).
+	* To search for a number, we’ll start at the root node, and be able to recursively search the left or right subtree.
+	* The height of this tree is 3, or $log_2 n$, since each **parent** node has up to two children.
+* We can define a node with not one but two pointers:
+	```c
+	typedef struct node
+	{
+	    int number;
+	    struct node *left;
+	    struct node *right;
+	}
+	node;
+	```
+* Let’s use that definition to write a program that uses a tree:
+	```c
+	int main(void)
+	{
+	    // Tree of size 0
+	    node *tree = NULL;
+	  
+	    // Add number to list
+	    node *n = malloc(sizeof(node));
+	    if (n == NULL)
+	    {
+	        return 1;
+	    }
+	    n->number = 2;
+	    n->left = NULL;
+	    n->right = NULL;
+	    tree = n;
+	```
+	* First, we have a tree with no nodes, so the root is null. Then we allocate memory for a node `n`, and set its value and pointers to children nodes to null. Then, we can set our `tree` to point to that node.
+* To add a node, we allocate more memory for another node, and set `tree->left = n`, since this node should be the left child of the root node.
+	```c
+	// Add number to list
+	n = malloc(sizeof(node));
+	if (n == NULL)
+	{
+	    free_tree(tree);
+	    return 1;
+	}
+	n->number = 1;
+	n->left = NULL;
+	n->right = NULL;
+	tree->left = n;
+	```
+	We have a `free_tree` function, which we’ll see later.
+* We’ll add our third node, which will be the right child:
+	```c
+	// Add number to list
+	n = malloc(sizeof(node));
+	if (n == NULL)
+	{
+	    free_tree(tree);
+	    return 1;
+	}
+	n->number = 3;
+	n->left = NULL;
+	n->right = NULL;
+	tree->right = n;
+	
+	// Print tree
+	print_tree(tree);
+	
+	// Free tree
+	free_tree(tree);
+	return 0;
+	```
+* The `print_tree` function will start at the root node, and recursively print the tree:
+	```c
+	void print_tree(node *root)
+	{
+	    if (root == NULL)
+	    {
+	        return;
+	    }
+	    print_tree(root->left);
+	    printf("%i\n", root->number);
+	    print_tree(root->right);
+	}
+	```
+	* Notice that this function recursively prints the left subtree first, then the root node’s value, then the right subtree. Since all the values to the left are lower, and all the values to the right will be higher, the values will be printed in order:
+		```
+		$ make tree
+		$ ./tree
+		1
+		2
+		3
+		```
+	* We can even swap `print_tree(root->left);` and `print_tree(root->right);` to print our tree in reverse order:
+		```c
+		void print_tree(node *root)
+		{
+		    if (root == NULL)
+		    {
+		        return;
+		    }
+		    print_tree(root->right);
+		    printf("%i\n", root->number);
+		    print_tree(root->left);
+		}
+		```
+		```
+		$ make tree
+		$ ./tree
+		3
+		2
+		1
+		```
+* To free the memory for each of the nodes in our tree, we’ll have to recursively free both children first:
+	```c
+	void free_tree(node *root)
+	{
+	    if (root == NULL)
+	    {
+	        return;
+	    }
+	    free_tree(root->left);
+	    free_tree(root->right);
+	    free(root);
+	}
+	```
+* We can also search our tree with an implementation of binary search:
+	```c
+	bool search(node *tree, int number)
+	{
+	    if (tree == NULL)
+	    {
+	        return false;
+	    }
+	    else if (number < tree->number)
+	    {
+	        return search(tree->left, number);
+	    }
+	    else if (number > tree->number)
+	    {
+	        return search(tree->right, number);
+	    }
+	    else if (number == tree->number)
+	    {
+	        return true;
+	    }
+	}
+	```
+	* If we don’t have any more nodes to look at, then we know the number we’re looking for isn’t in the tree, and we can return `false`.
+	* Otherwise, we can search either the left or the right subtrees.
+	* And if the number is at the node we’re looking at, we can return `true`.
+	* The last conditional can be simplified to `else`, since there’s no other case possible.
+* If we add nodes in inefficient ways, though, our binary search tree might start to look like a linked list:
+
+	<img src="imbalanced_tree.png" width="300">
+
+	* We started our tree with a node with value of `1`, then added the node with value `2`, and finally added the node with value `3`. Even though this tree follows the constraints of a binary search tree, it’s not as efficient as it could be.
+	* We can make the tree balanced, or more optimal, by making the node with value `2` the new root node.
+* With a balanced binary search tree, the running time for search and insert will be $O(\log n)$. But if our tree isn’t balanced, it can devolve into a linked list, with running time for search and insert of $O(n)$.
+
+## More data structures
+
+* A **hash table** is a data structure that allows us to associate keys with values. It looks like an array, where we can jump to each location by its index:
+
+	<img src="hash_table_indexed.png" width="75">
+
+* We can think of each location as labeled with a letter from A through Z, and insert names into each location:
+
+	<img src="hash_table_names.png" width="200">
+
+* If we have multiple names with the same first letter, we can add them with a linked list:
+
+	<img src="hash_table_multiple_names.png" width="500">
+
+	* The array has 26 pointers, some of which are null, but some pointing to a name in a node, each of which may also point to another name in another node.
+* We can describe each node in code with:
+	```c
+	typedef struct node
+	{
+	    char word[LONGEST_WORD + 1];
+	    struct node *next;
+	}
+	node;
+	```
+	* Each node will have an array of characters already allocated, of maximum size `LONGEST_WORD + 1`, called `word`, that it’s storing. Then, a `next` pointer will point to another node, if there is one.
+* And to create the hash table, we might write:
+	```c
+	node *hash_table[NUMBER_OF_BUCKETS];
+	```
+	* The hash table will be an array of pointers to nodes, with `NUMBER_OF_BUCKETS` as its size.
+* To decide which bucket, or location in the array, that a value should be placed in, we use a **hash function**, which takes some input and produces an index, or location. In our example, the hash function just returns an index corresponding to the first letter of the name, such as “0” for “Albus” and “25” for “Zacharias”.
+	* We might start sorting a shuffled deck of cards by dividing them into four buckets, each labeled by suit, and then sort each of the suits.
+* We can try to have smaller chains in our hash table by using two letters, instead of just one:
+
+	<img src="hash_table_two_letters.png" width="400">
+
+	* Now, we’ll have 676 buckets total, for all the combinations of the first two letters.
+* We can consider the first three letters with even more buckets, but we’ll be using more space in memory. Some of those buckets will be empty, but we’re more likely to only need one step to look for a value, reducing our running time for searching.
+* It turns out that the worst case running time for searching a hash table is $O9n)$, since all of our values might be in the same bucket, devolving into a linked list as well. In practice, though, the running time will likely be much faster.
+* We can use another data structure called a **trie** (pronounced like “try”, and is short for “retrieval”). A trie is a tree with arrays as nodes:
+
+	<img src="trie_empty.png" width="430">
+
+	* Each array will have locations that represent each letter, A-Z.
+* For each word, the first letter will point to an array, where the next valid letter will point to another array, and so on, until we reach a boolean value indicating the end of a valid word, marked in green:
+
+	<img src="trie_with_hagrid.png" width="400">
+
+* With multiple names, we start seeing some of the space being reused for the first letters that are shared:
+
+	<img src="trie_with_multiple_names.png" width="550">
+
+* We might define a trie in code with:
+	```c
+	typedef struct node
+	{
+	    bool is_word;
+	    struct node *children[SIZE_OF_ALPHABET];
+	}
+	node;
+	```
+	* At each node, or array, we’ll have a boolean value that indicates if it’s a valid word (whether or not it should be green). Then, we’ll have an array of `SIZE_OF_ALPHABET` pointers to other nodes, called `children`.
+* Now, the height of our tree is the length of the longest word we want to store.
+* And even if our data structure has lots of words, the maximum lookup time will be just the length of the word we’re looking for. This might be a fixed maximum, so we have a constant time, $O(1)$, for searching and insertion.
+* The cost for this, though, is that we need lots of memory to store mostly null pointers.
+* There are even higher-level constructs, **abstract data structures**, where we use our building blocks of arrays, linked lists, trees, hash tables, and tries to solve some other problem.
+** For example, one abstract data structure is a **queue**, like a line of people waiting, where the first value we put in are the first values that are removed, or first-in-first-out (FIFO). To add a value we **enqueue** it, and to remove a value we **dequeue** it. We could use an array that we have to grow, or we could use a linked list.
+* Another abstract data structure is a stack, where items most recently added are removed first: last-in-first-out (LIFO). In a dining hall, we might take, or pop, the top tray from a stack, and clean trays would be added, or pushed, to the top as well.
 We take a look at “Jack Learns the Facts About Queues and Stacks”, an animation about these data structures.
 A restaurant might place food orders in multiple shelves, with areas each labeled by the first letter of the customer’s name. This is an example of a dictionary, where we can map keys to values.
