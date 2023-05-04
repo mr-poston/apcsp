@@ -198,7 +198,7 @@ Complete the `is_tie` function.
 <summary>Hints</summary>
     <ul>
         <li>Recall that a tie happens if every candidate still in the election has the same number of votes. Note, too, that the <code>is_tie</code> function takes an argument <code>min</code>, which is the smallest number of votes any candidate currently has. How might you use that information to determine if the election is a tie (or, conversely, not a tie)?</li>
-    <ul>
+    </ul>
 </details>
 
 ### `eliminate`
