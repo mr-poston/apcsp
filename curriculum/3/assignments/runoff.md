@@ -184,7 +184,7 @@ Complete the `find_min` function.
 <summary>Hints</summary>
     <ul>
         <li>You’ll likely want to loop through the candidates to find the one who is both still in the election and has the fewest number of votes. What information should you keep track of as you loop through the candidates?</li>
-    <ul>
+    </ul>
 </details>
 
 ### `is_tie`
