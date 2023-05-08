@@ -11,17 +11,17 @@
   * [PDF](https://cdn.cs50.net/2021/fall/lectures/5/src5.pdf)
   * [ZIP](https://cdn.cs50.net/2021/fall/lectures/5/src5.zip)
 * Shorts
-  * [Data Structures](https://cs50.harvard.edu/ap/2023/curriculum/x/shorts/data_structures/)
-  * [Singly-Linked Lists](https://cs50.harvard.edu/ap/2023/curriculum/x/shorts/singly_linked_lists/)
-  * [Doubly-Linked Lists](https://cs50.harvard.edu/ap/2023/curriculum/x/shorts/doubly_linked_lists)
-  * [Hash Tables](https://cs50.harvard.edu/ap/2023/curriculum/x/shorts/hash_tables/)
-  * [Tries](https://cs50.harvard.edu/ap/2023/curriculum/x/shorts/tries/)
+  1. [Data Structures](https://cs50.harvard.edu/ap/2023/curriculum/x/shorts/data_structures/)
+  2. [Singly-Linked Lists](https://cs50.harvard.edu/ap/2023/curriculum/x/shorts/singly_linked_lists/)
+  3. [Doubly-Linked Lists](https://cs50.harvard.edu/ap/2023/curriculum/x/shorts/doubly_linked_lists)
+  4. [Hash Tables](https://cs50.harvard.edu/ap/2023/curriculum/x/shorts/hash_tables/)
+  5. [Tries](https://cs50.harvard.edu/ap/2023/curriculum/x/shorts/tries/)
 * [Lab 5](./assignments/lab5.md)
 * [Problem Set 5](./assignments/pset5.md)
 
 <details>
 <summary>Past Problems</summary>
 <ul>
-  <li><a href="https://docs.cs50.net/2019/ap/problems/resize/less/resize.html">Speller</a>, with a trie</li>
+  <li><a href="https://docs.cs50.net/2019/ap/problems/speller/trie/speller.html">Speller</a>, with a trie</li>
 </ul>
 </details>
