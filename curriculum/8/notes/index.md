@@ -4,186 +4,949 @@
 * TOC
 {:toc}
 
-## Last time (and next time)
+## The internet
 
-* We've been introduced to web programming, where we've learned to use Flask, a framework written in the language of Python, to build dynamic web-based applications.
-* The internal structure of our applications have followed a paradigm, or methodology, called MVC, Model-View-Controller, where code used for different functions are organized in different files and folders, and interact with each other in predictable ways.
-* But until now, we haven't had much code in our Model layer. We've used CSVs to read and write data, but those rows of text are a bit clunky to work with.
-* CS50 Finance will use a database language, SQL, to work with data more efficiently. It will also use a real third-party API, application programming interface, to get real-time data on stock prices, allowing users to "buy" and "sell" virtual stocks. We'll be able to access the API's functions by reading its documentation.
+* Today we’ll take a look at web programming, using a set of new languages and technologies to build applications that are both **server-side**, running on servers or cloud services, and **client-side**, running on the user’s own devices.
+* The **Internet** is the network of networks of computers, or servers, communicating with one another by sending and receiving data.
+    * The original “internet” was established in 1969, called [ARPANET](https://en.wikipedia.org/wiki/ARPANET), which connected computers between various institutions.
+    * Today, many more cables and server hardware connects all the computers on the internet.
+* **Routers** are specialized computers, with CPUs and memory, that routes, or relays, data from one point to another. At home or on campus, for example, we might have routers that accepts data and sends them out.
+    * We take a look at a video where staff members “send” an envelope across the screen of a Zoom meeting.
+    * A router might have multiple options for what direction to send some data, and there are algorithms that try to figure out that direction.
+* **Protocols** are a set of rules or conventions, like a physical handshake for humans , that the world has agreed upon for computers to communicate with.
+* **TCP/IP** are two protocols for sending data between two computers. In the real world, we might write an address on an envelope in order to send a letter to someone, along with our own address for a letter in return.
+* **IP** stands for internet protocol, a protocol that includes a standard way for computers to address each other. **IP addresses** are unique addresses for computers connected to the internet, such that a packet sent from one computer to another will be passed along routers until it reaches its destination.
+    * An IP address might have the format `#.#.#.#`, where each number can have a value from 0 to 255. Each number will be the size of one byte, so the entire address will be 4 bytes, or 32 bits. This means that this version of IP, version 4, can only support a maximum of 4 billion addresses. Another version of IP, version 6, uses 128 bits to support many more possible addresses.
+* **TCP**, transmission control protocol, is a protocol for sending and receiving data. TCP allows for a single server, at the same IP address, to provide multiple services through the use of a port number, a small integer added to the IP address. For example, HTTP is sent to port number 80, and HTTPS uses port number 443.
+    * TCP also allows for a large amount of data, like an image, to be sent in smaller chunks. Each of them might be labeled with a sequence number, as with “part 1 of 4” or “part 2 of 4”. And if one of the parts is lost, the recipient can ask for the missing part again.
+    * **UDP** is another protocol for sending data that does not guarantee delivery like TCP, which might be useful for streaming real-time videos or calls, since we don’t want to wait for all the packets to be redelivered before we get new ones.
+* **DNS**, domain name system, is another technology that translates domain names like cs50.harvard.edu to IP addresses. DNS is generally provided by a server nearby, with a big table in its memory, of domain names and IP addresses.
 
-## Logging in
+## The web
 
-* When we log in to a website, with our username and password, we're not prompted to log in again for each page we visit after, usually until we explicitly log out.
-* It turns out that there is another web technology called **cookies**, small pieces of data that a website can ask a browser to store on a user's computer. Then, when the browser visits that website again, it will automatically send that cookie back, like a virtual handstamp that identifies ourself to the server, without having to enter our login information again. The cookie might store a long random string, to prevent adversaries from easily guessing it, and the server will remember that it corresponds to our account.
-* When we visit a site like Gmail for the first time, our browser will send HTTP headers like this:
-  ```
-  GET / HTTP/1.1
-  Host: gmail.com
-  ...
-  ```
-* Then, Gmail's server will reply with the login page. After we successfully log in, Gmail's server will then reply with headers like this:
-  ```
-  HTTP/1.1 200 OK
-  Content-Type: text/html
-  Set-Cookie: session=value
-  ...
-  ```
-  * The `Set-Cookie` header asks our browser to save the `session` and `value` key-value pair to our computer; `value` will be a long random string or number that identifies us to the server.
-  * If we, as the user, set our browser to not save cookies, we'll have to log in for every page we visit. But cookies might also identify us to advertisers, who can then track us across different sites we visit, if those sites include embedded images or scripts that are from the same third-party advertising service. So political entities like the EU have passed laws to help ensure companies behind websites are explicit to users about the purpose of cookies they want to store.
-* When we visit Gmail again later, our browser will send the same value back as part of the `Cookie` header:
-  ```
-  GET / HTTP/1.1
-  Host: gmail.com
-  Cookie: session=value
-  ...
-  ```
-  * And cookies can be set to expire by the server, which is why after some number of days, we might be asked to log in again.
-* In today's source code directory in the CS50 IDE, we'll first look at the example called `store`. We'll `cd` into the `store` directory, and call `flask run` in our terminal to start our IDE's web server. Then, we can visit the link to see a simple "store":<br>
-  ![webpage with input boxes of 0 for Foo, 0 for Bar, 0 for Baz, with button labeled Purchase and link to View your shopping cart](/store.png)
-  * We can change the quantity of each item, and click "Purchase" to see them added to a virtual cart that tell us the count of each item we have.
-  * We can keep shopping, but even if we close the window and reopen it, we see that our cart still saved the number of each item we added before.
-* With cookies, we can implement **sessions** on our server. A session is an abstraction of saved state for each user's visit to our website; our server might give me a cookie with `session=12345` and you a cookie with `session=78910`, and store some data for each user who visits, based on that session value.
-* With Flask, we only need a few lines of code to use this abstraction:
-  ```python
-  ...
-  from flask_session import Session
-  ...
-  app.config["SESSION_PERMANENT"] = False
-  app.config["SESSION_TYPE"] = "filesystem"
-  Session(app)
-  ...
-  @app.route("/update", methods=["POST"])
-  def update():
-      for item in request.form:
-          session[item] = int(request.form.get(item))
-      return redirect("/cart")
-  ```
-  * We set up our Flask app to use the Session library, and in each of our routes, we'll have access to a `session` dictionary, which we can store data in our server's memory or filesystem for each specific user.
-  * We'll introduce this library in a bit more detail in this week's problem set.
+* The internet, with routers, IP, TCP, and DNS, is like the plumbing that allows us to send data from one computer to another. The web is one application that is built on top of the internet.
+* **HTTP**, or Hypertext Transfer Protocol, standardizes how web browsers and web servers communicate within TCP/IP packets.
+    * **HTTPS** is the secure version of HTTP, ensuring that the contents of packets between the browser and server are encrypted.
+* A **URL**, or web address, might look like `https://www.example.com/`.
+    * `https://` is the *protocol* being used.
+    * The `/` at the end is a request for the default file. It might also end in something like `/file.html` for a specific file.
+    * `example.com` is the *domain name*. `.com` is a top-level domain name, and others like `.edu` or `.io` indicate what type of website might be hosted there. Today, there are hundreds of top-level domain names, some with restrictions on how they can be used.
+    * `www` is the *hostname*, or *subdomain*, that refers to one or more specific servers in the domain name. A domain name might include web servers for `www`, or email servers for `mail`, so each subdomain can point to them separately.
+    * Together, `www.example.com` is a **fully qualified domain name**, or one that has a specific set of addresses.
+* Two commands supported by HTTP include **GET** and **POST**. GET allows a browser to ask for a page or file in a URL, and POST allows a browser to send additional data to the server that is hidden from the URL. Both of these are **requests** we can make to a server, which will provide a **response** in return.
+* A GET request will start with:
+    ```
+    GET / HTTP/1.1
+    Host: www.example.com
+    ...
+    ```
+    * The `GET` indicates that the request is for some file, and `/` indicates the default file.
+    * There are different versions of the HTTP protocol, so `HTTP/1.1` indicates that the browser is using version 1.1.
+    * `Host: www.example.com` indicates that the request is for `www.example.com`, since the same web server might be hosting multiple websites and domains.
+* A response for a successful request will start with:
+    ```
+    HTTP/1.1 200 OK
+    Content-Type: text/html
+    ...
+    ```
+    * The web server will respond with the version of HTTP, followed by a status code, which is `200 OK` here, indicating that the request was valid.
+    * Then, the web server indicates the type of content in its response, which might be text, image, or other format.
+    Finally, the rest of the packet or packets will include the content.
+* The keys and values, like `Host: www.example.com` and `Content-Type: text/html`, are known as **HTTP headers**.
+* We’ll type in `http://harvard.edu` in our browser, and see that the address bar has changed to `https://www.harvard.edu` after the page has loaded. Browsers include developer tools, which allow us to see what’s happening. In Chrome’s menu, for example, we can go to View > Developer > Developer Tools, which will open a panel on the screen. We’ll also use an Incognito window, so Chrome doesn’t remember our previous requests.
+* In the Network tab, we can see that there were over a hundred requests, for text, images, and other pieces of data that were downloaded separately for a single web page. It turns out that our browser made a single request, and the response from the server indicated that we needed to make all those other requests to download the other data on the page:
 
-## Databases
+    <img src="requests.png" width="250">
 
-* So far, we've seen how we can store data in CSV files. But finding data requires linear search, and we have to open, read, change, and save the entire file if we want to make a change.
-* Databases are a set of data, usually organized and managed by some software for us. Database management software such as MySQL and Postgres commonly allow for selecting, inserting, updating, and deleting data with a language called SQL, Structured Query Language.
-* A spreadsheet with rows and columns is like a simple database. Each column is a specific field of data, and each row contains values for one entry in the database.
-* For example, we might store information about students, with a column for an ID, a column for a name, and so on.
-* We might have different sheets, or tabs, within the same spreadsheet, and in databases these would be called tables.
-* With Google Sheets, we can create a spreadsheet called "university", and create two sheets within that, one called "students" and one called "faculty":<br>
-  ![sheet labeled faculty with columns labeled id, name, department, email, phone](/faculty.png)
-* With a database, we can represent data in the same way, and SQL also requires us to specify the type of data we want to store in each field. By specifying the type, our database software can store and optimize our data more efficiently.
-* There are different variants, or dialects, of SQL, depending on what database program we're using. In SQLite, a popular, lightweight software we'll be using, data types include:
-  * `BLOB`
-  * `INTEGER`
-  * `NUMERIC`
-  * `REAL`
-  * `TEXT`
-* And within the `INTEGER` type, we might specify the size as a `smallint`, `integer`, or `bigint`, each of which might be stored with a different number of bytes. We might be tempted to use a `bigint`, for example, but that might use unnecessary space and be more and more costly as we have more and more rows to store.
-* `REAL` numbers can be a `real` type for a floating-point number, or `double precision`, with more bytes allocated.
-* The `NUMERIC` type represents other types of numbers, such as a `boolean`. `date`, `datetime`, `numeric(scale, precision)` (for decimal numbers with a specific number of digits), `time`, and `timestamp`.
-* A `TEXT` field can be a `char(n)` field, a fixed number of characters; a `varchar(n)`, a variable number of characters up to _n_, or a larger `text` field with no specified maximum. And we can infer, from our experience with arrays in C, that a fixed number of characters for each row would be faster to index into, since we can calculate exactly where each value will be. Our database software will provide this abstraction, and use the right data structures and algorithms for storing and accessing our data, faster than something we might be able to implement ourselves.
+* If we scroll up in the lists of requests, we can see the request headers for the first request by clicking on the one for `harvard.edu`:
 
-## SQLite
+    <img src="request_headers.png" width="500">
 
-* We can open the CS50 IDE and use the terminal to explore SQLite, a popular database management software. SQLite is a technology for storing data on a server's disk as a binary file, so it doesn't have a server or other software to set up. (Other technologies, like Postgres and MySQL, use a running program that acts as a database server, which has better performance but requires some configuration and memory.) Instead, we'll use the `sqlite3` program on our IDE as a human interface to a database file, and in our code, we'll use abstractions that can open and work with an SQLite database file.
-* We'll start by typing `sqlite3 froshims3.db`, and we'll be able to create a table in that database with a command like `CREATE TABLE 'registrants' ('id' integer, 'name' varchar(255), 'dorm' varchar(255));`. We specify the name of our new table, and for each column or field, the type of data. And by convention, we use 255 for our `varchar` fields, since that used to be the maximum for many older databases, and are probably enough for all realistic possibilities, without being too excessive.
-* Nothing happens at our command line after, but we can type `.schema` and see the schema, or description, of our table:<br>
-  ![.schema command in sqlite in command line, showing our original CREATE TABLE command](/schema.png)
-* We can add a row to our table with `INSERT INTO registrants (id, name, dorm) VALUES(1, 'Brian', 'Pennypacker');`, and conventionally the uppercased words are SQL keywords, while the rest are words specific to our data.
-* We can see our table with `SELECT * FROM registrants;`, and see our table printed out.
-* And we can easily filter our data with `SELECT * FROM registrants WHERE dorm = 'Matthews';`. We can specify just the fields we want to get back, too, with something like `SELECT name FROM registrants WHERE dorm = 'Matthews';`
-* We can change rows with something like `UPDATE registrants SET dorm = 'Canaday' WHERE id = 1;`.
-* We can delete rows with something like `DELETE FROM registrants WHERE id = 1;`.
-* The CS50 IDE also has a graphical program, phpLiteAdmin, which can open SQLite files too. We can double-click `froshims3` in our files list on the IDE, and be able to browse rows. We can try to insert a row, too, by clicking on the name of the table and the Insert link, and see the SQL that phpLiteAdmin runs:<br>
-  ![phpLiteAdmin showing INSERT command](/phpliteadmin.png)
-* We can start over by deleting the file `froshims3.db`, and creating a blank file with the same name. Now we can double-click it, and phpLiteAdmin will let us create a new table. We'll create 7 fields this time, and we'll have more options:<br>
-  ![phpLiteAdmin showing Create new table with Field, Type, Primary Key, Autoincrement, Not NULL, and Default Value options for each field](/phpliteadmin.png)
-  * For our first field, `id`, we'll make that an `integer`, and we can use the Primary Key option to indicate to our database that this column will be the one used to uniquely identify each record. We'll use autoincrement so our database will automatically provide the next value for `id` each time we add a record, and the Not Null option ensures that there is a value for that field for each record.
-  * Then we'll have a `name` field that is a `varchar` with a maximum length of 255, and make that Not NULL.
-  * We'll have a `dorm` field, `varchar` with a maximum length of 255, and a `phone` field that we'll set to a fixed `char` of 10 characters. If we were to use a numeric field, phone numbers that start with 0 would lose those leading zeroes, and we might consider needing more characters if we wanted to support international phone numbers.
-  * We'll have an `email` field as a `varchar` with maximum length 255, and store a `birthdate` as a `date`. For `sports`, there might be more information we need someday, so we'll have that as a `varchar` with a maximum length of 1024, an even power of 2.
-* We can add fields to the table later, too.
-* We can click the SQL tab to insert rows manually, or use the Insert tab, but writing code to execute queries will be lead to the most organized data, since we'll be able to set everything consistently.
+* And we can scroll to see that the server’s response actually returned a status code of `301 Moved Permanently`, redirecting our browser from `http://...` to `https://...`:
 
-## SQL
+    <img src="response_headers.png" width="200">
 
-* We can import the CS50 SQL library to execute queries easily, with `lecture.py`:
-  ```python
-  from cs50 import SQL
+    * Note that the response includes a `Location:` header for the browser to redirect us to.
+* In VS Code’s terminal, we can use a command-line tool, `curl`, to see the response headers for a request as well:
+    ```
+    $ curl -I -X GET http://harvard.edu/
+    HTTP/1.1 301 Moved Permanently
+    Retry-After: 0
+    Content-Length: 0
+    Server: Pantheon
+    Location: https://www.harvard.edu/
+    ...
+    ```
+* If we visit the new location with `curl`, we see a status code of `200`, as well as a new version of HTTP that we can use:
+    ```
+    $ curl -I -X GET https://www.harvard.edu/
+    HTTP/2 200 
+    cache-control: public, max-age=1200
+    content-type: text/html; charset=UTF-8
+    ```
+* And if we try to visit a URL that doesn’t exist, we’ll see an HTTP status code of `404`:
+    ```
+    $ curl -I -X GET https://www.harvard.edu/thisfiledoesnotexist
+    HTTP/2 404 
+    cache-control: no-cache, must-revalidate, max-age=0
+    content-type: text/html; charset=UTF-8
+    ```
+* Other **HTTP status codes** include:
+    * `200 OK`
+    * `301 Moved Permanently`
+    * `302 Found`
+    * `304 Not Modified`
+    * `307 Temporary Redirect`
+    * `401 Unauthorized`
+    * `403 Forbidden`
+    * `404 Not Found`
+    * `418 I'm a Teapot`
+        * An April Fool’s joke years ago
+    * `500 Internal Server Error`
+        * Buggy code on a server might result in this status code, like segfaults we might have seen in C.
+    * `503 Service Unavailable`
+    * …
+* It turns out that `safetyschool.org` redirects to `yale.edu`! Someone must have purchased the domain name and set it to redirect:
+    ```
+    $ curl -I -X GET http://safetyschool.org
+    HTTP/1.1 301 Moved Permanently
+    Server: Sun-ONE-Web-Server/6.1
+    Date: Tue, 02 Nov 2021 19:59:18 GMT
+    Content-length: 122
+    Content-type: text/html
+    Location: http://www.yale.edu
+    Connection: close
+    ```
 
-  db = SQL("sqlite:///froshims.db")
+## HTML
 
-  rows = db.execute("SELECT * FROM registrants)
+* Now that we can use the internet and HTTP to send and receive messages, it’s time to see what’s in the content for web pages. **HTML**, Hypertext Markup Language, is not a programming language, but rather used to format web pages and tell the browser how to display them.
+* A simple page in HTML might look like this:
+    ```html
+    <!DOCTYPE html>
 
-  for row in rows:
-      print(f"{row['name']} registered")
-  ```
-  * Here, we're opening a file called `froshims.db` in the same directory and calling it `db`, using `SQL` to open it. We call `db.execute` to run a query, and save the results into the `rows` list. Then, we can iterate over each row and print out any fields we'd like.
-  * We can run `python lecture.py`, and the CS50 SQL library will also helpfully print a debug line showing what we sent to the database.
-* Since we can query a database in Python, we can also integrate that into a Flask application. We can create a Flask `application.py` file:
-  ```python
-  from flask import Flask, render_template, request
+    <html lang="en">
+        <head>
+            <title>
+                hello, title
+            </title>
+        </head>
+        <body>
+            hello, body
+        </body>
+    </html>
+    ```
+* Since this page is saved in our instance of VS Code, in the cloud, we can also run our own web server with the **`http-server`** command, and clicking “Open in Browser” in the notification that appears.
+    * This web server will listen on port 8080 instead, since our instance of VS Code is using port 80 already.
+* Then, we’ll see the file we created, `hello.html`, and we can see our page’s content, “hello, world”, on the page, and title, “hello, title”, in the tab bar.
+* Let’s look at the HTML again:
+    * The first line, `<!DOCTYPE html>`, is a declaration that the page follows the HTML standard.
+    * Next is a **tag**, a word in brackets like `<html>` and `</html>`. The first is a start or open tag, and the second is a close tag, which looks almost the same but with a `/` in front of the tag’s name. In this case, the tags indicate the start and end of the HTML page. The start tag here has an **attribute** as well, `lang="en"` which specifies that the language of the page will be in English, to help the browser translate the page if needed. Notice that attributes are key-value pairs.
+    * Nested within the `<html>` tag are two more tags, `<head>` and `<body>`, which are both like children nodes in a tree. And within `<head>` is the `<title>` tag, the contents of which we see in a tab or window’s title in a browser. Within `<body>` is the contents of the page itself, a text node, which we’ll see in the main view of a browser as well.
+* The page will be loaded into the browser’s memory as a data structure, like this tree:
 
-  from cs50 import SQL
+    <img src="html_structure.png" width="300">
 
-  app = Flask(__name__)
+    * Note that there is a hierarchy mapping each tag and its children. Rectangular nodes are tags, while oval ones are text.
+* HTML allows us to build the structure of our web pages, and we can look for reference materials online for all the tags and attributes that we can use as building blocks.
+* We can use a [validator](https://validator.w3.org/#validate_by_input) to check that our HTML is valid.
+* We’ll take a look at `paragraphs0.html`:
+```html
+<!DOCTYPE html>
 
-  db = SQL("sqlite:///lecture.db")
+<html lang="en">
+    <head>
+        <title>paragraphs</title>
+    </head>
+    <body>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus convallis scelerisque quam, vel hendrerit lectus viverra eu. Praesent posuere eget lectus ut faucibus. Etiam eu velit laoreet, gravida lorem in, viverra est. Cras ut purus neque. In porttitor non lorem id lobortis. Mauris gravida metus libero, quis maximus dui porta at. Donec lacinia felis consectetur venenatis scelerisque. Nulla eu nisl sollicitudin, varius velit sit amet, vehicula erat. Curabitur sollicitudin felis sit amet orci mattis, a tempus nulla pulvinar. Aliquam erat volutpat.
+        </p>
+        <p>
+            Mauris ut dui in eros semper hendrerit. Morbi vel elit mi. Sed sit amet ex non quam dignissim dignissim et vel arcu. Pellentesque eget elementum orci. Morbi ac cursus ex. Pellentesque quis turpis blandit orci dapibus semper sed non nunc. Nulla et dolor nec lacus finibus volutpat. Sed non lorem diam. Donec feugiat interdum interdum. Vivamus et justo in enim blandit fermentum vel at elit. Phasellus eu ante vitae ligula varius aliquet. Etiam id posuere nibh.
+        </p>
+        <p>
+            Aenean venenatis convallis ante a rhoncus. Nullam in metus vel diam vehicula tincidunt. Donec lacinia metus sem, sit amet egestas elit blandit sit amet. Nunc egestas sem quis nisl mattis semper. Pellentesque ut magna congue lorem eleifend sodales. Donec tortor tortor, aliquam vitae mollis sed, interdum ut lectus. Mauris non purus quis ipsum lacinia tincidunt.
+        </p>
+    </body>
+</html>
+```
+With the <p> tag, we can indicate that each section of text should be a paragraph.
+After we save this file, we’ll refresh the index of our web server, and then open paragraphs.html, to see that each paragraph of text is separated by some spacing.
+We can add headings with tags like <h1>, <h2>, and <h3> in headings.html:
+<!DOCTYPE html>
 
-  @app.route("/")
-  def index():
-      rows = db.execute("SELECT * FROM registrants")
-      return render_template("index.html", rows=rows)
-  ```
-  * We select everything from the `registrants` table and store that in a variable called `rows`.
-  * Then, we pass the results, `rows`, to the template.
-* In our template, `templates/index.html`, we'll iterate over a list of rows that are passed in, displaying each one's `name` field:
-  ```html
-  {% raw  %}{% extends "layout.html" %}
+<html lang="en">
+    <head>
+        <title>headings</title>
+    </head>
+  
+    <body>
+        <h1>One</h1>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus convallis scelerisque quam, vel hendrerit lectus viverra eu. Praesent posuere eget lectus ut faucibus. Etiam eu velit laoreet, gravida lorem in, viverra est. Cras ut purus neque. In porttitor non lorem id lobortis. Mauris gravida metus libero, quis maximus dui porta at. Donec lacinia felis consectetur venenatis scelerisque. Nulla eu nisl sollicitudin, varius velit sit amet, vehicula erat. Curabitur sollicitudin felis sit amet orci mattis, a tempus nulla pulvinar. Aliquam erat volutpat.
+        </p>
 
-  {% block body %}
+        <h2>Two</h2>
+        <p>
+            Mauris ut dui in eros semper hendrerit. Morbi vel elit mi. Sed sit amet ex non quam dignissim dignissim et vel arcu. Pellentesque eget elementum orci. Morbi ac cursus ex. Pellentesque quis turpis blandit orci dapibus semper sed non nunc. Nulla et dolor nec lacus finibus volutpat. Sed non lorem diam. Donec feugiat interdum interdum. Vivamus et justo in enim blandit fermentum vel at elit. Phasellus eu ante vitae ligula varius aliquet. Etiam id posuere nibh.
+        </p>
 
-      <ul>
-          {% for row in rows %}
+        <h3>Three</h3>
+        <p>
+            Aenean venenatis convallis ante a rhoncus. Nullam in metus vel diam vehicula tincidunt. Donec lacinia metus sem, sit amet egestas elit blandit sit amet. Nunc egestas sem quis nisl mattis semper. Pellentesque ut magna congue lorem eleifend sodales. Donec tortor tortor, aliquam vitae mollis sed, interdum ut lectus. Mauris non purus quis ipsum lacinia tincidunt.
+        </p>
+    </body>
+</html>
+Each level of heading has a different size, and we can use up to six levels of headings with <h6>.
+We take a look at list0.html, where we use the <ul> tag to create an unordered list, like bullet points:
+<!DOCTYPE html>
 
-              <li>{{ row["name"] }} registered</li>
+<html lang="en">
+    <head>
+        <title>list</title>
+    </head>
+    <body>
+        <ul>
+            <li>foo</li>
+            <li>bar</li>
+            <li>baz</li>
+        </ul>
+    </body>
+</html>
+We can also use <ol> instead, for an ordered list with numbers.
+Tables start with a <table> tag and have <tr> tags as rows, and <td> tags for individual cells:
+<!DOCTYPE html>
 
-          {% endfor %}
-      </ul>
+<html lang="en">
+    <head>
+        <title>table</title>
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Carter</td>
+                    <td>+1-617-495-1000</td>
+                </tr>
+                <tr>
+                    <td>David</td>
+                    <td>+1-949-468-2750</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
+In image.html, we can upload an image to our instance of VS Code and include it in our page with an <img> tag. We can also use the alt attribute to add alternative text for accessibility:
+<!DOCTYPE html>
 
-  {% endblock %}{% endraw %}
-  ```
-* We can implement a search functionality too, by adding a `q` URL parameter:
-  ```python
-  ...
-  @app.route("/")
-  def index():
-      q = request.args.get("q")
-      rows = db.execute(f"SELECT * FROM registrants WHERE name = '{q}'")
-      return render_template("index.html", rows=rows)
-  ```
-  * Now, only rows that have a matching name will be returned to our template to display.
+<html lang="en">
+    <head>
+        <title>image</title>
+    </head>
+    <body>
+        <img alt="Harvard University" src="harvard.jpg">
+    </body>
+</html>
+It turns out the image is included at its full size, so we’ll use CSS later to set its width and height.
+We can also include videos with video.html:
+<!DOCTYPE html>
 
-## lecture.db
+<html lang="en">
+    <head>
+        <title>video</title>
+    </head>
+    <body>
+        <video autoplay loop muted width="1280">
+            <source src="halloween.mp4" type="video/mp4">
+        </video>
+    </body>
+</html>
+We’ll use HTML attributes to change how our video is displayed. Notice that some attributes are empty, where there is no value.
+We’ll embed another page in ours with an inline frame, or iframe:
+<!DOCTYPE html>
 
-* A sample database of music metadata, `lecture.db`, is in this week's source directory. Importantly, it demonstrates how we can relate data in different tables.
-* With our database of students, we might have noticed that the `dorm` field will have the same strings repeated over and over again. Instead of storing the same data, we can store a reference to some other table of dorms, using fewer bytes to represent the same data.
-* In the sample database, we have a table for Albums, Artists, and Tracks. In the Album table, each row has an AlbumId, Title, and ArtistId. The Artist table has an ArtistId and Name for each row, so by joining the two tables together, we can figure out the artist's name. And since each artist has multiple albums, we're saving space. If a row in the Artist table has more data, we can update it just once, rather than in every row of the Album table, if that data was repeated there.
-* We can use phpLiteAdmin in the CS50 IDE, as before, to look at the tables and rows in `lecture.db`, and run a query like `SELECT * FROM Album WHERE ArtistId = 1;` to see all the albums by the artist with ID 1. We can use SQL to join tables, getting the artist's name too, with `SELECT * FROM Album, Artist WHERE Album.ArtistId = Artist.ArtistId;`. The `name` from the Artist table will also be selected (since we said `SELECT *`), and matched to each row in Album where the `ArtistId` field is the same. Another way to express the same idea would be `SELECT * FROM Artist JOIN Album ON Artist.ArtistId = Album.ArtistId;`.
-* Normalizing our database is this method of storing redundant data once, and using a reference to another table as needed to save space, with a slight cost to performance and simplicity.
-* In SQL, we can add a `UNIQUE` constraint to a field, without using it as a primary key. We can also indicate that a field should be an `INDEX`, where the database should build an index (with a tree, hash table, or some other data structure) for looking up fields more quickly. Finally a `FOREIGN KEY` is what we would call a field that refers to a row in some other table; for example, the `ArtistId` field in the `Album` table is a foreign key to the `Artist` table.
-* SQL also has functions for numeric operations like `AVG`, `COUNT`, `MAX`, `MIN`, and `SUM`.
+<html lang="en">
+    <head>
+        <title>iframe</title>
+    </head>
+    <body>
+        <iframe allowfullscreen src="https://www.youtube.com/embed/xvFZjo5PgG0"></iframe>
+    </body>
+</html>
+We can create links in link1.html with the <a>, or anchor, tag:
+<!DOCTYPE html>
 
-## Problems
+<html lang="en">
+    <head>
+        <title>link</title>
+    </head>
+    <body>
+      Visit <a href="https://www.harvard.edu">Harvard</a>.
+    </body>
 
-* One problem with databases is **race conditions**, where the timing of two actions or events cause unexpected behavior.
-* For example, when we sign up for a new account on a website, it might ask us for a username we'd like. If the username is taken already, we'll see a message that tells us so, and if not, we're able to start creating an account with that username. And if we take our time with putting in the rest of our information, that username might be taken by someone else by the time we actually submit the form. But if the web server didn't check again, there would be a problem where the same username is now reassigned to us!
-* If two people, or web server threads, are checking the state of a variable at the exact same time, and then make a change based on that, after some amount of time, then there is a race condition in that window of time.
-* Another example is two people, withdrawing money from two different ATMs at the exact same time, with the same account information. If the account has $100, but both people try to withdraw $100 at the same time, each ATM might check the account balance, see there is a balance of $100, and saves $0 back into the account. But each ATM did this, so a total of $200 would have been withdrawn!
-* Another example involves two roommates and a fridge. The first roommate comes home, and sees that there is no milk in the fridge. So the first roommate leaves to the store to buy milk, and while they are at the store, the second roommate comes home, sees that there is no milk, and leaves for another store to get milk. Later, there will be two jugs of milk in the fridge. By leaving a note, we can solve this problem. We can even lock the fridge so that our roommate can't check whether there is milk, until we've gotten back.
-* In the database world, we can also lock rows and tables. We can use **transactions**, where a set of actions is guaranteed to happen together. That property is called **atomicity**, where, for example, we can check the value of a row and change it, without anything else being able to read or change that value.
-* We might have also seen some websites, like for airline tickets or hotel rooms, provide a window of time after we add something to our cart, that reserves it for us, letting us fill out our information without someone else purchasing it in the meantime.
-* Another problem in SQL is called a **SQL injection attack**, where an adversary can execute their own commands on our database. Earlier, we passed in the `q` URL parameter to filter registrants based on their name, with `rows = db.execute(f"SELECT * FROM registrants WHERE name = '{q}'")`. But if `q` had the value of `Brian'; DELETE FROM registrants WHERE name = 'Brian`, it would end our previous statement and run another statement.
-* To guard against this, we can sanitize user data, or escape characters like semicolons and single quotes, such that they are interpreted as part of the string, rather than special characters that end strings or commands.
-* The CS50 SQL Library allows us to escape user input with the `execute` function, and we can write `rows = db.execute("SELECT * FROM registrants WHERE name = :name", name=q)` where we use a special placeholder, `:name`, that will be escaped before it is substituted into the string.
-* Another example would be typing in `' OR '1' = '1` in a password field; if the query is `db.execute(f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'")`, then substituting that password would get us `db.execute("SELECT * FROM users  WHERE username = 'me@examplemailprovider.com' AND password = '' OR '1' = '1'")`, and that would select that user since `1 = 1`.
-  * On the other hand, the escaped input would be substituted as `db.execute("SELECT * FROM users  WHERE username = 'me@examplemailprovider.com' AND password = '\' OR \'1\' = \'1'")`, preventing the intention of our command from being changed since the single quotes are escaped.
+</html>
+The href attribute is for a hypertext reference, or simply where the link should take us, and within the tag is the text that should appear as the link.
+When we visit this page, we can hover over the link, and our browser will show what the URL is.
+But we could set the href to https://www.yale.edu, but leave Harvard within the tag, which might prank users or even trick them into visiting a fake version of some website. Phishing is an act of tricking users, a form of social engineering that includes misleading links.
+We can link to other pages on our own server with just image.html or something similar.
+In responsive.html, we can add attributes to make our page responsive, or automatically adapted for different screen sizes:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <title>responsive</title>
+    </head>
+    <body>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus convallis scelerisque quam, vel hendrerit lectus viverra eu. Praesent posuere eget lectus ut faucibus. Etiam eu velit laoreet, gravida lorem in, viverra est. Cras ut purus neque. In porttitor non lorem id lobortis. Mauris gravida metus libero, quis maximus dui porta at. Donec lacinia felis consectetur venenatis scelerisque. Nulla eu nisl sollicitudin, varius velit sit amet, vehicula erat. Curabitur sollicitudin felis sit amet orci mattis, a tempus nulla pulvinar. Aliquam erat volutpat.
+    </body>
+</html>
+We’ll open Chrome’s Developer Tools again, and in the top left of the panel, use the icon that looks like mobile devices to simulate a phone:
+Paragraph of text in simulated device view
+It turns out that we can also provide inputs in a request as part of a URL like https://wwww.example.com/path?key=value. Here, the ? indicates that we’re adding inputs, which will include one or more key-value pairs.
+If we search for something on Google, we’ll see that the URL changes to https://www.google.com/search?q=cats&.... Here, the q key, for “query”, has a value of cats, along with other keys and values.
+These inputs are part of GET requests that look like:
+GET /search?q=cats HTTP/1.1
+Host: www.google.com
+...
+We can also use POST, to send inputs like usernames and passwords, that should be hidden from the URL.
+In search0.html, we can create a form that takes user input and sends it to Google’s search engine:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>search</title>
+    </head>
+    <body>
+        <form action="https://www.google.com/search" method="get">
+            <input name="q" type="text">
+            <input type="submit">
+        </form>
+    </body>
+</html>
+First, we have a <form> tag that has an action of Google’s search URL, with a method of GET.
+Inside the form, we have one <input>, with the name q, and another <input> with the type of submit. When the second input, a button, is clicked, the form will automatically add the input to the URL.
+So when we open search.html in our browser, we can use the form to search via Google.
+CSS
+Let’s make a home page:
+<!DOCTYPE html>
+  
+<html lang="en">
+    <head>
+        <title>home</title>
+    </head>
+    <body>
+        <p>
+            John Harvard
+        </p>
+        <p>
+            Welcome to my home page!
+        </p>
+        <p>
+            Copyright (c) John Harvard
+        </p>
+    </body>
+</html>
+We have three paragraphs, and we could use <div> tags, or divisions, to indicate they are separate areas on our page.
+We can also use HTML tags that add more context to our page:
+<!DOCTYPE html>
+  
+<html lang="en">
+    <head>
+        <title>home</title>
+    </head>
+    <body>
+        <header>
+            John Harvard
+        </header>
+        <main>
+            Welcome to my home page!
+        </main>
+        <footer>
+            Copyright (c) John Harvard
+        </footer>
+    </body>
+</html>
+We’ll stylize our page by adding a few aesthetics:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>home</title>
+    </head>
+    <body>
+        <header style="font-size: large; text-align: center;">
+            John Harvard
+        </header>
+        <main style="font-size: medium; text-align: center;">
+            Welcome to my home page!
+        </main>
+        <footer style="font-size: small; text-align: center;">
+            Copyright &#169; John Harvard
+        </footer>
+    </body>
+</html>
+We’ll also use an HTML entity to represent the copyright symbol, which will be displayed in our browser as ©.
+In our <style> tags, we’re using CSS, Cascading Style Sheets, another language that tells our browser how to display tags on a page. CSS uses properties, or key-value pairs, like font-size: large;.
+We can align all the text at once, instead of repeating ourselves:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>home</title>
+    </head>
+    <body style="text-align: center;">
+        <header style="font-size: large;">
+            John Harvard
+        </header>
+        <main style="font-size: medium;">
+            Welcome to my home page!
+        </main>
+        <footer style="font-size: small;">
+            Copyright &#169; John Harvard
+        </footer>
+    </body>
+</html>
+Here, the style applied to the <body> tag cascades, or applies, to its children, so all the sections inside will have centered text as well.
+To factor out, or separate our CSS from HTML, we can include styles in the <head> tag:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <style>
+
+            body {
+                text-align: center;
+            }
+
+            header
+            {
+                font-size: large;
+            }
+
+            main
+            {
+                font-size: medium;
+            }
+
+            footer
+            {
+                font-size: small;
+            }
+
+        </style>
+        <title>home</title>
+    </head>
+    <body>
+        <header>
+            John Harvard
+        </header>
+        <main>
+            Welcome to my home page!
+        </main>
+        <footer>
+            Copyright &#169; John Harvard
+        </footer>
+    </body>
+</html>
+We can use a CSS type selector to style each type of tag.
+We can also use a more specific class selector:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <style>
+
+            .centered
+            {
+                text-align: center;
+            }
+
+            .large
+            {
+                font-size: large;
+            }
+
+            .medium
+            {
+                font-size: medium;
+            }
+
+            .small
+            {
+                font-size: small;
+            }
+
+        </style>
+        <title>css</title>
+    </head>
+    <body>
+        <header class="centered large">
+            John Harvard
+        </header>
+        <main class="centered medium">
+            Welcome to my home page!
+        </main>
+        <footer class="centered small">
+            Copyright &#169; John Harvard
+        </footer>
+    </body>
+</html>
+We can define our own CSS class with a . followed by a keyword we choose, so here we’ve created .centered, .large, .medium, and .small, each with some property.
+Then, on any number of tags in our page’s HTML, we can add one or more of these classes with the class attribute.
+Finally, we can take all of the CSS for the properties and move them to another file with the <link> tag:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="home.css" rel="stylesheet">
+        <title>home</title>
+    </head>
+    <body>
+        <header class="centered large">
+            John Harvard
+        </header>
+        <main class="centered medium">
+            Welcome to my home page!
+        </main>
+        <footer class="centered small">
+            Copyright &#169; John Harvard
+        </footer>
+    </body>
+</html>
+.centered
+{
+    text-align: center;
+}
+
+.large
+{
+    font-size: large;
+}
+
+.medium
+{
+    font-size: medium;
+}
+
+.small
+{
+    font-size: small;
+}
+Now, we have a reusable CSS file.
+CSS also has ID selectors, like in paragraphs1.html. It turns out that we can use Chrome’s Developer Tools here as well. We’ll use the Elements tab to see that the <head> of this page includes properties for #first, an ID in CSS that we can use only once, as well as a HTML tag <p id="first"> that has the styles applied:
+Page with Elements tab showing source code of paragraphs1.html
+We can click on an element in the HTML in this panel, and change the style of our page within our browser. We can hover over CSS properties on the right side, and uncheck or change them. This won’t change our original source code, but this will change our browser’s copy so we can experiment.
+We can also right-click on anything displayed on the page, and click “Inspect Element” to see it highlighted in the panel for us, where we can make more changes quickly or learn how other pages implement features.
+With CSS, we’ll also rely on references and other resources to look up how to use properties as we need them.
+We can use other types of selectors as well:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <style>
+  
+            p:first-child
+            {
+                font-size: larger;
+            }
+  
+        </style>
+        <title>paragraphs</title>
+    </head>
+    <body>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus convallis scelerisque quam, vel hendrerit lectus viverra eu. Praesent posuere eget lectus ut faucibus. Etiam eu velit laoreet, gravida lorem in, viverra est. Cras ut purus neque. In porttitor non lorem id lobortis. Mauris gravida metus libero, quis maximus dui porta at. Donec lacinia felis consectetur venenatis scelerisque. Nulla eu nisl sollicitudin, varius velit sit amet, vehicula erat. Curabitur sollicitudin felis sit amet orci mattis, a tempus nulla pulvinar. Aliquam erat volutpat.
+        </p>
+        <p>
+            Mauris ut dui in eros semper hendrerit. Morbi vel elit mi. Sed sit amet ex non quam dignissim dignissim et vel arcu. Pellentesque eget elementum orci. Morbi ac cursus ex. Pellentesque quis turpis blandit orci dapibus semper sed non nunc. Nulla et dolor nec lacus finibus volutpat. Sed non lorem diam. Donec feugiat interdum interdum. Vivamus et justo in enim blandit fermentum vel at elit. Phasellus eu ante vitae ligula varius aliquet. Etiam id posuere nibh.
+        </p>
+        <p>
+            Aenean venenatis convallis ante a rhoncus. Nullam in metus vel diam vehicula tincidunt. Donec lacinia metus sem, sit amet egestas elit blandit sit amet. Nunc egestas sem quis nisl mattis semper. Pellentesque ut magna congue lorem eleifend sodales. Donec tortor tortor, aliquam vitae mollis sed, interdum ut lectus. Mauris non purus quis ipsum lacinia tincidunt.
+        </p>
+    </body>
+</html>
+Here, we’re using p:first-child to set properties on the first <p> tag.
+We’ll look at the style of link2.html:
+a {
+    color: #ff0000;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+In link4.html, we can select tags based on attributes:
+a
+{
+    text-decoration: none;
+}
+
+a:hover
+{
+    text-decoration: underline;
+}
+
+a[href="https://www.harvard.edu/"]
+{
+    color: #ff0000;
+}
+
+a[href="https://www.yale.edu/"]
+{
+    color: #0000ff;
+}
+The attribute selectors will affect tags with those attributes, and we can use a[href*="harvard.edu"] to be less specific in our selection, affecting tags with harvard.edu anywhere in its href.
+A set of CSS conventions and shared styles is known as a framework, with classes and components we can quickly use.
+One popular framework is Bootstrap, with components like alerts that we can use with HTML like:
+<div class="alert alert-warning">
+    ...
+</div>
+The framework provides the CSS that sets the style for those classes.
+With the help of the documentation on Bootstrap’s website, we’ll include a <link> to its CSS for our page with a table:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <title>table</title>
+    </head>
+    <body>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Carter</td>
+                    <td>+1-617-495-1000</td>
+                </tr>
+                <tr>
+                    <td>David</td>
+                    <td>+1-949-468-2750</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
+By adding the table class, per the Boostrap documentation, we see that our table is indeed stylized to be easier to read.
+We’ll update our search page, too, with styles from Bootstrap:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>search</title>
+    </head>
+    <body>
+        <div class="container-fluid">
+
+            <ul class="m-3 nav">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="https://about.google/">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="https://store.google.com/">Store</a>
+                </li>
+                <li class="nav-item ms-auto">
+                    <a class="nav-link text-dark" href="https://www.google.com/gmail/">Gmail</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="https://www.google.com/imghp">Images</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="https://accounts.google.com/ServiceLogin" role="button">Sign in</a>
+                </li>
+            </ul>
+
+            <div class="text-center">
+              <img alt="Happy Cat" class="img-fluid w-25" src="cat.gif">
+              <form action="https://www.google.com/search" class="mt-4" method="get">
+                  <input autocomplete="off" autofocus class="form-control form-control-lg mb-4 mx-auto w-50" name="q" placeholder="Query" type="search">
+                  <button class="btn btn-light" type="submit">Google Search</button>
+                  <button class="btn btn-light" name="btnI" type="submit">I'm Feeling Lucky</button>
+              </form>
+ 
+          </div>
+        </div>
+          
+    </body>
+</html>
+First, we’ll put everything in a <div> that can grow to fit the screen.
+Then, we’ll create a list with items and classes based on Bootstrap’s documentation, to display links and buttons in the header.
+Finally, we’ll add an image of a cat to the center of our page, as well as styles for our form.
+Even with a framework, we can still write our own CSS styles to change any that we want.
+JavaScript
+To write code that can run in users’ browsers, or on the client, we’ll use a new language, JavaScript. The code will still come from our web server, but it will be executed by the user’s browser.
+The syntax of JavaScript is similar to that of C and Python for basic constructs:
+set
+counter
+to
+0
+let counter = 0;
+change
+counter
+by
+1
+counter = counter + 1;
+counter += 1;
+counter++;
+if
+x
+<
+y
+then
+if (x < y)
+{
+
+}
+if
+x
+<
+y
+then
+else
+if (x < y)
+{
+
+}
+else
+{
+
+}
+if
+x
+<
+y
+then
+else
+if
+x
+>
+y
+then
+else
+if (x < y)
+{
+
+}
+else if (x > y)
+{
+
+}
+else
+{
+
+}
+forever
+while (true)
+{
+
+}
+repeat
+3
+for (let i = 0; i < 3; i++)
+{
+
+}
+Notice that in JavaScript we use let to declare variables, without needing to indicate types.
+With JavaScript, we can change the HTML in the browser in real-time. We can use <script> tags to include our code directly, or from a .js file.
+We’ll create another form:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script>
+
+            function greet()
+            {
+                alert('hello, there');
+            }
+
+        </script>
+        <title>hello</title>
+    </head>
+    <body>
+        <form onsubmit="greet(); return false;">
+            <input autocomplete="off" autofocus id="name" placeholder="Name" type="text">
+            <input type="submit">
+        </form>
+    </body>
+</html>
+Here, we won’t add an action to our form, since this will stay on the same page. Instead, we’ll have an onsubmit attribute that will call a function we’ve defined in JavaScript, and use return false; to prevent the form from actually being submitted anywhere.
+In the <head> tag, we’ll have a <script> tag with a function that defines a function, greet, in JavaScript.
+Now, if we load that page, we’ll see hello, there being shown when we submit the form.
+Since our input tag, or element, has an ID of name, we can use it in our code:
+<script>
+
+    function greet()
+    {
+        let name = document.querySelector('#name').value;
+        alert('hello, ' + name);
+    }
+
+</script>
+document is a global variable that comes with JavaScript in the browser, and querySelector is a function we can use to select a node in the DOM, Document Object Model, or the tree structure of the HTML page. After we select the element with the ID name, we get the text value inside the input, and add it to our alert.
+We can move our function to the bottom of the <body> of the page, since we want the rest of the page to load first:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>hello</title>
+    </head>
+    <body>
+        <form>
+            <input autocomplete="off" autofocus id="name" placeholder="Name" type="text">
+            <input type="submit">
+        </form>
+        <script>
+
+            function greet()
+            {
+                let name = document.querySelector('#name').value;
+                alert('hello, ' + name);
+            }
+
+            document.querySelector('form').addEventListener('submit', greet);
+
+      </script>
+    </body>
+</html>
+Now, we can listen to events in JavaScript, which occur when something happens on the page. For example, we can listen to the submit event on our form element, and call the greet function when the event happens.
+We can also use anonymous functions in JavaScript:
+<script>
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+        let name = document.querySelector('#name').value;
+        alert('hello, ' + name);
+        e.preventDefault();
+    });
+
+</script>
+We can pass in a function with no name with the function() syntax, and it turns out that event handlers in JavaScript get an event variable, e by convention, that we can use inside our function. Here, we use e.preventDefault(); to stop the default behavior of the form.
+We can programmatically change style, too:
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>background</title>
+    </head>
+    <body>
+        <button id="red">R</button>
+        <button id="green">G</button>
+        <button id="blue">B</button>
+        <script>
+
+            let body = document.querySelector('body');
+            document.querySelector('#red').addEventListener('click', function()
+            {
+                body.style.backgroundColor = 'red';
+            });
+
+            document.querySelector('#green').addEventListener('click', function() {
+                body.style.backgroundColor = 'green';
+            });
+
+            document.querySelector('#blue').addEventListener('click', function() {
+                body.style.backgroundColor = 'blue';
+            });
+
+        </script>
+    </body>
+</html>
+After selecting an element, we can use the style property to set values for CSS properties as well. Here, we have three buttons, each of which has an event listener for the click event, that changes the background color of the <body> element.
+We can also use JavaScript to make an element “blink”, or appear and reappear at an interval:
+<!DOCTYPE html>
+  
+<html lang="en">
+    <head>
+        <script>
+  
+            // Toggles visibility of greeting
+            function blink()
+            {
+                let body = document.querySelector('body');
+                if (body.style.visibility == 'hidden')
+                {
+                    body.style.visibility = 'visible';
+                }
+                else
+                {
+                    body.style.visibility = 'hidden';
+                }
+            }
+  
+            // Blink every 500ms
+            window.setInterval(blink, 500);
+  
+        </script>
+        <title>blink</title>
+    </head>
+    <body>
+        hello, world
+    </body>
+</html>
+We can implement a form with autocomplete, using a dictionary of words and an event listener for the keyup event:
+<!DOCTYPE html>
+  
+<html lang="en">
+  
+    <head>
+        <title>autocomplete</title>
+    </head>
+  
+    <body>
+  
+        <input autocomplete="off" autofocus placeholder="Query" type="text">
+  
+        <ul></ul>
+  
+        <script src="large.js"></script>
+        <script>
+      
+            let input = document.querySelector('input');
+            input.addEventListener('keyup', function(event) {
+                let html = '';
+                if (input.value) {
+                    for (word of WORDS) {
+                        if (word.startsWith(input.value)) {
+                            html += `<li>${word}</li>`;
+                        }
+                    }
+                }
+                document.querySelector('ul').innerHTML = html;
+            });
+  
+        </script>
+  
+    </body>
+</html>
+If we visit autocomplete.html and start typing in the input box, we’ll see matching words appear below.
+With geolocation.html, we can ask the browser for a user’s GPS coordinates:
+<!DOCTYPE html>
+  
+<html lang="en">
+    <head>
+        <title>geolocation</title>
+    </head>
+    <body>
+        <script>
+          
+            navigator.geolocation.getCurrentPosition(function(position) {
+                document.write(position.coords.latitude + ", " + position.coords.longitude);
+            });
+  
+        </script>
+    </body>
+</html>
+Now, we can use those coordinates to see our location on a map.
