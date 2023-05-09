@@ -959,7 +959,7 @@
     ```
 * It turns out that these data structures are generally **B-trees** with nodes organized such that we can search faster than linearly:
 
-<img src="b_tree.png" width="300">
+    <img src="b_tree.png" width="300">
 
     * Creating an index takes some time up front, perhaps by sorting the data, but afterwards we can search much more quickly.
 * With our data spread among different tables, we can nest our queries to get useful data. For example, we can get all the titles of shows starring a particular person:
