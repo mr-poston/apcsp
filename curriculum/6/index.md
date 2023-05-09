@@ -1,6 +1,6 @@
 # Chapter 6
 
-<iframe width="1214" height="683" src="https://video.cs50.io/embed/ky-24RvI57s" title="CS50 2021 in HDR - Lecture 6 - Python" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="1214" height="683" src="https://video.cs50.io/ky-24RvI57s" title="CS50 2021 in HDR - Lecture 6 - Python" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 * [Notes](notes)
 * Slides

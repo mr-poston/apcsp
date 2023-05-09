@@ -4,506 +4,1019 @@
 * TOC
 {:toc}
 
-## Last time
+## Data processing
 
-* Last time, we learned about Python, a programming language that comes with many features and libraries. Today, we'll use Python to generate HTML for webpages, and see how separations of concerns might be applied.
-* A few weeks ago, we learned about web requests in HTTP, which might look like this:
-  ```
-  GET / HTTP/1.1
-  Host: www.example.com
-  ...
-  ```
-  * Hopefully, a server responds with something like:
+* In the last unit, we collected a survey of [Hogwarts house](https://harrypotter.fandom.com/wiki/Hogwarts_Houses) preferences, and tallied the data from a CSV file with Python.
+* In this unit, we’ll collect some more data about your favorite TV shows and their genres.
+* We get hundreds of responses from the audience, and start looking at them on Google Sheets, a web-based spreadsheet application, showing our data in rows and columns:
+
+    <img src="favorites.png" width="400">
+
+* Like we did in the Python unit, we can download our data as a CSV file, which is an example of a **flat-file database**, where the data for each column is separated by commas, and each row is on a new line, saved simply as a text file in ASCII or Unicode.
+    * A flat-file database is completely portable, which means that we can open it on nearly any operating system without special software like Microsoft Excel or Apple Numbers.
+* We’ll upload the CSV file to our instance of VS Code by dragging and dropping it:
+
+    <img src="uploading.png" width="400">
+
+* Then, we’ll see the file opened in an editor:
+
+    <img src="csv.png" width="200">
+
+    * Notice that some rows have multiple genres, and those are surrounded by quotes, like `"Crime, Drama"`, so that the commas within our data aren’t misinterpreted.
+* Let’s write a new program, `favorites.py`, to read our CSV file:
+    ```python
+    import csv
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.reader(file)
+        next(reader)
+        for row in reader:
+            print(row[1])
     ```
-    HTTP/1.1 200 OK
-    Content-Type: text/html
+    * We’ll open the file with a reference called `file`, using the `with` keyword in Python that will close our file for us.
+    * The `csv` library has a `reader` function that will create a reader variable we can use to read in the file as a CSV.
+    * We’ll call `next` to skip the first row, since that’s the header row.
+    * Then, we’ll use a loop to print the second column in each row, which is the title.
+* Now, if we run our program, we’ll see a list of show titles:
+    ```
+    $ python favorites.py
+    ...
+    Friends
+    ...
+    friends
+    ... 
+    Friends
     ...
     ```
-    * The `...` is the actual HTML of the page.
+    * But for the show titled “Friends”, some entries are capitalized and some are lowercased.
 
-## Flask
+### Cleaning
 
-* Today, we'll use Flask, a microframework, or a set of code that allows us to build programs without writing shared or repeated code over and over. (Bootstrap, for example, is a framework for CSS.)
-* Flask is written in Python and is a set of libraries of code that we can use to write a web server in Python.
-* One methodology for organizing web server code is MVC, or Model-View-Controller:<br>
-  ![request (HTTP, CLI, etc.) from a client goes into a Controller, which demands from a Model (Database, WS, etc) and receives data that it then sends to a View (Templates, layout) which are sent back to the client as a response (HTML, RSS, XML, JSON, etc.)](/mvc.png)
-  * Thus far, the programs we've written have all been in the Controller category, whereby we have logic and algorithms that solve some problem and print output to the terminal. But with web programming, we also want to add formatting and aesthetics (the View component), and also access data in a more organized way (the Model component). When we start writing our web server's code in Python, most of the logic will be in the controllers.
-  * By organizing our program this way, we can have separation of concerns.
-* Today, we'll build a website where students can fill out a form to register for Frosh IMs, freshman year intramural sports.
-* We can start by opening the CS50 IDE, and write some Python code that is a simple web server program, `serve.py`:
-  ```python
-  from http.server import BaseHTTPRequestHandler, HTTPServer
-
-  class HTTPServer_RequestHandler(BaseHTTPRequestHandler):
-
-      def do_GET(self):
-
-          self.send_response(200)
-
-          self.send_header("Content-type", "text/html")
-          self.end_headers()
-
-          self.wfile.write(b"<!DOCTYPE html>")
-          self.wfile.write(b"<html lang='en'>")
-          self.wfile.write(b"<head>")
-          self.wfile.write(b"<title>hello, title</title>")
-          self.wfile.write(b"</head>")
-          self.wfile.write(b"<body>")
-          self.wfile.write(b"hello, body")
-          self.wfile.write(b"</body>")
-          self.wfile.write(b"</html>")
-
-
-  port = 8080
-  server_address = ("0.0.0.0", port)
-  httpd = HTTPServer(server_address, HTTPServer_RequestHandler)
-
-  httpd.serve_forever()
-  ```
-  * We already know how to write a hello, world HTML page, but now we're writing a program in Python to actually generate and return an HTML page.
-  * Most of this code is based on the `http` library that we can import that handles the HTTP layer, but we have written our own `do_GET` function that will be called every time we receive a GET request. As usual, we need to look at the documentation for the library to get a sense of what we should write, and what we have available for us. First, we send a 200 status code, and send the HTTP header indicating that this is an HTML page. Then, we write (as ASCII bytes) some HTML, line by line, into the response.
-  * Notice that we set the server to use port 8080 (since the IDE itself is using port 80), and actually create and start the server (based on documentation we found online).
-  * Now, if we run `python serve.py`, we can click CS50 IDE > Web Server, which will open our IDE's web server in another tab for us, and we'll see the hello, world page we just wrote.
-* We can see that reimplementing many common functions of a web server can get tedious, even with an HTTP library, so a framework like Flask helps a lot in providing abstractions and shortcuts that we can reuse.
-* With Flask, we can write the following in an `application.py` file:
-  ```python
-  from flask import Flask, render_template, request
-
-  app = Flask(__name__)
-
-  @app.route("/")
-  def index():
-      return "hello, world"
-  ```
-  * With `app = Flask(__name__)`, we initialize a Flask application for our `application.py` file. Then, we use the `@app.route("/")` syntax to indicate that the function below will respond to any requests for `/`, or the root page of our site. We call that function `index` by convention, and it will just return "hello, world" as the response, without any HTML.
-  * Now, we can call `flask run` from the terminal in the same folder as our `application.py`, and the resulting URL will show a page that reads "hello, world" (which our browser displays even without HTML).
-* We can change the `index` function to return a template, or a file that has HTML that we've written, that acts as the View.
-  ```
-  return render_template("index.html")
-  ```
-  * In a `templates` folder, we'll have an `index.html` file with the following:
-    ```html
-    <!DOCTYPE html>
-
-    <html lang="en">
-        <head>
-            <meta name="viewport" content="initial-scale=1, width=device-width">
-            <title>hello</title>
-        </head>
-        <body>
-            hello, {{ name }}
-        </body>
-    </html>
-    ```
-  * We see a new feature, `{{ name }}`, like a placeholder. So we'll go back and change the logic of `index`, our controller, to check for parameters in the URL and pass them to the view:
-    ```
-    return render_template("index.html", name=request.args.get("name", "world"))
-    ```
-    * We use `request.args.get` to get a parameter from the request's URL called `name`. (The second argument, `world`, will be the default value that's returned if one wasn't set.) Now, we can visit `/?name=David` to see "hello, David" on the page. Now, we can generate an infinite number of webpages, even though we've only written a few lines of code.
-* In `froshims0`, we can write an `application.py` that can receive and respond to a POST request from a form:
-  ```python
-  from flask import Flask, render_template, request
-
-  app = Flask(__name__)
-
-
-  @app.route("/")
-  def index():
-      return render_template("index.html")
-
-
-  @app.route("/register", methods=["POST"])
-  def register():
-      if not request.form.get("name") or not request.form.get("dorm"):
-          return render_template("failure.html")
-      return render_template("success.html")
-  ```
-  * For the default page, we'll return an `index.html` that contains a form:
-    ```html
-    {% raw  %}
-    {% extends "layout.html" %}
-
-    {% block body %}
-        <h1>Register for Frosh IMs</h1>
-        <form action="/register" method="post">
-            <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
-            <select name="dorm">
-                <option disabled selected value="">Dorm</option>
-                <option value="Apley Court">Apley Court</option>
-                <option value="Canaday">Canaday</option>
-                <option value="Grays">Grays</option>
-                <option value="Greenough">Greenough</option>
-                <option value="Hollis">Hollis</option>
-                <option value="Holworthy">Holworthy</option>
-                <option value="Hurlbut">Hurlbut</option>
-                <option value="Lionel">Lionel</option>
-                <option value="Matthews">Matthews</option>
-                <option value="Mower">Mower</option>
-                <option value="Pennypacker">Pennypacker</option>
-                <option value="Stoughton">Stoughton</option>
-                <option value="Straus">Straus</option>
-                <option value="Thayer">Thayer</option>
-                <option value="Weld">Weld</option>
-                <option value="Wigglesworth">Wigglesworth</option>
-            </select>
-            <input type="submit" value="Register">
-        </form>
-    {% endblock %}
-    {% endraw %}
-    ```
-    * We have an HTML form, with an `input` tag for a student to type in their name, and a `select` tag to create a dropdown list for them to select a dorm. Our form will be submitted to a route we call `/register`, and we'll use the POST method to send the form's information.
-    * Notice that our template is now using a new feature, `extends`, to define blocks that will be substituted themselves in another file, `layout.html`:
-      ```html
-      {% raw  %}
-      <!DOCTYPE html>
-
-      <html lang="en">
-          <head>
-              <meta name="viewport" content="initial-scale=1, width=device-width">
-              <title>froshims0</title>
-          </head>
-          <body>
-              {% block body %}{% endblock %}
-          </body>
-      </html>
-      {% endraw %}
-      ```
-      * Now, if we have other pages on our site, they can easily share the common markup we would want on every page. The `{% raw %}{% block body %}{% endblock %}{% endraw %}` syntax is a placeholder block in Flask, where other pages, like `index.html`, can provide HTML that will be substituted into that block.
-    * In our `register` function, we'll indicate that we're listening for a POST request, and inside the function, just make sure that we got a value for both `name` and `dorm`. `request.form` is an abstraction provided by Flask, such that we can access the arguments, or parameters, from the request's POST data.
-* When we run our application with `flask run`, and visit the URL, sometimes we might see an Internal Server Error. And if we come back to our terminal, where our Flask server is running, we'll see an error message that provides us clues to what went wrong. We can press Control+C to stop our web server, make changes that will hopefully fix our error, and start our web server again. And even if nothing is broken but we made a change, sometimes we need to quit Flask and start it again, for it to notice those changes.
-* We also need a `success.html` and `failure.html` in our `templates` directory, which might look like:
-  ```html
-  {% raw  %}
-  {% extends "layout.html" %}
-
-  {% block body %}
-      You are registered! (Well, not really.)
-  {% endblock %}
-  {% endraw %}
-  ```
-  * Our `register` function will return that, with the template fully rendered, if we provided both a name and dorm in the form.
-  * With `layout.html`, we didn't need to copy and paste the same `<head>` and other shared markup, making it easier for us to make changes across all the pages we have at once.
-* The failure page, too, will share the same layout but send a different message:
-  ```html
-  {% raw  %}
-  {% extends "layout.html" %}
-
-  {% block body %}
-      You must provide your name and dorm!
-  {% endblock %}
-  {% endraw %}
-  ```
-  * The `{% raw  %}{% %}{% endraw %}` syntax is actually called Jinja, a templating language that Flask is able to understand and put together.
-* And all of this Python code lives on our server in the CS50 IDE, generating a completed HTML page each time and sending it to the browser as a response. We can see that by right-clicking the page in Chrome, clicking View Source, and seeing the full HTML that users will get.
-* Now let's actually do something with the submitted form information. In `froshims1/application.py`, we'll create a list to store all the registered students:
-  ```python
-  from flask import Flask, redirect, render_template, request
-
-  # Configure app
-  app = Flask(__name__)
-
-  # Registered students
-  students = []
-
-
-  @app.route("/")
-  def index():
-      return render_template("index.html")
-
-
-  @app.route("/registrants")
-  def registrants():
-      return render_template("registered.html", students=students)
-
-
-  @app.route("/register", methods=["POST"])
-  def register():
-      name = request.form.get("name")
-      dorm = request.form.get("dorm")
-      if not name or not dorm:
-          return render_template("failure.html")
-      students.append(f"{name} from {dorm}")
-      return redirect("/registrants")
-  ```
-  * We create an empty list, `students = []`, and when we get a name and dorm in `register`, we'll use `students.append(f"{name} from {dorm}")` to add a formatted string with that name and dorm, to the `students` list.
-  * In the `registrants` function, we'll pass in our `students` list to the template of `registered.html`:
-    ```html
-    {% raw  %}
-    {% extends "layout.html" %}
-
-    {% block body %}
-        <ul>
-            {% for student in students %}
-                <li>{{ student }}</li>
-            {% endfor %}
-        </ul>
-    {% endblock %}
-    {% endraw %}
-    ```
-    * Notice that, with Jinja, we can have simple concepts like a `for` loop to generate HTML based on variables passed into the template. (We need an `endfor` since, in HTML, indentation is only needed for stylistic purposes, so we need to specify when a loop ends.) Here, we're creating an `<li>` for each `student`, or string, in the `students` variable that was passed in by the controller, `application.py`. And notice that the markup, or formatting of the list, is in this template, or view.
-* If we stop our server, and restart it, we'll have lost all of the data we've collected, since the `students` variable is only created and stored as long as our program is running.
-* In `froshims2/application.py`, we use a new library:
-  ```python
-  import os
-  import smtplib
-  from flask import Flask, render_template, request
-
-  # Configure app
-  app = Flask(__name__)
-
-
-  @app.route("/")
-  def index():
-      return render_template("index.html")
-
-
-  @app.route("/register", methods=["POST"])
-  def register():
-      name = request.form.get("name")
-      email = request.form.get("email")
-      dorm = request.form.get("dorm")
-      if not name or not email or not dorm:
-          return render_template("failure.html")
-      message = "You are registered!"
-      server = smtplib.SMTP("smtp.gmail.com", 587)
-      server.starttls()
-      server.login("jharvard@cs50.net", os.getenv("PASSWORD"))
-      server.sendmail("jharvard@cs50.net", email, message)
-      return render_template("success.html")
-  ```
-  * The SMTP (Simple Mail Transfer Protocol) library allows us to use abstractions for sending email, and here, every time we get a valid form, we'll send an email. By reading the documentation for `smtplib` and for Gmail, we can figure out the lines of code needed to log in to Gmail's server programmatically, and send an email to the email address from our form.
-* We can also save the registration data to a CSV on our server, which can then be opened even after our server is stopped:
-  ```python
-  from flask import Flask, render_template, request
-  import csv
-
-  app = Flask(__name__)
-
-
-  @app.route("/")
-  def index():
-      return render_template("index.html")
-
-
-  @app.route("/register", methods=["POST"])
-  def register():
-      if not request.form.get("name") or not request.form.get("dorm"):
-          return render_template("failure.html")
-      file = open("registered.csv", "a")
-      writer = csv.writer(file)
-      writer.writerow((request.form.get("name"), request.form.get("dorm")))
-      file.close()
-      return render_template("success.html")
-
-
-  @app.route("/registered")
-  def registered():
-      file = open("registered.csv", "r")
-      reader = csv.reader(file)
-      students = list(reader)
-      return render_template("registered.html", students=students)
-  ```
-  * We import the `csv` library, and open a file called `registered.csv` to append or read from. If we received a form in the `register` route, we'll open the file with `a`, to append. Then, we create a `csv.writer` (based on the documentation for the library), and use the `writerow` function to write the name and dorm to the file. Finally, we'll close the file.
-  * The `registered` route will open the file for reading, and create a list of lists based on the file. Then, in `registered.html`, we can iterate over each list in the list (each row), and print the first item (the name) and the second item (the dorm):
-    ```html
-    {% raw %}
-    {% extends "layout.html" %}
-
-    {% block body %}
-        <h1>Registered</h1>
-        <ul>
-            {% for student in students %}
-                <li>{{ student[0] }} from {{ student[1] }}</li>
-            {% endfor %}
-        </ul>
-    {% endblock %}
-    {% endraw %}
-    ```
-* With a language we'll look at next week, SQL, we'll be able to work with data more easily than we can with a CSV file.
-* In `froshims6/templates/index.html`, we use JavaScript in our template to check the input immediately:
-  ```html
-  {% raw %}
-  {% extends "layout.html" %}
-
-  {% block body %}
-      <h1>Register for Frosh IMs</h1>
-      <form action="/register" method="post">
-          <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
-          <select name="dorm">
-              <option disabled selected value="">Dorm</option>
-              <option value="Apley Court">Apley Court</option>
-              <option value="Canaday">Canaday</option>
-              <option value="Grays">Grays</option>
-              <option value="Greenough">Greenough</option>
-              <option value="Hollis">Hollis</option>
-              <option value="Holworthy">Holworthy</option>
-              <option value="Hurlbut">Hurlbut</option>
-              <option value="Lionel">Lionel</option>
-              <option value="Matthews">Matthews</option>
-              <option value="Mower">Mower</option>
-              <option value="Pennypacker">Pennypacker</option>
-              <option value="Stoughton">Stoughton</option>
-              <option value="Straus">Straus</option>
-              <option value="Thayer">Thayer</option>
-              <option value="Weld">Weld</option>
-              <option value="Wigglesworth">Wigglesworth</option>
-          </select>
-          <input type="submit" value="Register">
-      </form>
-
-      <script>
-
-          document.querySelector('form').onsubmit = function() {
-              if (!document.querySelector('input').value) {
-                  alert('You must provide your name!');
-                  return false;
-              }
-              else if (!document.querySelector('select').value) {
-                  alert('You must provide your dorm!');
-                  return false;
-              }
-              return true;
-          };
-
-      </script>
-
-  {% endblock %}
-  {% endraw %}
-  ```
-  * With JavaScript on the page, the user can get feedback immediately since it runs in the browser. And we should still validate the input on our server, since someone might disable JavaScript or try to send bad requests programmatically. With libraries like Bootstrap, we can make validation pretty and really improve a user's experience, or UX.
-  * In this example, we have a function that will be called when the `form` on the page is submitted, and checks that there's a value for both the `input` and the `select`. If there is no value for one of them, we'll create an alert and `return fallse` to stop the form from being submitted. Otherwise, our function will `return true` if both are present, allowing the form to be submitted by the browser.
-  * We could also factor out the JavaScript code into a `.js` file and include it, but since we don't have very many lines of code yet, we can make a design decision to include our JavaScript code directly in our template. Frameworks like React will organize view code, like the HTML and JavaScript, in particular ways, so that we can maintain consistent patterns in more complicated web applications.
-
-## Words
-
-* Let's create a website where someone can search for words that start with some string, much like how we might want to have autocomplete. We'll need a file called `large` that's a list of dictionary words, and in `words0/application.py` we'll have:
-  ```python
-  from flask import Flask, render_template, request
-
-  app = Flask(__name__)
-
-  WORDS = []
-  with open("large", "r") as file:
-      for line in file.readlines():
-          WORDS.append(line.rstrip())
-
-  @app.route("/")
-  def index():
-      return render_template("index.html")
-
-
-  @app.route("/search")
-  def search():
-      words = [word for word in WORDS if word.startswith(request.args.get("q"))]
-      return render_template("search.html", words=words)
-  ```
-  * When our server starts, we'll create a `WORDS` list from reading in each line of the `large` file, removing the new line with `rstrip`, and storing that in our list.
-  * In our `index` function, we'll render `index.html`, which is just a form:
-    ```html
-    {% raw %}
-    {% extends "layout.html" %}
-
-    {% block body %}
-        <form action="/search" method="get">
-            <input autocomplete="off" autofocus name="q" placeholder="Query" type="text">
-            <input type="submit" value="Search">
-        </form>
-    {% endblock %}
-    {% endraw %}
-    ```
-    * Our form will use the `get` method, since we want the query to be in the URL.
-  * In our `search` route, we create a list, `words`, which is a list of every `word` in our global `WORDS` list (that we read in earlier) that start with the value of the parameter `q`. It's equivalent to:
+* To improve our program, we’ll first use a `DictReader`, dictionary reader, which creates a dictionary from each row, allowing us to access each column by its name. We also don’t need to skip the header row in this case, since the `DictReader` will use it automatically.
     ```python
-    words = []
-    q = request.args.get("q")
-    for word in WORDS:
-        if word.startswith(q):
-            words.append(word)
+    import csv
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            print(row["title"])
     ```
-    * Once we have a list of words that match, we'll pass it to our template, `search.html` that will display each one with markup.
-  * We can run our server with `flask run`, and when we visit the URL, we see a form that we can type some input into. If we type in the letter `a` or `b`, we can click submit and be taken to a page with all the words in our dictionary that start with `a` or `b`. And we notice that our route is something like `/search?q=a`, though we could have changed `q` (for query) to anything we'd like. We can even change the URL with some other value for `q`, and see our results displayed.
-* In `words1`, we'll get the results list immediately with JavaScript. And we can infer how that example works, before looking at the code, by running it in the IDE. We can visit the URL, and use the Network tab in Developer Tools by right-clicking the page in Chrome:
-  ![words1 with input box on page and results directly below; Network panel in Developer tools shows a request to search?q=a](/words1.png)
-  * We see that our browser is making a request every time we type into the input box, and if we click on the request and then Response, we can see that our browser got some fragment of HTML with our results.
-* We can click on View Source on the page, and see that our page has a bit of JavaScript after the HTML:
-  ```html
-  <input autocomplete="off" autofocus placeholder="Query" type="text">
-
-  <ul></ul>
-
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script>
-
-      let input = document.querySelector('input');
-      input.onkeyup = function() {
-          $.get('/search?q=' + input.value, function(data) {
-              document.querySelector('ul').innerHTML = data;
-          });
-      };
-
-  </script>
-  ```
-  * Here, we're using a JavaScript library called jQuery, which provides us with some abstractions. We're selecting the `input` element, and every time the `keyup` event occurs, we want to change the page. The `keyup` event will happen when we press a key in the input box, and let go. We use jQuery's `$.get` function to make a GET request to our server at the `/search?q=` route, with the value of the input box appended. When we get some `data` back, the `$.get` function will call an anonymous function (a callback) to set the `innerHTML` of the `ul` on our page to that `data`.
-  * And notice that we provided an empty opened and closed `<ul>` element in our template, but we'll change the HTML inside with what our server responds with.
-* On our server-side code, our `search` route is the mostly the same as before, but the template, `search.html`, will only have `<li>` elements, one for each matching word:
-  ```html
-  {% raw %}
-  {% for word in words %}
-      <li>{{ word }}</li>
-  {% endfor %}
-  {% endraw %}
-  ```
-  * Since we don't extend a `layout.html`, this route will only return an incomplete fragment of HTML. But that still works because our JavaScript code is putting it inside a complete page, our `index.html`.
-* With `words2`, we have our server return data more efficiently, in a format called JSON, JavaScript Object Notation:
-  ![words2 with Response to a request for search?q=a as a list of strings, as opposed to li elements with markup](/words2.png)
-  * Then, in our JavaScript code on the page, we'll write each of them as an `<li>`, generating the markup in the browser instead of on our server.
-  * The Python code in `application.py` uses a `jsonify` function to return a list as a JSON object:
+    * Since the first row in our CSV has the names of the columns, it can be used to label each column in our data as well. Now our program will still work, even if the order of the columns are changed.
+* Now let’s try to filter out duplicates in our responses:
     ```python
-    @app.route("/search")
-    def search():
-        q = request.args.get("q")
-        words = [word for word in WORDS if q and word.startswith(q)]
-        return jsonify(words)
+    import csv
+
+    titles = []
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            if not row["title"] in titles:
+                titles.append(row["title"])
+
+    for title in titles:
+        print(title)
     ```
-  * And our `index.html` has the JavaScript to append each word as an `<li>` element:
-    ```javascript
-    let input = document.querySelector('input');
-    input.onkeyup = function() {
-        $.get('/search?q=' + input.value, function(data) {
-            let html = '';
-            for (word of data) {
-                html += '<li>' + word + '</li>';
-            }
-            document.querySelector('ul').innerHTML = html;
-        });
-    };
+    * We’ll make a new list called `titles`, and only add each row’s title if it’s not already in the list. Then, we can print all the titles:
+        ```
+        $ python favorites.py
+        ...
+        Friends
+        ...
+        friends
+        ...
+        ```
+        * We see that there are still near-duplicates, since `Friends` and `friends` are indeed different strings still.
+* We’ll want to change the current title to all uppercase, and remove whitespace around it, before we add it to our list:
+    ```python
+    import csv
+
+    titles = []
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            title = row["title"].strip().upper()
+            if not title in titles:
+                titles.append(title)
+
+    for title in titles:
+        print(title)
     ```
-* In fact, since the browser can run JavaScript that can search a list, we can write all of this in JavaScript, without making a request to a server:
-  ```javascript
-  let input = document.querySelector('input');
-  input.onkeyup = function() {
-      let html = '';
-      if (input.value) {
-          for (word of WORDS) {
-              if (word.startsWith(input.value)) {
-                  html += '<li>' + word + '</li>';
-              }
-          }
-      }
-      document.querySelector('ul').innerHTML = html;
-  };
-  ```
-    * When we get input from the user, we'll just iterate over a `WORDS` array and append any `word` string that starts with the input's value to the page as an `<li>` element.
-  * We'll also have to include a `large.js` file that creates that global variable, `WORDS`, which starts with the following:
-    ```javascript
-    let WORDS = [
-      "a",
-      "aaa",
-      "aaas",
-      "aachen",
-      "aalborg",
-      "aalesund",
-      "aardvark",
-      ...
+    * Now, we’ve **canonicalized**, or standardized, our data, and our list of titles are much cleaner:
+        ```
+        $ python favorites.py
+        ...
+        NEW GIRL
+        FRIENDS
+        THE OFFICE
+        BREAKING BAD
+        ...
+        ```
+* It turns out that Python has another data structure built-in, `set`, which ensures that all the values are unique:
+    ```python
+    import csv
+
+    titles = set()
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            title = row["title"].strip().upper()
+            titles.add(title)
+
+    for title in titles:
+        print(title)
     ```
-* Even with a relatively simple example, we see how there can be a few different approaches to solving the same problem. With version 0, our server sent back entire, complete pages on every search. With version 1, we used JavaScript to make requests without navigating to another page, getting back data with markup from the server. With version 2, we used JavaScript, but only got back data from the server, that we then marked up in the browser. Finally, with version 3, we used JavaScript and the word list to accomplish the same results, but all within the browser. Each approach has pros and cons, so depending on what tradeoffs we value, one solution might be better than the rest.
+    * Now, we can call `add` on the set, and not have to check ourselves if it’s already in the set.
+* To sort the titles, we can just change our loop to `for title in sorted(titles)`, which will sort our set before we iterate over it:
+    ```python
+    import csv
+
+    titles = set()
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            title = row["title"].strip().upper()
+            titles.add(title)
+
+    for title in sorted(titles):
+        print(title)
+    ```
+    ```
+    $ python favorites.py
+    ADVENTURE TIME
+    ANNE WITH AN E
+    ...
+    AVATAR
+    AVATAR THE LAST AIRBENDER
+    AVATAR: THE LAST AIRBENDER
+    ...
+    BROOKLYN 99
+    BROOKLYN-99
+    ...
+    ```
+    * Now, we see our titles alphabetized, but there were still a few different ways that a show’s title could be entered. We’ll leave these differences there for now, since it will likely take a bit more effort to fully standardize our data.
+
+### Counting
+
+* We can use a dictionary, instead of a set, to count the number of times we’ve seen each title, with the keys being the titles and the values being an integer counting the number of times we see each of them:
+    ```python
+    import csv
+
+    titles = {}
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            title = row["title"].strip().upper()
+            titles[title] += 1
+
+    for title in sorted(titles):
+        print(title)
+    ```
+    * As we read each row, we increase the value stored for that title in the dictionary by 1.
+* We’ll run this program, and see:
+    ```
+    $ python favorites.py
+    Traceback (most recent call last):
+    File "/workspaces/20377622/favorites.py", line 9, in <module>
+        titles[title] += 1
+    KeyError: 'HOW I MET YOUR MOTHER'
+    ```
+    * We have a `KeyError`, since the title `HOW I MET YOUR MOTHER` isn’t in the dictionary yet.
+* We’ll have to add each title to our dictionary first, and set the initial value to 1:
+    ```python
+    import csv
+
+    titles = {}
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            title = row["title"].strip().upper()
+            if title in titles:
+                titles[title] += 1
+            else:
+                titles[title] = 1
+
+    for title in sorted(titles):
+        print(title, titles[title])
+    ```
+    * We’ll add the values, or counts, to our loop that prints every show name.
+* We can also set the initial value to 0, and then increment it by 1 no matter what:
+    ```python
+    import csv
+
+    titles = {}
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            title = row["title"].strip().upper()
+            if not title in titles:
+                titles[title] = 0
+            titles[title] += 1
+
+    for title in sorted(titles):
+        print(title, titles[title])
+    ```
+    ```
+    $ python favorites.py
+    ADVENTURE TIME 1
+    ANNE WITH AN E 1
+    ARCHER 1
+    ...
+    AVATAR THE LAST AIRBENDER 5
+    ...
+    COMMUNITY 8
+    ...
+    ```
+    * Now, the key will exist in the dictionary, and we can safely refer to its value in the dictionary.
+* We can sort by the values in the dictionary by changing our loop to:
+    ```python
+    ...
+    def get_value(title):
+        return titles[title]
+
+    for title in sorted(titles, key=get_value, reverse=True):
+        print(title, titles[title])
+    ```
+    * We define a function, `f`, which just returns the value of a title in the dictionary with `titles[title]`. The `sorted` function, in turn, will take in that function as the key to sort the dictionary. And we’ll also pass in `reverse=True` to sort from largest to smallest, instead of smallest to largest.
+    * So now we’ll see the most popular shows printed:
+        ```
+        $ python favorites.py
+        THE OFFICE 15
+        FRIENDS 9
+        COMMUNITY 8
+        GAME OF THRONES 6
+        ...
+        ```
+* We can actually define our function in the same line, with this syntax:
+    ```python
+    for title in sorted(titles, key=lambda title: titles[title], reverse=True):
+        print(title, titles[title])
+    ```
+    * We can write and pass in a **lambda**, or anonymous function, which has no name but takes in some argument or arguments, and returns a value immediately.
+    * Notice that there are no parentheses or `return` keyword, but concisely has the same effect as our `get_value` function earlier.
+* We can also try to count all the occurrences of a specific title:
+    ```python
+    import csv
+
+    counter = 0
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            title = row["title"].strip().upper()
+            if title == "THE OFFICE":
+                counter += 1
+    
+    print(f"Number of people who like The Office: {counter}")
+    ```
+    ```
+    $ python favorites.py
+    Number of people who like The Office: 15
+    ```
+    * We’ll have a simple `counter` variable, and add one to it.
+* Now, if our data referred to the same show in different ways, we can try to check if the word “OFFICE” was in the title at all:
+    ```python
+    import csv
+
+    counter = 0
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            title = row["title"].strip().upper()
+            if "OFFICE" in title:
+                counter += 1
+    
+    print(f"Number of people who like The Office: {counter}")
+    ```
+    ```
+    $ python favorites.py
+    Number of people who like The Office: 16
+    ```
+    * It turns out that a row has a typo, “Thevoffice”, so now our count is correct.
+* We can also use **regular expressions**, a standardized way to represent a pattern that a string must match.
+* For example, we can write a regular expression that matches email addresses:
+    ```regex
+    .*@.*\..*
+    ```
+    * The first period, `.`, indicates any character. The following asterisk, `*`, indicates 0 or more times. Then, we want an at sign, `@`. Then we want 0 or more characters again, `.*`, and then a literal period in our string, escaped with `\.`. Finally, we want 0 or more characters again with `.*`.
+* Since we probably want at least 1 character in each segment of an email address, we should change our regular expression to:
+    ```regex
+    .+@.+\..+
+    ```
+    * The plus sign, `+`, means we are matching for the previous character 1 or more times.
+    * We can restrict the domain of the email to `.edu` by changing our regular expression to `.+@.+\.edu`.
+* Languages like Python and JavaScript support regular expressions, which are like a mini-language in themselves, with syntax like:
+    * `.` for any character
+    * `.*` for 0 or more characters
+    * `.+` for 1 or more characters
+    * `?` for an optional character
+    * `^` for start of input
+    * `$` for end of input
+    * …
+* We can change our program earlier to use `re`, a Python library for regular expressions:
+    ```python
+    import csv
+    import re
+
+    counter = 0
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            title = row["title"].strip().upper()
+            if re.search("OFFICE", title):
+                counter += 1
+    
+    print(f"Number of people who like The Office: {counter}")
+    ```
+    ```
+    $ python favorites.py
+    Number of people who like The Office: 16
+    ```
+    * The `re` library has a function, `search`, to which we can pass a pattern and string to see if there is a match.
+    * We can change our expression to `"^(OFFICE|THE OFFICE)$"`, which will match either `OFFICE` or `THE OFFICE`, but only if they start at the beginning of the string, and stop at the end of the string (i.e., there are no other words before or after).
+    * We can even change `THE OFFICE` to `THE.OFFICE`, allowing any character (like a typo) to be in between those words.
+* We can also write a program to ask the user for a particular title and report its popularity:
+    ```python
+    import csv
+
+    title = input("Title: ").strip().upper()
+
+    counter = 0
+
+    with open("favorites.csv", "r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            if row["title"].strip().upper() == title:
+                counter += 1
+
+    print(counter)
+    ```
+    ```
+    $ python favorites.py
+    Title: the office
+    13
+    ```
+    * We ask the user for input, and then open our CSV file. Since we’re looking for just one title, we can have one `counter` variable that we increment.
+    * We check for a match after standardizing both the user’s input and each row’s title.
+
+## Relational databases
+
+* **Relational databases** are programs that store data, ultimately in files, but with additional data structures and interfaces that allow us to search and store data more efficiently.
+* When working with data, we generally need four types of basic operations with the acronym `CRUD`:
+    * `CREATE`
+    * `READ`
+    * `UPDATE`
+    * `DELETE`
+
+### SQL
+
+* With another programming language, **SQL** (pronounced like “sequel”), we can interact with databases with verbs like:
+    * `CREATE`, `INSERT`
+    * `SELECT`
+    * `UPDATE`
+    * `DELETE`, `DROP`
+* Syntax in SQL might look like:
+    ```sql
+    CREATE TABLE table (column type, ...);
+    ```
+    * With this statement, we can create a **table**, which is like a spreadsheet with rows and columns.
+    * In SQL, we choose the types of data that each column will store.
+* We’ll use a common database program called **SQLite**, one of many available programs that support SQL. Other database programs include Oracle Database, MySQL, PostgreSQL, and Microsoft Access.
+* SQLite stores our data in a binary file, with 0s and 1s that represent data efficiently. We’ll interact with our tables of data through a command-line program, `sqlite3`.
+* We’ll run some commands in VS Code to import our CSV file into a database:
+    ```
+    $ sqlite3 favorites.db
+    SQLite version 3.36.0 2021-06-18 18:36:39
+    Enter ".help" for usage hints.
+    sqlite> .mode csv
+    sqlite> .import favorites.csv favorites
+    ```
+    * First, we’ll run the `sqlite3` program with `favorites.db` as the name of the file for our database.
+    With `.import`, SQLite creates a table in our database with the data from our CSV file.
+* Now, we’ll see three files, including `favorites.db`:
+    ```
+    $ ls
+    favorites.csv  favorites.db  favorites.py
+    ```
+* We can open our database file again, and check the schema, or design, of our new table with `.schema`:
+    ```
+    $ sqlite3 favorites.db
+    SQLite version 3.36.0 2021-06-18 18:36:39
+    Enter ".help" for usage hints.
+    sqlite> .schema
+    CREATE TABLE IF NOT EXISTS "favorites"(
+    "Timestamp" TEXT,
+    "title" TEXT,
+    "genres" TEXT
+    );
+    ```
+    * We see that `.import` used the `CREATE TABLE ...` command to create a table called `favorites`, with column names automatically copied from the CSV’s header row, and types for each of them assumed to be text.
+* We can select, or read data, with:
+    ```
+    sqlite> SELECT title FROM favorites;
+    +------------------------------------+
+    |                title               |
+    +------------------------------------+
+    | How i met your mother              |
+    | The Sopranos                       |
+    | Friday Night Lights                |
+    ...
+    ```
+    * With a command in the format `SELECT columns FROM table;`, we can read data from one or more columns. For example, we can write `SELECT title, genre FROM favorites;` to select both the title and genre.
+* SQL supports many functions that we can use to count and summarize data:
+    * `AVG`
+    * `COUNT`
+    * `DISTINCT`
+    * `LOWER`
+    * `MAX`
+    * `MIN`
+    * `UPPER`
+    * …
+* We can clean up our titles as before, converting them to uppercase and printing only the unique values:
+    ```
+    sqlite> SELECT DISTINCT(UPPER(title)) FROM shows;
+    ... 
+    | LAW AND ORDER                      |
+    | B99                                |
+    | GOT                                |
+    ...
+    ```
+* We can also get a count of how many responses there are:
+    ```
+    sqlite> SELECT COUNT(title) FROM favorites;
+    +--------------+
+    | COUNT(title) |
+    +--------------+
+    | 158          |
+    +--------------+
+    ```
+* We can also add more phrases to our command:
+    * `WHERE`, adding a Boolean expression to filter our data
+    * `LIKE`, filtering responses more loosely
+    * `ORDER BY`
+    * `LIMIT`
+    * `GROUP BY`
+    * …
+* We can limit the number of results:
+    ```
+    sqlite> SELECT title FROM favorites LIMIT 10;
+    +-----------------------+
+    |         title         |
+    +-----------------------+
+    | How i met your mother |
+    | The Sopranos          |
+    | Friday Night Lights   |
+    | Family Guy            |
+    | New Girl              |
+    | Friends               |
+    | Office                |
+    | Breaking Bad          |
+    | Modern Family         |
+    | Office                |
+    +-----------------------+
+    ```
+* We can also look for titles matching a string:
+    ```
+    sqlite> SELECT title FROM favorites WHERE title LIKE "%office%";
+    +-------------+
+    |    title    |
+    +-------------+
+    | Office      |
+    | Office      |
+    | The Office  |
+    | The Office  |
+    | The Office  |
+    | The Office  |
+    | The Office  |
+    | The Office  |
+    | The Office  |
+    | The Office  |
+    | The Office  |
+    | the office  |
+    | The Office  |
+    | ThE OffiCE  |
+    | The Office  |
+    | Thevoffice  |
+    +-------------+
+    ```
+    * The `%` character is a placeholder for zero or more other characters, so SQL supports some pattern matching, though not it’s not as powerful as regular expressions are.
+* We can select just the count in our command:
+    ```
+    sqlite> SELECT COUNT(title) FROM favorites WHERE title LIKE "%office%";
+    +--------------+
+    | COUNT(title) |
+    +--------------+
+    | 16           |
+    +--------------+
+    ```
+* If we don’t like a show, we can even delete it:
+    ```
+    sqlite> SELECT COUNT(title) FROM favorites WHERE title LIKE "%friends%";
+    +--------------+
+    | COUNT(title) |
+    +--------------+
+    | 9            |
+    +--------------+
+    sqlite> DELETE FROM favorites WHERE title LIKE "%friends%";
+    sqlite> SELECT COUNT(title) FROM favorites WHERE title LIKE "%friends%";
+    +--------------+
+    | COUNT(title) |
+    +--------------+
+    | 0            |
+    +--------------+
+    ```
+    * With SQL, we can change our data more easily and quickly than with Python.
+* We can update a specific row of data:
+    ```
+    sqlite> SELECT title FROM favorites WHERE title = "Thevoffice";
+    +------------+
+    |   title    |
+    +------------+
+    | Thevoffice |
+    +------------+
+    sqlite> UPDATE favorites SET title = "The Office" WHERE title = "Thevoffice";
+    sqlite> SELECT title FROM favorites WHERE title = "Thevoffice";
+    sqlite> 
+    ```
+    * Now, we’ve changed that row’s value.
+* We can change the values in multiple rows, too:
+    ```
+    sqlite> SELECT genres FROM favorites WHERE title = "Game of Thrones";
+    +--------------------------------------------------------------------------------------------------------------+
+    |                                                    genres                                                    |
+    +--------------------------------------------------------------------------------------------------------------+
+    | Action, Adventure, Drama, Fantasy, Thriller, War                                                             |
+    | Action, Adventure, Drama                                                                                     |
+    | Action, Adventure, Comedy, Drama, Family, Fantasy, History, Horror, Musical, Mystery, Romance, Thriller, War |
+    | Action, Drama, Family, Fantasy, War                                                                          |
+    | Fantasy, Thriller, War                                                                                       |
+    +--------------------------------------------------------------------------------------------------------------+
+    sqlite> UPDATE favorites SET genres = "Action, Adventure, Drama, Fantasy, Thriller, War" WHERE title = "Game of Thrones";
+    sqlite> SELECT genres FROM favorites WHERE title = "Game of Thrones";
+    +--------------------------------------------------+
+    |                      genres                      |
+    +--------------------------------------------------+
+    | Action, Adventure, Drama, Fantasy, Thriller, War |
+    | Action, Adventure, Drama, Fantasy, Thriller, War |
+    | Action, Adventure, Drama, Fantasy, Thriller, War |
+    | Action, Adventure, Drama, Fantasy, Thriller, War |
+    | Action, Adventure, Drama, Fantasy, Thriller, War |
+    +--------------------------------------------------+
+    ```
+    * With `DELETE` and `DROP`, we can remove rows and even entire tables as well.
+    * And notice that in our commands, we’ve written SQL keywords in all caps, so they stand out more.
+    * There also isn’t a built-in way to undo commands, so if we make a mistake we might have to build our database again!
+
+### Tables
+
+* We’ll take a look at our schema again:
+*    ```
+    sqlite> .schema
+    CREATE TABLE IF NOT EXISTS "favorites"(
+    "Timestamp" TEXT,
+    "title" TEXT,
+    "genres" TEXT
+    );
+    ```*
+* If we look at our values of genres, we see some redundancy:
+    ```
+    sqlite> SELECT genres FROM favorites;
+    +-----------------------------------------------------------+
+    |                          genres                           |
+    +-----------------------------------------------------------+
+    | Comedy                                                    |
+    | Comedy, Crime, Drama, Horror, Sci-Fi, Talk-Show, Thriller |
+    | Drama, Family, Sport                                      |
+    | Animation, Comedy                                         |
+    | Comedy, Drama                                             |
+    ...
+    ```
+* And if we want to search for shows that are comedies, we have to search with not just `SELECT title FROM favorites WHERE genre = "Comedy";`, but also ... `WHERE genre = "Comedy, Drama";`, ... `WHERE genre = "Comedy, News";`, and so on.
+* We can use the `LIKE` keyword again, but two genres, “Music” and “Musical”, are similar enough for that to be problematic.
+* We can actually write our own Python program that will use SQL to import our CSV data into *two* tables:
+    ```python
+    # Imports titles and genres from CSV into a SQLite database
+    
+    import cs50
+    import csv
+    
+    # Create database
+    open("favorites8.db", "w").close()
+    db = cs50.SQL("sqlite:///favorites8.db")
+    
+    # Create tables
+    db.execute("CREATE TABLE shows (id INTEGER, title TEXT NOT NULL, PRIMARY KEY(id))")
+    db.execute("CREATE TABLE genres (show_id INTEGER, genre TEXT NOT NULL, FOREIGN KEY(show_id) REFERENCES shows(id))")
+    
+    # Open CSV file
+    with open("favorites.csv", "r") as file:
+    
+        # Create DictReader
+        reader = csv.DictReader(file)
+    
+        # Iterate over CSV file
+        for row in reader:
+    
+            # Canoncalize title
+            title = row["title"].strip().upper()
+    
+            # Insert title
+            show_id = db.execute("INSERT INTO shows (title) VALUES(?)", title)
+    
+            # Insert genres
+            for genre in row["genres"].split(", "):
+
+                db.execute("INSERT INTO genres (show_id, genre) VALUES(?, ?)", show_id, genre)
+    ```
+    * First, we import the Python `cs50` library so we can run SQL commands more easily.
+    * Then, the rest of this code will import each row of `favorites.csv`.
+* Now, our database will have this design:
+    ```
+    $ sqlite3 favorites8.db
+    SQLite version 3.36.0 2021-06-18 18:36:39
+    Enter ".help" for usage hints.
+    sqlite> .schema
+    CREATE TABLE shows (id INTEGER, title TEXT NOT NULL, PRIMARY KEY(id));
+    CREATE TABLE genres (show_id INTEGER, genre TEXT NOT NULL, FOREIGN KEY(show_id) REFERENCES shows(id));
+    ```
+    * We have one table, `shows`, with an `id` column and a `title` column. We can specify that a `title` isn’t null, and that `id` is the column we want to use as a primary key.
+    * Then, we’ll have a table called `genres`, where we have a `show_id` column that references our `shows` table, along with a `genre` column.
+    * This is an example of a **relation**, like a link, between rows in different tables in our database.
+* In our `shows` table, we’ll see each show with an id number:
+    ```
+    sqlite> SELECT * FROM shows;
+    +-----+------------------------------------+
+    | id  |               title                |
+    +-----+------------------------------------+
+    | 1   | HOW I MET YOUR MOTHER              |
+    | 2   | THE SOPRANOS                       |
+    | 3   | FRIDAY NIGHT LIGHTS                |
+    | 4   | FAMILY GUY                         |
+    | 5   | NEW GIRL                           |
+    | 6   | FRIENDS                            |
+    | 7   | OFFICE                             |
+    ...
+    ```
+* And we can see that the genres table has one or more rows for each show_id:
+    ```
+    sqlite> SELECT * FROM genres;
+    +---------+-------------+
+    | show_id |    genre    |
+    +---------+-------------+
+    | 1       | Comedy      |
+    | 2       | Comedy      |
+    | 2       | Crime       |
+    | 2       | Drama       |
+    | 2       | Horror      |
+    | 2       | Sci-Fi      |
+    | 2       | Talk-Show   |
+    | 2       | Thriller    |
+    | 3       | Drama       |
+    | 3       | Family      |
+    | 3       | Sport       |
+    | 4       | Animation   |
+    | 4       | Comedy      |
+    | 5       | Comedy      |
+    | 6       | Comedy      |
+    | 7       | Comedy      |
+    ...
+    ```
+    * Since each show may have more than one genre, we can have more than one row per show in our `genres` table, known as a **one-to-many** relationship.
+    * Furthermore, the data is now cleaner, since each genre name is in its own row.
+* We can select all the shows are that comedies by selecting from the `genres` table first, and then looking for those `id`s in the `shows` table:
+    ```
+    sqlite> SELECT title FROM shows WHERE id IN (SELECT show_id FROM genres WHERE genre = "Comedy");
+    +------------------------------------+
+    |               title                |
+    +------------------------------------+
+    | HOW I MET YOUR MOTHER              |
+    | THE SOPRANOS                       |
+    | FAMILY GUY                         |
+    | NEW GIRL                           |
+    | FRIENDS                            |
+    | OFFICE                             |
+    | MODERN FAMILY                      |
+    ...
+    ```
+    * Notice that we’ve nested two queries, where the inner one returns a list of show `id`s, and the outer one uses those to select the titles of shows that match.
+* Now we can sort and show just the unique titles by adding to our command:
+    ```
+    sqlite> SELECT DISTINCT(title) FROM shows WHERE id IN (SELECT show_id FROM genres WHERE genre = "Comedy") ORDER BY title;
+    +------------------------------------+
+    |               title                |
+    +------------------------------------+
+    | ARCHER                             |
+    | ARRESTED DEVELOPMENT               |
+    | AVATAR THE LAST AIRBENDER          |
+    | B99                                |
+    | BILLIONS                           |
+    | BLACK MIRROR                       |
+    ...
+    ```
+* And we can add new data to each table, in order to add another show. First, we’ll add a new row to the `shows` table for Seinfeld:
+    ```
+    sqlite> INSERT INTO shows (title) VALUES("Seinfeld");
+    ```
+* Then, we can get our row’s `id` by looking for it in the table:
+    ```
+    sqlite> SELECT * FROM shows WHERE title = "Seinfeld";
+    +-----+----------+
+    | id  |  title   |
+    +-----+----------+
+    | 159 | Seinfeld |
+    +-----+----------+
+    ```
+* We’ll use that as the `show_id` to add a new row in the `genres` table:
+    ```
+    sqlite> INSERT INTO genres (show_id, genre) VALUES(159, "Comedy");
+    ```
+* Then, we’ll use `UPDATE` to set the title to uppercase:
+    ```
+    sqlite> UPDATE shows SET title = "SEINFELD" WHERE title = "Seinfeld";
+    ```
+* Finally, we’ll run the same command as before, and see our new show is indeed in the list of comedies:
+    ```
+    sqlite> SELECT DISTINCT(title) FROM shows WHERE id IN (SELECT show_id FROM genres WHERE genre = "Comedy") ORDER BY title;
+    ...
+    | SEINFELD                       |
+    ...
+    ```
+
+## SQL with Python
+
+* It turns out that we’ll be able to write Python code that automates this, so we can imagine building web applications that can programmatically store and look up user data, online shopping orders, and more.
+* We can write a program that asks the user for a show title and then prints its popularity:
+    ```python
+    import csv
+
+    from cs50 import SQL
+
+    db = SQL("sqlite:///favorites.db")
+
+    title = input("Title: ").strip()
+
+    rows = db.execute("SELECT COUNT(*) AS counter FROM favorites WHERE title LIKE ?", title)
+
+    row = rows[0]
+
+    print(row["counter"])
+    ```
+    * We’ll use the `cs50` library to run SQL commands more easily, and open the `favorites.db` database we created earlier.
+    * We’ll prompt the user for a title, and then execute a command. A `?` in the command will allow us to safely substitute variables in our command.
+    * The results are returned in a list of rows, and `COUNT(*)` returns just one row. In our command, we’ll add `AS counter`, so the count is returned in the row (which is a dictionary) with the column name `counter`.
+* We can run our program and search for “The Office”:
+    ```
+    $ python favorites.py
+    Title: The Office
+    12
+    ```
+* And we can tweak our program to print all the rows that match:
+    ```python
+    import csv
+
+    from cs50 import SQL
+
+    db = SQL("sqlite:///favorites.db")
+
+    title = input("Title: ").strip()
+
+    rows = db.execute("SELECT title FROM favorites WHERE title LIKE ?", title)
+
+    for row in rows:
+        print(row["title"])
+    ```
+    ```
+    $ python favorites.py
+    Title: The Office
+    The Office
+    The Office
+    The Office
+    The Office
+    The Office
+    The Office
+    The Office
+    The Office
+    the office
+    The Office
+    ThE OffiCE
+    The Office
+    The Office
+    ```
+    * Since `LIKE` is case-insensitive, we see all the various ways the titles were capitalized.
+
+## IMDb
+
+IMDb, or the Internet Movie Database, has datasets available for download as TSV (tab-separated values) files.
+We’ll open a database that the staff has created beforehand:
+$ sqlite3 shows.db
+SQLite version 3.36.0 2021-06-18 18:36:39
+Enter ".help" for usage hints.
+sqlite> .schema
+CREATE TABLE shows (
+                    id INTEGER,
+                    title TEXT NOT NULL,
+                    year NUMERIC,
+                    episodes INTEGER,
+                    PRIMARY KEY(id)
+                );
+CREATE TABLE genres (
+                    show_id INTEGER NOT NULL,
+                    genre TEXT NOT NULL,
+                    FOREIGN KEY(show_id) REFERENCES shows(id)
+                );
+CREATE TABLE stars (
+                show_id INTEGER NOT NULL,
+                person_id INTEGER NOT NULL,
+                FOREIGN KEY(show_id) REFERENCES shows(id),
+                FOREIGN KEY(person_id) REFERENCES people(id)
+            );
+CREATE TABLE writers (
+                show_id INTEGER NOT NULL,
+                person_id INTEGER NOT NULL,
+                FOREIGN KEY(show_id) REFERENCES shows(id),
+                FOREIGN KEY(person_id) REFERENCES people(id)
+            );
+CREATE TABLE ratings (
+                show_id INTEGER NOT NULL,
+                rating REAL NOT NULL,
+                votes INTEGER NOT NULL,
+                FOREIGN KEY(show_id) REFERENCES shows(id)
+            );
+CREATE TABLE people (
+                id INTEGER,
+                name TEXT NOT NULL,
+                birth NUMERIC,
+                PRIMARY KEY(id)
+            );
+Notice that we have multiple tables, each of which has columns of various data types.
+In both the stars and writers table, for example, we have a show_id column that references the id of some row in the shows table, and a person_id column that references the id of some row in the people table. Effectively, they link shows and people by their ids.
+It turns out that SQL, too, has its own data types:
+BLOB, for “binary large object”, raw binary data that might represent files
+INTEGER
+NUMERIC, number-like but not quite a number, like a date or time
+REAL, for floating-point values
+TEXT, like strings
+Columns can also have additional attributes:
+PRIMARY KEY, like the id columns above that will be used to uniquely identify each row
+FOREIGN KEY, like the show_id column above that refers to a column in some other table
+We can see that there are millions of rows in the people table:
+sqlite> SELECT * FROM people;
+...
+| 13058200 | Emilio Mancuso                                      |       |
+| 13058201 | Pietro Furnis                                       |       |
+| 13058202 | Ida Lonati Frati                                    |       |
++----------+-----------------------------------------------------+-------+
+But like before, we can search for just one row:
+sqlite> SELECT * FROM people WHERE name = "Steve Carell";
++--------+--------------+-------+
+|   id   |     name     | birth |
++--------+--------------+-------+
+| 136797 | Steve Carell | 1962  |
++--------+--------------+-------+
+It turns out that there are a few shows titled “The Office”:
+sqlite> SELECT * FROM shows WHERE title = "The Office";
++---------+------------+------+----------+
+|   id    |   title    | year | episodes |
++---------+------------+------+----------+
+| 112108  | The Office | 1995 | 6        |
+| 290978  | The Office | 2001 | 14       |
+| 386676  | The Office | 2005 | 188      |
+| 1791001 | The Office | 2010 | 30       |
+| 2186395 | The Office | 2012 | 8        |
+| 8305218 | The Office | 2019 | 28       |
++---------+------------+------+----------+
+The most popular one, with 188 episodes, is the one we want, so we can get just that one:
+sqlite> SELECT * FROM shows WHERE title = "The Office" and year = "2005";
++--------+------------+------+----------+
+|   id   |   title    | year | episodes |
++--------+------------+------+----------+
+| 386676 | The Office | 2005 | 188      |
++--------+------------+------+----------+
+We can turn on a timer and see that our original command took about 0.02 seconds to run:
+sqlite> .timer on
+sqlite> SELECT * FROM shows WHERE title = "The Office";
++---------+------------+------+----------+
+|   id    |   title    | year | episodes |
++---------+------------+------+----------+
+| 112108  | The Office | 1995 | 6        |
+| 290978  | The Office | 2001 | 14       |
+| 386676  | The Office | 2005 | 188      |
+| 1791001 | The Office | 2010 | 30       |
+| 2186395 | The Office | 2012 | 8        |
+| 8305218 | The Office | 2019 | 28       |
++---------+------------+------+----------+
+Run Time: real 0.021 user 0.016419 sys 0.004117
+We can create an index, or additional data structures that our database program will use for future searches:
+sqlite> CREATE INDEX "title_index" ON "shows" ("title");
+Run Time: real 0.349 user 0.195206 sys 0.051217
+Now, our search command takes nearly no time:
+sqlite> SELECT * FROM shows WHERE title = "The Office";
++---------+------------+------+----------+
+|   id    |   title    | year | episodes |
++---------+------------+------+----------+
+| 112108  | The Office | 1995 | 6        |
+| 290978  | The Office | 2001 | 14       |
+| 386676  | The Office | 2005 | 188      |
+| 1791001 | The Office | 2010 | 30       |
+| 2186395 | The Office | 2012 | 8        |
+| 8305218 | The Office | 2019 | 28       |
++---------+------------+------+----------+
+Run Time: real 0.000 user 0.000104 sys 0.000124
+It turns out that these data structures are generally B-trees, like binary trees we’ve seen in C but with more children, with nodes organized such that we can search faster than linearly:
+tree with root node and four child nodes, each with two or three child nodes
+Creating an index takes some time up front, perhaps by sorting the data, but afterwards we can search much more quickly.
+With our data spread among different tables, we can nest our queries to get useful data. For example, we can get all the titles of shows starring a particular person:
+sqlite3> SELECT title FROM shows WHERE id IN (SELECT show_id FROM stars WHERE person_id = (SELECT id FROM people WHERE name = "Steve Carell"));
++------------------------------------+
+|               title                |
++------------------------------------+
+| The Dana Carvey Show               |
+| Over the Top                       |
+| Watching Ellie                     |
+| Come to Papa                       |
+| The Office                         |
+...
+We’ll SELECT the title from the shows table for shows with an id that matches a list of show_ids from the stars table. Those show_ids, in turn, must have a person_id that matches the id of Steve Carell in the people table.
+Our query runs pretty quickly, but we can create a few more indexes:
+sqlite> CREATE INDEX person_index ON stars (person_id);
+Run Time: real 0.890 user 0.662294 sys 0.097505
+sqlite> CREATE INDEX show_index ON stars (show_id);
+Run Time: real 0.644 user 0.469162 sys 0.058866
+sqlite> CREATE INDEX name_index ON people (name);
+Run Time: real 0.840 user 0.609600 sys 0.088177
+Each index takes almost a second to build, but afterwards, our same query takes very little time to run.
+It turns out that we can use JOIN commands to combine tables in our queries:
+sqlite> SELECT title FROM people 
+   ...> JOIN stars ON people.id = stars.person_id
+   ...> JOIN shows ON stars.show_id = shows.id
+   ...> WHERE name = "Steve Carell";
+With the JOIN syntax, we can virtually combine tables based on their foreign keys, and use their columns as though they were one table. Here, we’re matching the people table with the stars table, and then with the shows table.
+We can format the same query a little better by listing the tables we want to use all at once:
+sqlite> SELECT title FROM people, stars, shows
+   ...> WHERE people.id = stars.person_id
+   ...> AND stars.show_id = shows.id
+   ...> AND name = "Steve Carell";
++------------------------------------+
+|               title                |
++------------------------------------+
+| The Dana Carvey Show               |
+| Over the Top                       |
+| Watching Ellie                     |
+| Come to Papa                       |
+| The Office                         |
+The downside to having lots of indexes is that each of them take up some amount of space, which might become significant with lots of data and lots of indexes.
+Problems
+One problem in SQL is called a SQL injection attack, where an someone can inject, or place, their own commands into inputs that we then run on our database.
+We might encounter a login page for a website that asks for a username and password, and checks for those in a SQL database.
+Our query for searching for a user might be:
+rows = db.execute("SELECT * FROM users WHERE username = ? AND password = ?", username, password)
+
+if len(rows) == 1:
+    # Log user in
+By using the ? symbols as placeholders, our SQL library will escape the input, or prevent dangerous characters from being interpreted as part of the command.
+In contrast, we might have a SQL query that’s a formatted string, such as:
+rows = db.execute(f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'")
+
+if len(rows) == 1:
+    # Log user in
+If a user types in malan@harvard.edu'-- as their input, then the query will end up being:
+ rows = db.execute(f"SELECT * FROM users WHERE username = 'malan@harvard.edu'--' AND password = '{password}'")
+This query will actually select the row where username = 'malan@harvard.edu', without checking the password, since the single quotes end the input, and -- turns the rest of the line into a comment in SQL.
+The user could even add a semicolon, ;, and write a new command of their own, that our database will execute.
+Another set of problems with databases are race conditions, where shared data is unintentionally changed by code running on different devices or servers at the same time.
+One example is a popular post getting lots of likes. A server might try to increment the number of likes, asking the database for the current number of likes, adding one, and updating the value in the database:
+rows = db.execute("SELECT likes FROM posts WHERE id = ?", id);
+likes = rows[0]["likes"]
+db.execute("UPDATE posts SET likes = ? WHERE id = ?", likes + 1, id);
+Two different servers, responding to two different users, might get the same starting number of likes since the first line of code runs at the same time on each server.
+Then, both will use UPDATE to set the same new number of likes, even though there should have been two separate increments.
+Another example might be of two roommates and a shared fridge in their dorm. The first roommate comes home, and sees that there is no milk in the fridge. So the first roommate leaves to the store to buy milk. While they are at the store, the second roommate comes home, sees that there is no milk, and leaves for another store to get milk as well. Later, there will be two jugs of milk in the fridge.
+We can solve this problem by locking the fridge so that our roommate can’t check whether there is milk until we’ve gotten back.
+To solve this problem, SQL supports transactions, where we can lock rows in a database, such that a particular set of actions are atomic, or guaranteed to happen together.
+For example, we can fix our problem above with:
+db.execute("BEGIN TRANSACTION")
+rows = db.execute("SELECT likes FROM posts WHERE id = ?", id);
+likes = rows[0]["likes"]
+db.execute("UPDATE posts SET likes = ? WHERE id = ?", likes + 1, id);
+db.execute("COMMIT")
+The database will ensure that all the queries in between are executed together.
+But the more transactions we have, the slower our applications might be, since each server has to wait for other servers’ transactions to finish.
