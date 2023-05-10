@@ -1,3 +1,4 @@
+{% raw %}
 # Lecture 9
 {:.no_toc}
 
@@ -178,18 +179,18 @@
 
 * In `index.html` and `greet.html`, we have some repeated HTML code. With just HTML, we aren’t able to share code between files, but with Flask templates (and other web frameworks), we can factor out such common content.
 * We’ll create another template, `layout.html`:
-```
-<!DOCTYPE html>
+    ```
+    <!DOCTYPE html>
 
-<html lang="en">
-    <head>
-        <title>hello</title>
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
-```
+    <html lang="en">
+        <head>
+            <title>hello</title>
+        </head>
+        <body>
+            {% block body %}{% endblock %}
+        </body>
+    </html>
+    ```
     * With the `{% %}` syntax, we can include placeholder blocks, or other chunks of code. Here we’ve named our block `body` since it contains the HTML that should go in the `<body>` element.
 * In `index.html`, we’ll use the `layout.html` blueprint and only define the `body` block with:
     ```
@@ -1019,3 +1020,4 @@ Let’s look at how we might store our registered students in a dictionary in th
     ```
     * With `response.json()`, we turn the raw response into a list of dictionaries, and then we can build a string of HTML with the `for` loop.
 * So, in this web application, HTML is used to for the view itself, Python is used to write the code on our server that sends back data, and JavaScript is used to make the page interactive and dynamic.
+{% endraw %}
