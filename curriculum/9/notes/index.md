@@ -178,18 +178,18 @@
 
 * In `index.html` and `greet.html`, we have some repeated HTML code. With just HTML, we aren’t able to share code between files, but with Flask templates (and other web frameworks), we can factor out such common content.
 * We’ll create another template, `layout.html`:
-    ```
-    <!DOCTYPE html>
+```
+<!DOCTYPE html>
 
-    <html lang="en">
-        <head>
-            <title>hello</title>
-        </head>
-        <body>
-            {% block body %}{% endblock %}
-        </body>
-    </html>
-    ```
+<html lang="en">
+    <head>
+        <title>hello</title>
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>
+```
     * With the `{% %}` syntax, we can include placeholder blocks, or other chunks of code. Here we’ve named our block `body` since it contains the HTML that should go in the `<body>` element.
 * In `index.html`, we’ll use the `layout.html` blueprint and only define the `body` block with:
     ```
