@@ -67,7 +67,7 @@
     </html>
     ```
 * Now, typing `flask run` will return that HTML file when we visit our server’s URL:
-    ```
+    ```bash
     $ flask run
     * Environment: development
     * Debug mode: off
@@ -335,7 +335,7 @@
 
         # Validate submission
         if not request.form.get("name") or request.form.get("sport") not in ["Basketball", "Soccer", "Ultimate Frisbee"]:
-        return render_template("failure.html")
+            return render_template("failure.html")
 
         # Confirm registration
         return render_template("success.html")
@@ -467,7 +467,7 @@
 
 ## Storing data
 
-Let’s look at how we might store our registered students in a dictionary in the memory of our web server with [`froshims3`](https://cdn.cs50.net/2021/fall/lectures/9/src9/froshims3/):
+* Let’s look at how we might store our registered students in a dictionary in the memory of our web server with [`froshims3`](https://cdn.cs50.net/2021/fall/lectures/9/src9/froshims3/):
     ```python
     # Implements a registration form, storing registrants in a dictionary, with error messages
 
@@ -515,7 +515,7 @@ Let’s look at how we might store our registered students in a dictionary in th
     def registrants():
         return render_template("registrants.html", registrants=REGISTRANTS)
     ```
-    We’ll create a dictionary called `REGISTRANTS`, and in `register` we’ll first check the `name` and `sport`, returning a different error message in each case with `error.html`. Then, we can store the name and sport in our `REGISTRANTS` dictionary, and redirect to another route that will display registered students.
+    * We’ll create a dictionary called `REGISTRANTS`, and in `register` we’ll first check the `name` and `sport`, returning a different error message in each case with `error.html`. Then, we can store the name and sport in our `REGISTRANTS` dictionary, and redirect to another route that will display registered students.
 * The error message template, meanwhile, will display the error message along with a fun image of a grumpy cat:
     ```
     {% extends "layout.html" %}
