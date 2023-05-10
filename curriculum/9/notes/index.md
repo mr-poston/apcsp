@@ -184,6 +184,7 @@
 
     <html lang="en">
         <head>
+            <meta name="viewport" content="initial-scale=1, width=device-width">
             <title>hello</title>
         </head>
         <body>
@@ -198,7 +199,7 @@
 
     {% block body %}
 
-        <form action="/greet" method="post">
+        <form action="/greet" method="get">
             <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
             <input type="submit">
         </form>
