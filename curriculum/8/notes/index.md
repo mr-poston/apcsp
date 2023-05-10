@@ -122,7 +122,7 @@
 
 * Now that we can use the internet and HTTP to send and receive messages, it’s time to see what’s in the content for web pages. **HTML**, Hypertext Markup Language, is not a programming language, but rather used to format web pages and tell the browser how to display them.
 * A simple page in HTML might look like this:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -151,7 +151,8 @@
 * HTML allows us to build the structure of our web pages, and we can look for reference materials online for all the tags and attributes that we can use as building blocks.
 * We can use a [validator](https://validator.w3.org/#validate_by_input) to check that our HTML is valid.
 * We’ll take a look at [`paragraphs0.html`](https://cdn.cs50.net/2021/fall/lectures/8/src8/paragraphs0.html?highlight):
-    ```html
+
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -174,7 +175,7 @@
     * With the `<p>` tag, we can indicate that each section of text should be a paragraph.
     * After we save this file, we’ll refresh the index of our web server, and then open `paragraphs.html`, to see that each paragraph of text is separated by some spacing.
 * We can add headings with tags like `<h1>`, `<h2>`, and `<h3>` in [`headings.html`](https://cdn.cs50.net/2021/fall/lectures/8/src8/headings.html?highlight):
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -202,7 +203,7 @@
     ```
     * Each level of heading has a different size, and we can use up to six levels of headings with `<h6>`.
 * We take a look at [`list0.html`](https://cdn.cs50.net/2021/fall/lectures/8/src8/list0.html?highlight), where we use the `<ul>` tag to create an unordered list, like bullet points:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -221,7 +222,7 @@
     * Here the `<li>` tag is used for each list item.
     * We can also use `<ol>` instead, for an ordered list with numbers.
 * Tables start with a `<table>` tag and have `<tr>` tags as rows, `<th>` tags for headers, and `<td>` tags for individual cells:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -251,7 +252,7 @@
     </html>
     ```
 * In [`image.html`](https://cdn.cs50.net/2021/fall/lectures/8/src8/image.html?highlight), we can upload an image to our instance of VS Code and include it in our page with an `<img>` tag. We can also use the `alt` attribute to add alternative text for accessibility:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -265,7 +266,7 @@
     ```
     * It turns out the image is included at its full size, so we’ll use CSS later to set its width and height.
 * We can also include videos with [`video.html`](https://cdn.cs50.net/2021/fall/lectures/8/src8/video.html?highlight):
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -281,7 +282,7 @@
     ```
     * We’ll use HTML attributes to change how our video is displayed. Notice that some attributes are empty, where there is no value. (`autoplay`, `loop`, `muted`)
 * We’ll embed another page in ours with an inline frame, or iframe:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -294,7 +295,7 @@
     </html>
     ```
 * We can create links in [`link1.html`](https://cdn.cs50.net/2021/fall/lectures/8/src8/link1.html?highlight) with the `<a>`, or anchor, tag:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -312,7 +313,7 @@
     * But we could set the `href` to `https://www.yale.edu`, but leave Harvard within the tag, which might prank users or even trick them into visiting a fake version of some website. **Phishing** is an act of tricking users, a form of social engineering that includes misleading links.
     * We can link to other pages on our own server with just `image.html` or something similar.
 * In [`responsive.html`](https://cdn.cs50.net/2021/fall/lectures/8/src8/responsive.html?highlight), we can add attributes to make our page **responsive**, or automatically adapted for different screen sizes:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -339,7 +340,7 @@
     ```
     * We can also use POST, to send inputs like usernames and passwords, that should be hidden from the URL.
 * In [`search0.html`](https://cdn.cs50.net/2021/fall/lectures/8/src8/search0.html?highlight), we can create a form that takes user input and sends it to Google’s search engine:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -361,7 +362,7 @@
 ## CSS
 
 * Let’s make a home page:
-    ```html
+    ```
     <!DOCTYPE html>
     
     <html lang="en">
@@ -383,7 +384,7 @@
     ```
     * We have three paragraphs, and we could use `<div>` tags, or divisions, to indicate they are separate areas on our page.
 * We can also use HTML tags that add more context to our page:
-    ```html
+    ```
     <!DOCTYPE html>
     
     <html lang="en">
@@ -404,7 +405,7 @@
     </html>
     ```
 * We’ll stylize our page by adding a few aesthetics:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -427,7 +428,7 @@
     * We’ll also use an **HTML entity** to represent the copyright symbol, which will be displayed in our browser as ©.
 * In our `<style>` tags, we’re using **CSS**, Cascading Style Sheets, another language that tells our browser how to display tags on a page. CSS uses **properties**, or key-value pairs, like font-size: large;.
 * We can align all the text at once, instead of repeating ourselves:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -449,7 +450,7 @@
     ```
     Here, the style applied to the `<body>` tag cascades, or applies, to its children, so all the sections inside will have centered text as well.
 * To factor out, or separate our CSS from HTML, we can include styles in the `<head>` tag:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -493,7 +494,7 @@
     ```
     * We can use a CSS **type selector** to style each type of tag.
 * We can also use a more specific **class selector**:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -539,7 +540,7 @@
     * We can define our own CSS **class** with a `.` followed by a keyword we choose, so here we’ve created `.centered`, `.large`, `.medium`, and `.small`, each with some property.
     * Then, on any number of tags in our page’s HTML, we can add one or more of these classes with the `class` attribute.
 * Finally, we can take all of the CSS for the properties and move them to another file with the `<link>` tag:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -590,7 +591,7 @@
     * We can also right-click on anything displayed on the page, and click “Inspect Element” to see it highlighted in the panel for us, where we can make more changes quickly or learn how other pages implement features.
 * With CSS, we’ll also rely on references and other resources to look up how to use properties as we need them.
 * We can use other types of selectors as well:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -655,14 +656,14 @@
     * The **attribute selectors** will affect tags with those attributes, and we can use `a[href*="harvard.edu"]` to be less specific in our selection, affecting tags with `harvard.edu` anywhere in its `href`.
 * A set of CSS conventions and shared styles is known as a **framework**, with classes and components we can quickly use.
 * One popular framework is [Bootstrap](https://getbootstrap.com/), with components like alerts that we can use with HTML like:
-    ```html
+    ```
     <div class="alert alert-warning">
         ...
     </div>
     ```
     * The framework provides the CSS that sets the style for those classes.
 * With the help of the documentation on Bootstrap’s website, we’ll include a `<link>` to its CSS for our page with a table:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -694,7 +695,7 @@
     ```
     * By adding the `table` class, per the Boostrap documentation, we see that our table is indeed stylized to be easier to read.
 * We’ll update our search page, too, with styles from Bootstrap:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -820,7 +821,7 @@
     * Notice that in JavaScript we use `let` to declare variables, without needing to indicate types.
 * With JavaScript, we can change the HTML in the browser in real-time. We can use `<script>` tags to include our code directly, or from a `.js` file.
 * We’ll create another form:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -847,7 +848,7 @@
     * In the `<head>` tag, we’ll have a `<script>` tag with a function that defines a function, `greet`, in JavaScript.
     * Now, if we load that page, we’ll see `hello, there` being shown when we submit the form.
 * Since our input tag, or **element**, has an ID of `name`, we can use it in our code:
-    ```html
+    ```
     <script>
 
         function greet()
@@ -860,7 +861,7 @@
     ```
     * `document` is a global variable that comes with JavaScript in the browser, and `querySelector` is a function we can use to select a node in the **DOM**, Document Object Model, or the tree structure of the HTML page. After we select the element with the ID `name`, we get the text `value` inside the input, and add it to our alert.
 * We can move our function to the bottom of the `<body>` of the page, since we want the rest of the page to load first:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -888,7 +889,7 @@
     ```
     Now, we can listen to **events** in JavaScript, which occur when something happens on the page. For example, we can listen to the `submit` event on our `form` element, and call the `greet` function when the event happens.
 * We can also use **anonymous functions** in JavaScript:
-    ```html
+    ```
     <script>
 
         document.querySelector('form').addEventListener('submit', function(e) {
@@ -901,7 +902,7 @@
     ```
     We can pass in a function with no name with the `function()` syntax, and it turns out that event handlers in JavaScript get an event variable, `e` by convention, that we can use inside our function. Here, we use `e.preventDefault();` to stop the default behavior of the form.
 * We can programmatically change style, too:
-    ```html
+    ```
     <!DOCTYPE html>
 
     <html lang="en">
@@ -934,7 +935,7 @@
     ```
     * After selecting an element, we can use the `style` property to set values for CSS properties as well. Here, we have three buttons, each of which has an event listener for the `click` event, that changes the background color of the `<body>` element.
 * We can also use JavaScript to make an element “blink”, or appear and reappear at an interval:
-    ```html
+    ```
     <!DOCTYPE html>
     
     <html lang="en">
@@ -967,7 +968,7 @@
     </html>
     ```
 * We can implement a form with autocomplete, using a dictionary of words and an event listener for the `keyup` event:
-    ```html
+    ```
     <!DOCTYPE html>
     
     <html lang="en">
@@ -1005,7 +1006,7 @@
     ```
     * If we visit [`autocomplete.html`](https://cdn.cs50.net/2021/fall/lectures/8/src8/autocomplete.html) and start typing in the input box, we’ll see matching words appear below.
 * With [`geolocation.html`](https://cdn.cs50.net/2020/fall/lectures/8/src8/geolocation.html), we can ask the browser for a user’s GPS coordinates:
-    ```html
+    ```
     <!DOCTYPE html>
     
     <html lang="en">
