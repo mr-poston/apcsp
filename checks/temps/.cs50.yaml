@@ -1,0 +1,8 @@
+check50:
+  files: &check50_files
+    - !exclude "*"
+    - !include "temps.c"
+    - !include "temps"
+
+submit50:
+  files: *check50_files
