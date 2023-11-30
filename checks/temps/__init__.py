@@ -15,7 +15,7 @@ def compiles():
 @check50.check(compiles)
 def output_check():
     """Output is correct"""
-    desired = "\\nAverage July Temperatures by City\\\\n\\\\n"
+    desired = "\\nAverage July Temperatures by City\\n\\n"
     desired += "Phoenix: 107\\n"
     desired += "Las Vegas: 105\\n"
     desired += ".* 97\\n"
