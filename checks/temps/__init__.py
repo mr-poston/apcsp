@@ -17,12 +17,12 @@ def output_check():
     desired = "\nAverage July Temperatures by City\n\n"
     desired += "Phoenix: 107\n"
     desired += "Las Vegas: 105\n"
-    desired += "Austin: 97\n"
-    desired += "Miami: 97\n"
+    desired += r"* 97\n"
+    desired += r"* 97\n"
     desired += "Denver: 90\n"
     desired += "Chicago: 85\n"
     desired += "New York: 85\n"
-    desired += "Boston: 82\n"
-    desired += "Los Angeles: 82\n"
+    desired += r"* 82\n"
+    desired += r"* 82\n"
     desired += "San Francisco: 66"
-    check50.run("./temps").stdout(desired).exit(0)
+    check50.run("./temps").stdout(desired, regex=True).exit(0)
