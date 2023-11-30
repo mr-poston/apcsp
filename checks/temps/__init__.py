@@ -15,5 +15,5 @@ def compiles():
 @check50.check(compiles)
 def output_check():
     """Output is correct"""
-    desired = "\\nAverage July Temperatures by City\\n\\n"
+    desired = "\nAverage July Temperatures by City\n\n"
     check50.run("./temps").stdout(desired + "Phoenix: 107\nLas Vegas: 105\n[AM].*: 97\n[AM].*: 97\nDenver: 90\n[CN].*: 85\n[CN].*: 85\n[BL].*: 82\n[BL].*: 82\nSan Francisco: 66", regex=True).exit(0)
