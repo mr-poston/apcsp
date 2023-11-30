@@ -16,15 +16,4 @@ def compiles():
 def output_check():
     """Output is correct"""
     desired = "\\nAverage July Temperatures by City\\n\\n"
-    desired += "Phoenix: 107\\n"
-    desired += "Las Vegas: 105\\n"
-    desired += ".* 97\\n"
-    desired += ".* 97\\n"
-    desired += "Denver: 90\\n"
-    desired += "Chicago: 85\\n"
-    desired += "New York: 85\\n"
-    desired += ".* 82\\n"
-    desired += ".* 82\\n"
-    desired += "San Francisco: 66"
-    desired = re.compile(desired)
     check50.run("./temps").stdout("Phoenix: 107\nLas Vegas: 105\n.*: 97\n.*: 97\nDenver: 90\n.*: 85\n.*: 85\n.*: 82\n.*: 82\nSan Francisco: 66", regex=True).exit(0)
