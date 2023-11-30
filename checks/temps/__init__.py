@@ -26,4 +26,4 @@ def output_check():
     desired += r"* 82\n"
     desired += r"* 82\n"
     desired += "San Francisco: 66"
-    check50.run("./temps").stdout(desired, regex=True).exit(0)
+    check50.run("./temps").stdout(re.compile(desired), regex=True).exit(0)
