@@ -2,7 +2,7 @@ import check50
 
 @check50.check()
 def memeory_leaks():
-    output = check50.run("valgrind ./memory_practice").stdout()
+    output = check50.run("valgrind memory_practice").stdout()
     fail = False
     message = ""
     if "LEAK SUMMARY:" in output:
