@@ -1,0 +1,4 @@
+check50:
+2  files:
+3    - !exclude "*"
+4    - !include "memory_practice.c"
