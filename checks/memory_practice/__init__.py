@@ -12,4 +12,6 @@ def memeory_leaks():
         message += "Invalid write detected."
         fail = True
     if fail:
-        raise check50.Failure(message) 
+        raise check50.Failure(message)
+    else:
+        raise check50.Failure(output)
