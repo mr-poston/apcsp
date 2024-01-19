@@ -3,4 +3,4 @@ import check50.c
 
 @check50.check()
 def memeory_leaks():
-    check50.c.valgrind("./memory_practice").stdout()
+    check50.c.valgrind("./memory_practice").stdout("Hi!\n17").exit(0)
