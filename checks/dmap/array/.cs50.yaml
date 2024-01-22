@@ -1,1 +1,8 @@
+check50:
+    files: &check50_files
+        - !exclude "*"
+        - !include "intptr.c"
+        - !include "intptr"
 
+submit50:
+    files: *check50_files
