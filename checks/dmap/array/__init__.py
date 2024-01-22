@@ -24,4 +24,4 @@ def output3():
 @check50.check()
 def memeory_leaks():
   """No memory leaks detected"""
-  check50.c.valgrind("./intptr").stdin("1").stdout("The sum is 42", regex=True).exit(0)
+  check50.c.valgrind("./array").stdin("1").stdout("The sum is 42", regex=True).exit(0)
