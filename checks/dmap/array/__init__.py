@@ -9,7 +9,7 @@ def compiles():
 @check50.check()
 def output1():
   """Output is correct"""
-  check50.run("./array").stdin("3").stdin("42").stdin("13").stdin("3").stdout("The sum is 58", regex=True).exit(0)
+  check50.run("./array").stdin("3 42 13 3").stdout("The sum is 58", regex=True).exit(0)
 
 @check50.check()
 def output2():
