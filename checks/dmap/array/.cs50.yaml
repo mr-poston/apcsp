@@ -1,8 +1,8 @@
 check50:
     files: &check50_files
         - !exclude "*"
-        - !include "intptr.c"
-        - !include "intptr"
+        - !include "array.c"
+        - !include "array"
 
 submit50:
     files: *check50_files
