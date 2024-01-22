@@ -14,4 +14,4 @@ def output():
 @check50.check()
 def memeory_leaks():
   """No memory leaks detected"""
-    check50.c.valgrind("./hi").stdout("HI!").exit(0)
+  check50.c.valgrind("./hi").stdout("HI!").exit(0)
