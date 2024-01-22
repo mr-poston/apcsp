@@ -14,7 +14,7 @@ def output1():
 @check50.check()
 def output2():
   """Output is correct"""
-  check50.run("./concatenate").stdin("home").stdin("run).stdout("homerun", regex=True).exit(0)
+  check50.run("./concatenate").stdin("home").stdin("run").stdout("homerun", regex=True).exit(0)
 
 @check50.check()
 def output3():
