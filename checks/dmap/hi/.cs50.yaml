@@ -1,0 +1,8 @@
+check50:
+    files: &check50_files
+        - !exclude "*"
+        - !include "hi.c"
+        - !include "hi"
+
+submit50:
+    files: *check50_files
