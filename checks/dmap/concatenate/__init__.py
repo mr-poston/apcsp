@@ -8,17 +8,17 @@ def compiles():
 
 @check50.check()
 def output1():
-  """Output is correct"""
+  """blackcat"""
   check50.run("./concatenate").stdin("black").stdin("cat").stdout("blackcat", regex=True).exit(0)
 
 @check50.check()
 def output2():
-  """Output is correct"""
+  """homerun"""
   check50.run("./concatenate").stdin("home").stdin("run").stdout("homerun", regex=True).exit(0)
 
 @check50.check()
 def output3():
-  """Output is correct"""
+  """supercharger"""
   check50.run("./concatenate").stdin("super").stdin("charger").stdout("supercharger", regex=True).exit(0)
 
 @check50.check()
