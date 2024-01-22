@@ -9,7 +9,7 @@ def compiles():
 @check50.check()
 def output1():
   """Output is correct"""
-  check50.run("./concatenate").stdin("black cat").stdout("blackcat", regex=True).exit(0)
+  check50.run("./concatenate").stdin("'black' 'cat'").stdout("blackcat", regex=True).exit(0)
 
 @check50.check()
 def output2():
