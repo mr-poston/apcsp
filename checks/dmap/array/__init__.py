@@ -8,17 +8,17 @@ def compiles():
 
 @check50.check()
 def output1():
-  """Output is correct"""
+  """Output is correct for [42, 13, 3]"""
   check50.run("./array").stdin("3 42 13 3").stdout("The sum is 58", regex=True).exit(0)
 
 @check50.check()
 def output2():
-  """Output is correct"""
+  """Output is correct for [11, 9]"""
   check50.run("./array").stdin("2 11 9").stdout("The sum is 20", regex=True).exit(0)
 
 @check50.check()
 def output3():
-  """Output is correct"""
+  """Output is correct for [1, 2, -3]"""
   check50.run("./array").stdin("3 1 2 -3").stdout("The sum is 0", regex=True).exit(0)
 
 @check50.check()
