@@ -14,7 +14,7 @@ def output1():
 @check50.check()
 def output2():
   """Output is correct"""
-  check50.run("./array").stdin("2").stdin("11").stdin("9").stdout("The sum is 20", regex=True).exit(0)
+  check50.run("./array").stdout("The sum is 20", regex=True).exit(0)
 
 @check50.check()
 def output3():
